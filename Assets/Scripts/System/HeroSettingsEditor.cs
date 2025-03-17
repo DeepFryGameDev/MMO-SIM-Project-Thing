@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Purpose: Used to tweak various settings related to Hero scripts - linked to the HeroSettings static class so that other scripts can simply reference that.
-// Directions: Attach to the [System] object
+// Directions: Attach to the [Editor] object
 // Other notes: Any time something is added here, it should be set in the SetSettings() method as well.  Ensure the var is also added to HeroSettings
 
 public class HeroSettingsEditor : MonoBehaviour

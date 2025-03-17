@@ -8,4 +8,6 @@ public static class KeyBindings
 {
     public static KeyCode interactKey;
     public static KeyCode whistleKey;
+
+    public static KeyCode playerCommandMenuKey;
 }

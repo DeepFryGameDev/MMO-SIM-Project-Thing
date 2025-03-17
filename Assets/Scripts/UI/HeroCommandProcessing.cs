@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class HeroCommandProcessing : MonoBehaviour
-{
-    // Purpose: Handles the procedures in which the command window operates when on a Hero Home Zone
-    // Directions: For now, attach to the [UI]/HeroZoneCanvas/HeroCommand object
-    // Other notes: 
+// Purpose: Handles the procedures in which the command window operates when on a Hero Home Zone
+// Directions: For now, attach to the [UI]/HeroZoneCanvas/HeroCommand object
+// Other notes: 
 
+public class HeroCommandProcessing : MonoBehaviour
+{  
     CanvasGroup CommandCanvasGroup; // Set to the canvasGroup attached to the HeroCommand UI panel
 
     HeroPathing heroPathing; // Used to manipulate the pathingState for the given hero
