@@ -15,6 +15,8 @@ public class HeroCommandProcessing : MonoBehaviour
 
     ThirdPersonCam cam; // Used to disable camera rotating when the player's movement is disabled
 
+    PlayerInteraction playerInteraction; // Used to hide/show the interaction graphic
+
     void Awake()
     {
         Setup();
@@ -23,6 +25,8 @@ public class HeroCommandProcessing : MonoBehaviour
     void Setup()
     {
         CommandCanvasGroup = GameObject.Find("HeroZoneCanvas/HeroCommand").GetComponent<CanvasGroup>(); //hacky, need to fix this later
+        playerInteraction = FindFirstObjectByType<PlayerInteraction>(); // and this
+
         playerMovement = FindFirstObjectByType<PlayerMovement>();
 
         cam = FindFirstObjectByType<ThirdPersonCam>();
@@ -43,7 +47,10 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void OpenHeroCommand()
     {
+        Debug.Log("Opening command window");
+
         // Turn off interaction image in UI
+        playerInteraction.SetIgnoreRay(true);
 
         //1. Disable player movement
         playerMovement.ToggleMovement(false);
@@ -56,12 +63,20 @@ public class HeroCommandProcessing : MonoBehaviour
     }
 
     /// <summary>
-    /// Function called when the hero command window should be closed.
+    /// Function called when the hero command window should be closed.  Basically just doing the opposite as OpenHeroCommand() and in reverse order.
     /// Like OpenHeroCommand() this should contain any methods related to turning off the UI and allowing player movement again
     /// </summary>
     public void CloseHeroCommand()
     {
+        Debug.Log("Closing command window");
 
+        ToggleCommandMenu(false);
+
+        heroPathing.StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
+
+        playerMovement.ToggleMovement(true);
+
+        playerInteraction.SetIgnoreRay(false);
     }
 
     /// <summary>
@@ -91,6 +106,5 @@ public class HeroCommandProcessing : MonoBehaviour
 
             cam.ToggleCameraRotation(true);
         }
-
     }
 }

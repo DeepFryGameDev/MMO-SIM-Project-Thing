@@ -19,15 +19,13 @@ public class HeroPathing : MonoBehaviour
 
     bool shouldRun; // Is set to true when the hero's running animation and run speed should be active. Essentially, when the hero should be running.
     public bool GetShouldRun() { return shouldRun; }
-
-    float distanceToWhistleTarget; // The distance from the hero's object to the whistle target (likely the player)
-    Transform whistleTargetTransform; // Set to the transform of the whistle target to gather position. Might not be needed.
-
+        
     public enum pathModes 
     {
         IDLE, // Hero is not moving
         RANDOM, // Hero is choosing random points within home zone and pathing to them
         TARGET, // Hero is moving to a designated point (ie whistle command)
+        WHISTLE,
         COMMAND // Not being used yet
     }
 
@@ -37,6 +35,13 @@ public class HeroPathing : MonoBehaviour
 
     bool randPathingActive; // Returns true if the hero is pathing to a random point
     bool randomWaiting; // Returns true when the hero has reached a random destination and is waiting to path to a new one    
+
+    #endregion
+
+    #region WhistlePathing Vars
+
+    float distanceToWhistleTarget; // The distance from the hero's object to the whistle target (likely the player)
+    Transform playerTransform; // Set to the transform of the whistle target to gather position. Might not be needed. (should always be player)
 
     #endregion
 
@@ -61,20 +66,25 @@ public class HeroPathing : MonoBehaviour
 
         agent = heroManager.NavMeshAgent();
 
+        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
         agent.speed = HeroSettings.walkSpeed;
         moveSpeed = agent.speed; // just simply setting defaults to w/e the agent's speed is (which is coincidentally set from HeroSettings)
     }
 
     void Update()
     {
-        if (pathMode == pathModes.RANDOM)
+        switch (pathMode)
         {
-            ProcessRandomPathing();
-        }        
+            case pathModes.RANDOM:
+                ProcessRandomPathing();
+                break;
+            case pathModes.WHISTLE:
+                WhistlePathing();
+                break;
+        }    
 
-        SyncMoveSpeed();
-
-        WhistlePathing();
+        SyncMoveSpeed();        
     }
 
     /// <summary>
@@ -100,6 +110,18 @@ public class HeroPathing : MonoBehaviour
         {
             CheckForRandomWait();
         }
+    }
+
+    /// <summary>
+    /// Begins new random pathing procedures.
+    /// </summary>
+    public void StartNewRandomPathing()
+    {
+        moveSpeed = HeroSettings.walkSpeed;
+
+        agent.isStopped = false;
+
+        pathMode = pathModes.RANDOM;
     }
 
     /// <summary>
@@ -170,6 +192,11 @@ public class HeroPathing : MonoBehaviour
 
         agent.velocity = new Vector3(0, 0, 0);
 
+        randPathingActive = false;
+        randomWaiting = false;
+
+        whistleTargetWithinRange = false;
+
         pathMode = pathModes.IDLE;
     }
 
@@ -182,6 +209,8 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     void WhistlePathing()
     {
+        distanceToWhistleTarget = Vector3.Distance(transform.position, playerTransform.position);
+
         if (distanceToWhistleTarget <= HeroSettings.whistleStoppingDistance && distanceToWhistleTarget != 0)
         {
             whistleTargetWithinRange = true;
@@ -189,8 +218,6 @@ public class HeroPathing : MonoBehaviour
 
         if (distanceToWhistleTarget > HeroSettings.whistleStoppingDistance)
         {
-            distanceToWhistleTarget = Vector3.Distance(transform.position, whistleTargetTransform.position);
-
             if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - WhistlePathing: Not within stopping distance: " + distanceToWhistleTarget + " > " + HeroSettings.whistleStoppingDistance);
             whistleTargetWithinRange = false;
         }
@@ -205,14 +232,12 @@ public class HeroPathing : MonoBehaviour
     /// Sets the destination for the NavMeshAgent and other needed Whistle vars
     /// </summary>
     /// <param name="targetTransform">Transform containing the position that the hero should path to</param>
-    public void WhistleMoveToTarget(Transform targetTransform)
+    public void WhistleMoveToTarget()
     {
-        whistleTargetTransform = targetTransform;
-
-        distanceToWhistleTarget = Vector3.Distance(transform.position, whistleTargetTransform.position);
+        distanceToWhistleTarget = Vector3.Distance(transform.position, playerTransform.position);
 
         // send agent to targetTransform pos
-        agent.SetDestination(whistleTargetTransform.position);
+        agent.SetDestination(playerTransform.position);
     }
 
     #endregion

@@ -10,6 +10,9 @@ public class PlayerInteraction : MonoBehaviour
 
     int layerMask = 1 << 8; // Set to layer layerInteractable - this ensures only interactable objects will receive instruction from the raycast
 
+    bool ignoreRay = false; // Used when interactions should not be possible - ie in a menu
+    public void SetIgnoreRay(bool ignoreRay) { this.ignoreRay = ignoreRay; }
+
     void Update()
     {
         CheckForAvailableInteraction();
@@ -29,7 +32,7 @@ public class PlayerInteraction : MonoBehaviour
 
         RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, ih.GetInteractDistance(), layerMask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, ih.GetInteractDistance(), layerMask) && !ignoreRay)
         {
             if (ih.GetShowInteractionRay()) Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
 

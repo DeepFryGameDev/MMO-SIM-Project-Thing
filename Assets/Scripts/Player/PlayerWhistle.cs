@@ -60,7 +60,7 @@ public class PlayerWhistle : MonoBehaviour
     IEnumerator StartCommandFromWhistle()
     {
         // Reset heroPathing
-        heroManagerWhistled.HeroPathing().pathMode = HeroPathing.pathModes.IDLE;
+        heroManagerWhistled.HeroPathing().pathMode = HeroPathing.pathModes.WHISTLE;
 
         // play some whisle SE eventually here
         Debug.Log("***PlayerWhistle: Whistling for " + heroManagerWhistled.Hero().name + "***");
@@ -72,7 +72,7 @@ public class PlayerWhistle : MonoBehaviour
         heroManagerWhistled.HeroPathing().ToggleRun(true);
 
         // have hero run to player
-        heroManagerWhistled.HeroPathing().WhistleMoveToTarget(gameObject.transform);
+        heroManagerWhistled.HeroPathing().WhistleMoveToTarget();
 
         //when hero is within stopping distance of player
         while (!heroManagerWhistled.HeroPathing().GetWhistleTargetWithinRange())
