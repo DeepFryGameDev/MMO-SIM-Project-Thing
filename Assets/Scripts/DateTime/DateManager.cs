@@ -106,12 +106,6 @@ public class DateManager : MonoBehaviour
             heroManager.HeroPathing().StopPathing();
         }
 
-        // move all heroes to starting position
-        foreach (HeroManager heroManager in heroManagers)
-        {
-            heroManager.HeroPathing().MoveToStartingPosition();
-        }
-
         RollForwardDate();
 
         // show graphic
@@ -126,14 +120,18 @@ public class DateManager : MonoBehaviour
         // wait transition seconds
         yield return new WaitForSeconds(DateSettings.transitionSeconds / 2);
 
+        // --- Start here ---
+
+        // move all heroes to starting position
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            heroManager.HeroPathing().MoveToStartingPosition();
+        }
+
         // move player to starting position
         spawnManager.MovePlayerToSpawnPosition();
 
-        // change all hero pathing to random again (should eventually be set to whatever the schedule has them doing)
-        foreach (HeroManager heroManager in heroManagers)
-        {
-            heroManager.HeroPathing().pathMode = HeroPathing.pathModes.RANDOM;
-        }
+        // --- End here ---
 
         // Wait again
         yield return new WaitForSeconds(DateSettings.transitionSeconds / 2);
@@ -141,6 +139,12 @@ public class DateManager : MonoBehaviour
         #endregion
 
         #region post-transition
+
+        // change all hero pathing to random again (should eventually be set to whatever the schedule has them doing)
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            heroManager.HeroPathing().StartNewRandomPathing();
+        }
 
         // enable player movement
         playerMovement.ToggleMovement(true);
