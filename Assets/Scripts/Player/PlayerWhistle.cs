@@ -15,11 +15,19 @@ public class PlayerWhistle : MonoBehaviour
     PlayerMovement pm; // Just used to toggle player movement
     HeroCommandProcessing hcp; // Used to allow the player to interface with the hero
 
+    bool canWhistle;
+    public void ToggleCanWhistle(bool toggle) { canWhistle = toggle; }
+
     void Awake()
     {
         pm = FindFirstObjectByType<PlayerMovement>();
 
         hcp = FindFirstObjectByType<HeroCommandProcessing>();
+    }
+
+    void Start()
+    {
+        canWhistle = true;
     }
 
     // Update is called once per frame
@@ -33,7 +41,7 @@ public class PlayerWhistle : MonoBehaviour
     /// </summary>
     void ListenForWhistle()
     {
-        if (Input.GetKeyDown(KeyBindings.whistleKey))
+        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle)
         {
             // Check if standing on home zone
             RaycastHit hit;
@@ -88,5 +96,5 @@ public class PlayerWhistle : MonoBehaviour
         // open command menu
         hcp.SetHeroPathing(heroManagerWhistled.HeroPathing());
         hcp.OpenHeroCommand();
-    }
+    }    
 }

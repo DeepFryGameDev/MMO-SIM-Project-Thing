@@ -258,4 +258,9 @@ public class HeroPathing : MonoBehaviour
             moveSpeed = HeroSettings.walkSpeed;
         }
     }
+
+    public void MoveToStartingPosition()
+    {
+        transform.position = heroManager.GetStartingPosition();
+    }
 }

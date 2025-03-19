@@ -33,6 +33,9 @@ public class HeroManager : MonoBehaviour
     public HeroHomeZone HomeZone() { return homeZone; }
     public void SetHomeZone(HeroHomeZone homeZone) { this.homeZone = homeZone; }
 
+    Vector3 startingPosition;
+    public Vector3 GetStartingPosition() { return startingPosition; }
+
     private void Awake()
     {
         Setup();
@@ -41,6 +44,8 @@ public class HeroManager : MonoBehaviour
     private void Start()
     {
         CheckForNulls();
+
+        startingPosition = transform.position;
     }
 
     void Setup() 
