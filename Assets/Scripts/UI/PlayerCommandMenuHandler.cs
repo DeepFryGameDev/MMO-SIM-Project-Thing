@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates the processes for the player command menu
+// Directions: Attach to PlayerCommandMenu/PlayerCommand object
 // Other notes: 
 
 public class PlayerCommandMenuHandler : MonoBehaviour
@@ -20,6 +20,11 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     void Awake()
     {
+        Setup();
+    }
+
+    void Setup()
+    {
         canvasGroup = GetComponent<CanvasGroup>();
         dateManager = FindFirstObjectByType<DateManager>();
         playerMovement = FindFirstObjectByType<PlayerMovement>();
@@ -35,9 +40,12 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// Ran in Update() to open the player command menu when the player hits the designated key
+    /// </summary>
     void CheckForMenuKey()
     {
-        if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey))
+        if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && GlobalSettings.GetUIState() == GlobalSettings.UIStates.IDLE)
         {
             // disable player movement
             playerMovement.ToggleMovement(false);
@@ -53,9 +61,15 @@ public class PlayerCommandMenuHandler : MonoBehaviour
             Cursor.visible = true;
 
             cam.ToggleCameraRotation(false);
+
+            GlobalSettings.SetUIState(GlobalSettings.UIStates.PLAYERCOMMAND);
         }
     }
 
+    /// <summary>
+    /// Set to the 'Close' button in the player command menu
+    /// These are the functions that will run when the player command menu is closed.
+    /// </summary>
     public void CloseMenuButtonClicked()
     {
         // close menu
@@ -72,8 +86,14 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         Cursor.visible = false;
 
         cam.ToggleCameraRotation(true);
+
+        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
 
+    /// <summary>
+    /// Set to the 'Next Week' button in the player command menu
+    /// These are the functions that will run when the player clicks this button
+    /// </summary>
     public void NextWeekButtonClicked()
     {
         StartCoroutine(dateManager.ProcessStartWeek());
@@ -81,6 +101,10 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         ToggleCanvasGroup(false);
     }
 
+    /// <summary>
+    /// Simply shows/hides the Player Command Menu
+    /// </summary>
+    /// <param name="toggle">True to show the menu, false to hide it</param>
     void ToggleCanvasGroup(bool toggle)
     {
         if (toggle)

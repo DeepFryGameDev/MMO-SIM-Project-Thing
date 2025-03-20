@@ -77,6 +77,8 @@ public class HeroCommandProcessing : MonoBehaviour
         playerMovement.ToggleMovement(true);
 
         playerInteraction.SetIgnoreRay(false);
+
+        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
 
     /// <summary>

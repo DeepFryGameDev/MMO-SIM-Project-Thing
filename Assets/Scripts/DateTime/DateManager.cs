@@ -1,19 +1,18 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates processing the date/time of year and displaying it
+// Directions: Attach to [System] GameObject
 // Other notes: 
 
 public class DateManager : MonoBehaviour
 {
-    int[] week = new int[4];
-    int[] month = new int[12];
+    int[] week = new int[4]; // used to progress the date
+    int[] month = new int[12]; // used to progress the date as well
 
-    int currentWeek;
-    int currentMonth;
+    int currentWeek; // used as the index for week[] to determine the current week
+    int currentMonth; // used as the index for month[] to determine the current month
 
     CanvasGroup canvasGroup;
     TextMeshProUGUI weekText;
@@ -31,6 +30,11 @@ public class DateManager : MonoBehaviour
 
     void Awake()
     {
+        Setup();
+    }
+
+    void Setup()
+    {
         canvasGroup = GameObject.Find("DateCanvas/DatePanel").GetComponent<CanvasGroup>(); // hacky, should change these later
         weekText = GameObject.Find("DateCanvas/DatePanel/WeekText").GetComponent<TextMeshProUGUI>();
         monthText = GameObject.Find("DateCanvas/DatePanel/MonthText").GetComponent<TextMeshProUGUI>();
@@ -45,13 +49,16 @@ public class DateManager : MonoBehaviour
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
     }
 
-    private void Start()
+    void Start()
     {
         InitializeDates();
 
         StartCoroutine(ShowToast());
     }
 
+    /// <summary>
+    /// Sets the week[] and month[] arrays to the expected values (week 1-4, and month 1-12)
+    /// </summary>
     void InitializeDates()
     {
         for (int i=0; i <= 3; i++)
@@ -68,6 +75,9 @@ public class DateManager : MonoBehaviour
         currentMonth = 0;
     }
 
+    /// <summary>
+    /// Simply moves the date forward one week, taking into account rolling months forward as well.
+    /// </summary>
     public void RollForwardDate()
     {
         currentWeek++;
@@ -84,9 +94,18 @@ public class DateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Quite a large Coroutine.  Split in three separate sections:
+    /// pre-transition: Here are the processes that should fire before the player/heroes are moved.  The screen is faded out here.
+    /// transition: Here are where objects should be reset in the world to prepare for the next week
+    /// post-transition: Here are processes that should fire after the player/hero objects are moved.  The screen fades back in here.
+    /// </summary>
+    /// <returns>Technically there are 2 waits, one at the beginning and one at the end of the transition phase.  Split in 1/2 of 'DateSettingstransitionSeconds' for each</returns>
     public IEnumerator ProcessStartWeek()
     {
         #region pre-transition
+        // keep player from opening any other menus
+        GlobalSettings.SetUIState(GlobalSettings.UIStates.BLOCKED);
 
         // hide mouse cursor
         ToggleCursor(false);
@@ -120,7 +139,7 @@ public class DateManager : MonoBehaviour
         // wait transition seconds
         yield return new WaitForSeconds(DateSettings.transitionSeconds / 2);
 
-        // --- Start here ---
+        // -*-*-*-*- Start here -*-*-*-*-
 
         // move all heroes to starting position
         foreach (HeroManager heroManager in heroManagers)
@@ -131,7 +150,7 @@ public class DateManager : MonoBehaviour
         // move player to starting position
         spawnManager.MovePlayerToSpawnPosition();
 
-        // --- End here ---
+        // -*-*-*-*- End here -*-*-*-*-
 
         // Wait again
         yield return new WaitForSeconds(DateSettings.transitionSeconds / 2);
@@ -155,9 +174,15 @@ public class DateManager : MonoBehaviour
         // brighten screen
         StartCoroutine(FadeToBlack(false));
 
+        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
+
         #endregion
     }
 
+    /// <summary>
+    /// Shows/hides the cursor
+    /// </summary>
+    /// <param name="toggle">True to show the cursor, false to hide it</param>
     void ToggleCursor(bool toggle)
     {
         if (toggle)
@@ -171,6 +196,10 @@ public class DateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to display the Date Toast to the user
+    /// </summary>
+    /// <returns>Waits for toast seconds between fade in/out</returns>
     IEnumerator ShowToast()
     {
         Debug.Log("<color=blue>[DateManager] Starting week: " + week[currentWeek] + " of Month " + month[currentMonth] + "</color>");
@@ -182,6 +211,11 @@ public class DateManager : MonoBehaviour
         ToggleToast(false);
     }
 
+    /// <summary>
+    /// Coroutine to process fade in/out. Used by adjusting the alpha of the fadeCanvasGroup.
+    /// </summary>
+    /// <param name="fadeIn"></param>
+    /// <returns>Waits for end of frame using DateSettings.fadeSettings as the timer</returns>
     IEnumerator FadeToBlack(bool fadeIn)
     {
         float timer;
@@ -213,12 +247,19 @@ public class DateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the text objects on the toast UI to the current week and month
+    /// </summary>
     void SetToastText()
     {
         weekText.text = week[currentWeek].ToString();
         monthText.text = GetMonth();
     }
 
+    /// <summary>
+    /// Displays and hides the Date toast.
+    /// </summary>
+    /// <param name="toggle">True to display the toast, false to hide it</param>
     void ToggleToast(bool toggle)
     {
         if (toggle)
@@ -230,6 +271,10 @@ public class DateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just used to display the month in text form
+    /// </summary>
+    /// <returns>String of the current month in text form</returns>
     string GetMonth()
     {
         switch (currentMonth) 
@@ -261,10 +306,5 @@ public class DateManager : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-    void Update()
-    {
-        
     }
 }

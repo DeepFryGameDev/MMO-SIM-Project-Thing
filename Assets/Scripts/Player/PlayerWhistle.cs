@@ -41,7 +41,7 @@ public class PlayerWhistle : MonoBehaviour
     /// </summary>
     void ListenForWhistle()
     {
-        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle)
+        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle && GlobalSettings.GetUIState() == GlobalSettings.UIStates.IDLE)
         {
             // Check if standing on home zone
             RaycastHit hit;
@@ -52,6 +52,8 @@ public class PlayerWhistle : MonoBehaviour
                 // set heroWhistled
                 heroManagerWhistled = hit.transform.gameObject.GetComponent<HeroHomeZone>().heroManager;
                 Debug.Log("Hero manager: " + heroManagerWhistled.Hero().name);
+
+                GlobalSettings.SetUIState(GlobalSettings.UIStates.HEROCOMMAND);
 
                 StartCoroutine(StartCommandFromWhistle());
             }

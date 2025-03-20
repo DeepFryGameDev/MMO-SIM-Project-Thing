@@ -58,6 +58,8 @@ public class NewGameSetup : MonoBehaviour
         playerParent = GameObject.FindGameObjectWithTag("Player");
 
         PlayerSetup();
+
+        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
 
     /// <summary>
