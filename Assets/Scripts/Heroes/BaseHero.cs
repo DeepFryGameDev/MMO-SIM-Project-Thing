@@ -14,6 +14,11 @@ public class BaseHero : BaseAttackableUnit
     float baseStamina = 100; // Base Max Stamina for the player - taken into account before class stats - used to determine sprinting duration
     float enduranceToStaminaMod = .25f; // Used to calculate maximum stamina based on the player's Endurance
 
+    // -- Energy -- 
+    float energy;
+    public float GetEnergy() { return energy; }
+    public void SetEnergy(float energy) { this.energy = energy; }
+
     float currentStamina; // Used to track what the player's current stamina at any given point is
     public float GetCurrentStamina() { return currentStamina; }
     public void SetCurrentStamina(float stamina) { currentStamina = stamina;}
