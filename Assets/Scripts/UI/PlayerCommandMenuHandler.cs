@@ -111,12 +111,14 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         {
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
             commandMenuOpen = true;            
         } else
         {
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
 
             commandMenuOpen = false;
         }

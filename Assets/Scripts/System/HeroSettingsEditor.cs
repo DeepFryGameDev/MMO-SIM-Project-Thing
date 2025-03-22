@@ -12,6 +12,9 @@ public class HeroSettingsEditor : MonoBehaviour
     [Tooltip("The maximum amount an attribute can be increased to.")] // This will be massively reworked, but leaving for now.
     public float maxAttributeVal = 9;
 
+    [Tooltip("Used when training and exploring in the world.")]
+    public float maxEnergy = 100;
+
     [Space(10)]
     //-----------------------------------------------------------------
     [Header("-----Movement-----")]
@@ -68,6 +71,7 @@ public class HeroSettingsEditor : MonoBehaviour
     {
         // Attributes and stats
         HeroSettings.maxAttributeVal = maxAttributeVal;
+        HeroSettings.maxEnergy = maxEnergy;
 
         // Movement
         HeroSettings.walkSpeed = walkSpeed;

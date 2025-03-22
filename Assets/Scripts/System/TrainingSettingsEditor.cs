@@ -12,7 +12,16 @@ public class TrainingSettingsEditor : MonoBehaviour
     [Range(1f, 50f)] public float trainingExpVariance = 5f;
 
     [Tooltip("The exp gained if the hero would otherwise roll a 0 during the math checks")]
-    public float minimumTrainingExp = 1;
+    public float minTrainingExpResult = 1;
+
+    [Tooltip("The minimum value that the random experience gained after training will start with before calculation.")]
+    public float minRandomTrainingExp = 6; // will be changed eventually when we have a formula
+
+    [Tooltip("The maximum value that the random experience gained after training will start with before calculation.")]
+    public float maxRandomTrainingExp = 12; // will be changed eventually when we have a formula
+
+    [Tooltip("When the player has low energy, effectiveness % of the training is reduced by this * the effectiveness.")]
+    public float lowEnergyResultDecay = .75f;
 
     private void Awake()
     {
@@ -27,6 +36,12 @@ public class TrainingSettingsEditor : MonoBehaviour
 
         TrainingSettings.trainingExpVariance = trainingExpVariance;
 
-        TrainingSettings.minimumTrainingExp = minimumTrainingExp;
+        TrainingSettings.minTrainingExpResult = minTrainingExpResult;
+
+        TrainingSettings.minRandomTrainingExp = minRandomTrainingExp;
+
+        TrainingSettings.maxRandomTrainingExp = maxRandomTrainingExp;
+
+        TrainingSettings.lowEnergyResultDecay = lowEnergyResultDecay;
     }
 }

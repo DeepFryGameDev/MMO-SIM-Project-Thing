@@ -17,27 +17,91 @@ public class HeroTraining : MonoBehaviour
     float resultMod = 1; // lowered for each level higher the trained stat is than the player's level. Not put into effect yet.
 
     float strengthExp, enduranceExp, agilityExp, dexterityExp, intelligenceExp, faithExp;
+    public float GetStrengthExp() { return strengthExp; }
 
     HeroManager heroManager;
+
+    float tempEffectiveness;
 
     void Start()
     {
         heroManager = GetComponent<HeroManager>();
+
+        // For debugging purposes.  Once scheduling is built in, this can be removed.
+        BaseTraining testTraining = new BaseTraining();
+        testTraining.SetTrainingType(BaseTraining.TrainingTypes.STRENGTH);
+        testTraining.SetTrainingLevel(1);
+        testTraining.SetEffectiveness(10f); // This will probably need a lot of tweaking
+
+        currentTraining = testTraining;
+    }
+
+    public void ProcessTraining()
+    {
+        if (currentTraining == null)
+        {
+            Debug.LogError("No current training for hero " + heroManager.Hero().name);
+        } else
+        {
+            CalculateTrainingResult();
+
+            IncreaseEXP();
+
+            DecreaseEnergy();
+
+            ResetTraining();
+        }            
+    }
+
+    private void ResetTraining()
+    {
+        currentTraining = null;
+
+        // For debugging purposes.  Once scheduling is built in, this can be removed.
+        BaseTraining testTraining = new BaseTraining();
+        testTraining.SetTrainingType(BaseTraining.TrainingTypes.STRENGTH);
+        testTraining.SetTrainingLevel(1);
+        testTraining.SetEffectiveness(10f); // This will probably need a lot of tweaking
+
+        currentTraining = testTraining;
     }
 
     public void CalculateTrainingResult()
     {
-        // do math
-        float math = 1f;
+        SetTempEffectiveness();
 
-        // get random value between new min and max trainingResultCalc
+        // get random value between minRandomTrainingExp and maxRandomTrainingExp. Should roughly be between 6-12?
+        float randomStartingExp = Random.Range(TrainingSettings.minRandomTrainingExp, TrainingSettings.maxRandomTrainingExp);
 
         // take energy into account - if lower than 25% energy, effectiveness goes down
+        float effectiveness = GetEffectivenessFromEnergy();
 
-        // take effectiveness into account
+        // ---- here is where buffs from players, like items or skills or something applied to heroes can increase the exp gained by training - just tweak the effectiveness.
 
-        // Should aim to get between 6-13ish exp.
-        trainingResult = math * resultMod; // resultMod is always 1 until we add that sytem in, so this doesn't do anything right now.
+        // Apply effectiveness to final result.  Should aim to get between 6-13ish exp.
+        trainingResult = effectiveness * resultMod; // resultMod is always 1 until we add that sytem in, so this doesn't do anything right now.
+    }
+
+    void SetTempEffectiveness()
+    {
+        tempEffectiveness = currentTraining.GetEffectiveness();
+    }
+
+    /// <summary>
+    /// If the hero's energy is lower than 25%, the effectiveness is reduced.  This can be expanded on later.
+    /// </summary>
+    /// <returns>tempEffectiveness * lowEnergyResultDecay</returns>
+    float GetEffectivenessFromEnergy()
+    {
+        if (heroManager.Hero().GetEnergy() <= (HeroSettings.maxEnergy * .25f))
+        {
+            Debug.Log("Hero energy low. Decreasing effectiveness");
+            return tempEffectiveness * TrainingSettings.lowEnergyResultDecay;
+        }
+        else
+        {
+            return tempEffectiveness;
+        }
     }
 
     void DecreaseEnergy()
@@ -46,6 +110,8 @@ public class HeroTraining : MonoBehaviour
         energy -= currentTraining.GetTrainingLevel() * TrainingSettings.energyDecayFromTrainingMod;
 
         heroManager.Hero().SetEnergy(energy);
+
+        Debug.Log("Hero's energy: " + heroManager.Hero().GetEnergy());
     }
 
     void IncreaseEXP()
@@ -54,8 +120,8 @@ public class HeroTraining : MonoBehaviour
         
         if (randomVariance <= 0)
         {
-            randomVariance = TrainingSettings.minimumTrainingExp;
-            Debug.LogWarning("(HeroTraining)RandomVariance is 0, exp was: " + trainingResult + " - granting hero " + TrainingSettings.minimumTrainingExp + " exp.");
+            randomVariance = TrainingSettings.minTrainingExpResult;
+            Debug.LogWarning("(HeroTraining)RandomVariance is 0, exp was: " + trainingResult + " - granting hero " + TrainingSettings.minTrainingExpResult + " exp.");
         }
 
         trainingResult = randomVariance;
@@ -72,7 +138,7 @@ public class HeroTraining : MonoBehaviour
                     // process strength stat level up
                     StatLevelUp(BaseTraining.TrainingTypes.STRENGTH);
 
-                    // reset strength exp to 0
+                    // reset strength exp to 0 (should be spill over value to go into the next level)
                     strengthExp = 0;
                 }
 
@@ -146,12 +212,5 @@ public class HeroTraining : MonoBehaviour
             default:
                 return 0;
         }
-    }
-
-    public void ProcessTraining()
-    {
-        CalculateTrainingResult();
-
-        DecreaseEnergy();
     }
 }

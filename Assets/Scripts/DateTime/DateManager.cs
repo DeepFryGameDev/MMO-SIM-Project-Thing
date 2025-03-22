@@ -130,6 +130,16 @@ public class DateManager : MonoBehaviour
         // show graphic
         StartCoroutine(ShowToast());
 
+        // calculate and show training results
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + "-*-*-");
+            Debug.Log("Before exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+            heroManager.HeroTraining().ProcessTraining();
+            Debug.Log("After exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+            Debug.Log("--------------------------------------------");
+        }
+
         #endregion
 
         #region transition

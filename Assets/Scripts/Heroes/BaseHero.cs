@@ -106,6 +106,8 @@ public class BaseHero : BaseAttackableUnit
 
         UpdateStaminaForMax();
 
+        energy = HeroSettings.maxEnergy;
+
         // ReportStats();
     }
 

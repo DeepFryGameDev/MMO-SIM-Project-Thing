@@ -8,5 +8,11 @@ public static class TrainingSettings
 
     public static float trainingExpVariance;
 
-    public static float minimumTrainingExp;
+    public static float minTrainingExpResult;
+
+    public static float minRandomTrainingExp;
+
+    public static float maxRandomTrainingExp;
+
+    public static float lowEnergyResultDecay;
 }

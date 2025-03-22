@@ -18,4 +18,6 @@ public static class HeroSettings
     public static float whistleStoppingDistance;
 
     public static float maxAttributeVal;
+
+    public static float maxEnergy;
 }
