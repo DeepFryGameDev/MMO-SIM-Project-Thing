@@ -15,9 +15,9 @@ public class BaseHero : BaseAttackableUnit
     float enduranceToStaminaMod = .25f; // Used to calculate maximum stamina based on the player's Endurance
 
     // -- Energy -- 
-    float energy;
-    public float GetEnergy() { return energy; }
-    public void SetEnergy(float energy) { this.energy = energy; }
+    int energy;
+    public int GetEnergy() { return energy; }
+    public void SetEnergy(int energy) { this.energy = energy; }
 
     float currentStamina; // Used to track what the player's current stamina at any given point is
     public float GetCurrentStamina() { return currentStamina; }

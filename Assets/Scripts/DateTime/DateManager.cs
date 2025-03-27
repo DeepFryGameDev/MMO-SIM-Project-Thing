@@ -26,6 +26,8 @@ public class DateManager : MonoBehaviour
 
     SpawnManager spawnManager;
 
+    TrainingManager trainingManager;
+
     HeroManager[] heroManagers;
 
     void Awake()
@@ -45,6 +47,8 @@ public class DateManager : MonoBehaviour
         cam = FindFirstObjectByType<ThirdPersonCam>();
 
         spawnManager = FindFirstObjectByType<SpawnManager>();
+
+        trainingManager = FindFirstObjectByType<TrainingManager>();
 
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
     }
@@ -119,7 +123,7 @@ public class DateManager : MonoBehaviour
         // disable camera movement
         cam.ToggleCameraRotation(false);
 
-        // change all hero pathing to idle (This is not fully resetting heroes).
+        // reset hero pathing
         foreach (HeroManager heroManager in heroManagers)
         {
             heroManager.HeroPathing().StopPathing();
@@ -133,12 +137,17 @@ public class DateManager : MonoBehaviour
         // calculate and show training results
         foreach (HeroManager heroManager in heroManagers)
         {
+            trainingManager.AddToHeroManagers(heroManager);
+
             Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + "-*-*-");
             Debug.Log("Before exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
-            heroManager.HeroTraining().ProcessTraining();
+            trainingManager.ProcessTraining(heroManager);
             Debug.Log("After exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
             Debug.Log("--------------------------------------------");
         }
+
+        // display the training results to the player
+        StartCoroutine(trainingManager.ShowTrainingResults());        
 
         #endregion
 

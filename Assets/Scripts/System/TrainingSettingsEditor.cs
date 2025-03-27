@@ -1,27 +1,39 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class TrainingSettingsEditor : MonoBehaviour
 {
+    [Header("-----EXP Calculation-----")]
     [Tooltip("For every stat level, exp needed to level is increased by this value.  A higher value will result in more exp needed for each stat levelup.")]
     public float heroStatExpFromTrainingMod = 50;
+
+    [Tooltip("The exp gained from training every week will be randomly increased or decreased by this amount.")]
+    [Range(1f, 20f)] public float trainingExpVariance = 5f;
+
+    [Tooltip("The base exp that will be received for each level of training being performed.")]
+    [Range(5f, 50f)] public float trainingLevelToExpBaseMod = 12f;
+
+    [Tooltip("The exp gained if the hero would otherwise roll a 0 during the math checks")]
+    public float minTrainingExpResult = 1;   
+
+    [Space(10)]
+    [Header("-----Energy Management-----")]
 
     [Tooltip("For every level of training exercise, energy is decayed by this amount.")]
     public float energyDecayFromTrainingMod = 15;
 
-    [Tooltip("The exp gained from training every week will be randomly increased or decreased by this amount.")]
-    [Range(1f, 50f)] public float trainingExpVariance = 5f;
+    [Tooltip("When the player has low energy, effectiveness % of the training is set to this %")]
+    public float lowEnergyResultDecay = .25f;
 
-    [Tooltip("The exp gained if the hero would otherwise roll a 0 during the math checks")]
-    public float minTrainingExpResult = 1;
+    [Space(10)]
+    [Header("-----Not Yet Implemented-----")]
 
-    [Tooltip("The minimum value that the random experience gained after training will start with before calculation.")]
-    public float minRandomTrainingExp = 6; // will be changed eventually when we have a formula
+    [Tooltip("For every level higher a trained stat is than the player's level, the effectiveness of training will go down.  Not yet implemented.")]
+    public float levelGapExpMod = 1;
 
-    [Tooltip("The maximum value that the random experience gained after training will start with before calculation.")]
-    public float maxRandomTrainingExp = 12; // will be changed eventually when we have a formula
-
-    [Tooltip("When the player has low energy, effectiveness % of the training is reduced by this * the effectiveness.")]
-    public float lowEnergyResultDecay = .75f;
+    [Tooltip("Focus goes down the longer a hero continuously trains.  Not yet implemented.")]
+    public float focusExpMod = 1;
 
     private void Awake()
     {
@@ -38,10 +50,12 @@ public class TrainingSettingsEditor : MonoBehaviour
 
         TrainingSettings.minTrainingExpResult = minTrainingExpResult;
 
-        TrainingSettings.minRandomTrainingExp = minRandomTrainingExp;
-
-        TrainingSettings.maxRandomTrainingExp = maxRandomTrainingExp;
-
         TrainingSettings.lowEnergyResultDecay = lowEnergyResultDecay;
+
+        TrainingSettings.trainingLevelToExpBaseMod = trainingLevelToExpBaseMod;
+
+        TrainingSettings.levelGapExpMod = levelGapExpMod;
+
+        TrainingSettings.focusExpMod = focusExpMod;
     }
 }

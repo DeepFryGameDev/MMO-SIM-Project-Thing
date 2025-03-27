@@ -38,8 +38,8 @@ public class BaseTraining
     public TrainingTypes GetTrainingType() { return trainingType; }
     public void SetTrainingType(TrainingTypes trainingType) { this.trainingType = trainingType; }
 
-    [Tooltip("Effectiveness of the training event")]
-    float effectiveness;
+    [Tooltip("Effectiveness of the training event. Default = 1")]
+    float effectiveness = 1;
 
     /// <summary>
     /// The effectiveness of the training

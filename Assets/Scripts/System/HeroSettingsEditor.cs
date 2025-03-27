@@ -13,7 +13,10 @@ public class HeroSettingsEditor : MonoBehaviour
     public float maxAttributeVal = 9;
 
     [Tooltip("Used when training and exploring in the world.")]
-    public float maxEnergy = 100;
+    public int maxEnergy = 100;
+
+    [Tooltip("The % at which energy is considered low and effectiveness goes down")]
+    [Range(.10f, .50f)] public float lowEnergyThreshold = .25f;
 
     [Space(10)]
     //-----------------------------------------------------------------
@@ -72,6 +75,7 @@ public class HeroSettingsEditor : MonoBehaviour
         // Attributes and stats
         HeroSettings.maxAttributeVal = maxAttributeVal;
         HeroSettings.maxEnergy = maxEnergy;
+        HeroSettings.lowEnergyThreshold = lowEnergyThreshold;
 
         // Movement
         HeroSettings.walkSpeed = walkSpeed;

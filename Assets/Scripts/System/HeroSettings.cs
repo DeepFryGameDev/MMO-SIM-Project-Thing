@@ -19,5 +19,6 @@ public static class HeroSettings
 
     public static float maxAttributeVal;
 
-    public static float maxEnergy;
+    public static int maxEnergy;
+    public static float lowEnergyThreshold;
 }

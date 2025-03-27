@@ -10,9 +10,11 @@ public static class TrainingSettings
 
     public static float minTrainingExpResult;
 
-    public static float minRandomTrainingExp;
-
-    public static float maxRandomTrainingExp;
-
     public static float lowEnergyResultDecay;
+
+    public static float trainingLevelToExpBaseMod;
+
+    public static float levelGapExpMod;
+
+    public static float focusExpMod;
 }
