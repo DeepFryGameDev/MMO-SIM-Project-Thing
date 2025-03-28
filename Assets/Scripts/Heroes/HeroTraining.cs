@@ -62,7 +62,7 @@ public class HeroTraining : MonoBehaviour
         currentTraining = testTraining;
 
         //SetStrengthExp(240); // testing levelup
-        heroManager.Hero().SetEnergy(25); // Testing energy/effectiveness
+        //heroManager.Hero().SetEnergy(25); // Testing energy/effectiveness
     }
 
     
