@@ -30,7 +30,6 @@ public class PlayerWhistle : MonoBehaviour
         canWhistle = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         ListenForWhistle();

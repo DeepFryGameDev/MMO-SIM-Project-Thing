@@ -1,30 +1,31 @@
-using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 // Purpose: This script handles all training based calculations and scripting
-// Directions: 
+// Directions: Just attach to [System]
 // Other notes: 
 
 
 public class TrainingManager : MonoBehaviour
 {
-    [HideInInspector] public List<HeroManager> heroManagers = new List<HeroManager>();
+    [HideInInspector] public List<HeroManager> heroManagers = new List<HeroManager>(); // Used to manage all active heroes
     public void AddToHeroManagers(HeroManager heroManager) { heroManagers.Add(heroManager); }
 
-    Transform layoutGroupTransform;
+    Transform layoutGroupTransform; // Used to add TrainingResults to the UI
 
-    CanvasGroup canvasGroup;
+    CanvasGroup canvasGroup; // Used to hide/show the Training Results UI.
 
     private void Awake()
     {
         layoutGroupTransform = GameObject.Find("TrainingResultsCanvas/Holder/LayoutGroup").transform; // hacky, will need a better solution eventually
-        canvasGroup = GameObject.Find("TrainingResultsCanvas/Holder").GetComponent<CanvasGroup>();
+        canvasGroup = GameObject.Find("TrainingResultsCanvas/Holder").GetComponent<CanvasGroup>(); // ^
     }
 
+    /// <summary>
+    /// When the week is progressed, all active heroes have this called to process the training exp for the week.  This will likely be a large method eventually.
+    /// </summary>
+    /// <param name="heroManager">The HeroManager for the hero in which to process their training.</param>
     public void ProcessTraining(HeroManager heroManager)
     {
         if (heroManager.HeroTraining().GetCurrentTraining() == null)
@@ -33,18 +34,26 @@ public class TrainingManager : MonoBehaviour
         }
         else
         {
+            // 1. Always run first.
             CacheExpAndEnergy(heroManager);
 
+            // 2. Calculate the training and stuff.
             CalculateTrainingResult(heroManager);
 
-            IncreaseEXP(heroManager);
 
+            // 3. Increase EXP, Decrease energy
+            IncreaseEXP(heroManager);
             DecreaseEnergy(heroManager);
 
+            // 4. Post training stuff.
             ResetTraining(heroManager);
         }
     }
 
+    /// <summary>
+    /// Before training is processed, this will set temporary values to be used to display training progress.
+    /// </summary>
+    /// <param name="heroManager">The HeroManager of the hero to cache</param>
     void CacheExpAndEnergy(HeroManager heroManager)
     {
         // current exp
@@ -57,7 +66,20 @@ public class TrainingManager : MonoBehaviour
         SetTempEffectiveness(heroManager);
     }
 
-    private void ResetTraining(HeroManager heroManager)
+    /// <summary>
+    /// For caching.  Simply just sets the tempEffectiveness val on the given heroManager
+    /// </summary>
+    /// <param name="heroManager">HeroManager for the hero to set temp effectiveness</param>
+    void SetTempEffectiveness(HeroManager heroManager)
+    {
+        heroManager.HeroTraining().SetTempEffectiveness(heroManager.HeroTraining().GetCurrentTraining().GetEffectiveness());
+    }
+
+    /// <summary>
+    /// Ran after training is processed.  This resets values to be used for the next training.
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the Hero to reset values</param>
+    void ResetTraining(HeroManager heroManager)
     {
         heroManager.HeroTraining().SetCurrentTraining(null);
 
@@ -69,6 +91,10 @@ public class TrainingManager : MonoBehaviour
         heroManager.HeroTraining().SetCurrentTraining(testTraining);
     }
 
+    /// <summary>
+    /// Processes all the different methods to spit out the exp for training.  The result is saved to the hero's HeroManager TrainingResult
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the Hero to calulate and assign the Training Result</param>
     public void CalculateTrainingResult(HeroManager heroManager)
     {      
         // -- EXP gathering
@@ -99,11 +125,11 @@ public class TrainingManager : MonoBehaviour
         Debug.Log("Training Result: " + heroManager.HeroTraining().GetTrainingResult());
     }
 
-    void SetTempEffectiveness(HeroManager heroManager)
-    {
-        heroManager.HeroTraining().SetTempEffectiveness(heroManager.HeroTraining().GetCurrentTraining().GetEffectiveness());
-    } 
 
+    /// <summary>
+    /// Coroutine - Displays the training results to the player with animated fill bars
+    /// </summary>
+    /// <returns>Yields for DateSettings.trainingResultsFillDelaySeconds and then animates the fill bars</returns>
     public IEnumerator ShowTrainingResults()
     {
         // for each heroManager in heroManagers {
@@ -173,12 +199,41 @@ public class TrainingManager : MonoBehaviour
         ResetVars();
     }
 
+    /// <summary>
+    /// Resets needed vars to be used on the next training.  Add as needed
+    /// </summary>
+    void ResetVars()
+    {
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            heroManager.HeroTraining().SetTempTRH(null);
+            heroManager.HeroTraining().SetLevelingUp(false);
+        }
+
+        heroManagers.Clear();
+
+        foreach (Transform transform in layoutGroupTransform)
+        {
+            Destroy(transform.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Coroutine - simply just waits for DateSettings.trainingResultsDelaySeconds and then displays the Training Results panel.
+    /// </summary>
+    /// <returns>Just waits for DateSettings.trainingResultsDelaySeconds</returns>
     IEnumerator DisplayResultPanelAfterDelay()
     {
         yield return new WaitForSeconds(DateSettings.trainingResultsDelaySeconds);
         ToggleCanvasGroup(true);
     }
 
+    /// <summary>
+    /// Coroutine - Fills the exp bars and sets the text for each Training Results UI object
+    /// </summary>
+    /// <param name="trainingType">The training type that should be displayed</param>
+    /// <param name="heroManager">The HeroManager for the Hero to be displayed</param>
+    /// <returns>Fills the bar over DateSettings.trainingResultsFillSeconds</returns>
     IEnumerator UpdateExpFill(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
     {
         float timer = 0;
@@ -277,6 +332,11 @@ public class TrainingManager : MonoBehaviour
         }            
     }
 
+    /// <summary>
+    /// Coroutine - Fills the energy bars
+    /// </summary>
+    /// <param name="heroManager">HeroManager for the hero to have energy bars filled</param>
+    /// <returns>Fills the bar over DateSettings.trainingResultsFillSeconds</returns>
     IEnumerator UpdateEnergyFill(HeroManager heroManager)
     {
         float timer = 0;
@@ -303,6 +363,12 @@ public class TrainingManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Just returns the hero's stat exp by the given training type
+    /// </summary>
+    /// <param name="trainingType">Stat to return</param>
+    /// <param name="heroManager">HeroManager of the Hero in question</param>
+    /// <returns>Experience points of given stat</returns>
     int GetHeroExpByType(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
@@ -381,6 +447,11 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the prefix of the stat by the given training type
+    /// </summary>
+    /// <param name="trainingType">Stat to return the prefix</param>
+    /// <returns>Prefix in 3 letter string format</returns>
     string GetStatPrefixByType(BaseTraining.TrainingTypes trainingType)
     {
         switch (trainingType)
@@ -402,6 +473,10 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Increases the hero's experience points based on their Training Result.
+    /// </summary>
+    /// <param name="heroManager">HeroManager for the hero to increase EXP</param>
     void IncreaseEXP(HeroManager heroManager)
     {
         switch (heroManager.HeroTraining().GetCurrentTraining().GetTrainingType())
@@ -518,6 +593,11 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When a hero's stat should level up, this function is called
+    /// </summary>
+    /// <param name="trainingType">The stat that should be leveled up</param>
+    /// <param name="heroManager">HeroManager for the hero that should have their stat leveled up</param>
     void StatLevelUp(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
     {
         Debug.Log(heroManager.Hero().name + " - LEVELUP");
@@ -563,6 +643,10 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Decreases energy from the given hero
+    /// </summary>
+    /// <param name="heroManager">HeroManager for the hero to have energy reduced</param>
     void DecreaseEnergy(HeroManager heroManager)
     {
         float energy = heroManager.Hero().GetEnergy();
@@ -573,27 +657,22 @@ public class TrainingManager : MonoBehaviour
         Debug.Log("Hero's energy: " + heroManager.Hero().GetEnergy());
     }
 
+    /// <summary>
+    /// Calculates how much energy is reduced from a given training using trainingSettings.energyDecayFromTrainingMod modifier
+    /// </summary>
+    /// <param name="heroManager">HeroManager for the needed hero to have energy checked</param>
+    /// <returns>Energy cost calculated from the current training and TrainingSettings.energyDecayFromTrainingMod</returns>
     float GetEnergyCost(HeroManager heroManager)
     {
         return (heroManager.HeroTraining().GetCurrentTraining().GetTrainingLevel() * TrainingSettings.energyDecayFromTrainingMod);
     }
 
-    void ResetVars()
-    {
-        foreach (HeroManager heroManager in heroManagers)
-        {
-            heroManager.HeroTraining().SetTempTRH(null);
-            heroManager.HeroTraining().SetLevelingUp(false);
-        }
 
-        heroManagers.Clear();
 
-        foreach (Transform transform in layoutGroupTransform)
-        {
-            Destroy(transform.gameObject);
-        }
-    }
-
+    /// <summary>
+    /// Just enables/disables the canvas group for Training Results
+    /// </summary>
+    /// <param name="toggle">True to show the Training Results canvas group.  False to hide it.</param>
     void ToggleCanvasGroup(bool toggle)
     {
         if (toggle)
