@@ -24,19 +24,9 @@ public class BaseTraining
         trainingLevel = level;
     }
 
-    public enum TrainingTypes
-    {
-        STRENGTH,
-        ENDURANCE,
-        DEXTERITY,
-        AGILITY,
-        INTELLIGENCE,
-        FAITH
-    }
-
-    TrainingTypes trainingType;
-    public TrainingTypes GetTrainingType() { return trainingType; }
-    public void SetTrainingType(TrainingTypes trainingType) { this.trainingType = trainingType; }
+    EnumHandler.TrainingTypes trainingType;
+    public EnumHandler.TrainingTypes GetTrainingType() { return trainingType; }
+    public void SetTrainingType(EnumHandler.TrainingTypes trainingType) { this.trainingType = trainingType; }
 
     [Tooltip("Effectiveness of the training event. Default = 1")]
     float effectiveness = 1;

@@ -6,19 +6,6 @@ using UnityEngine;
 
 public class GameItems : MonoBehaviour
 {
-    public BaseItemScriptableObject testSword;
-    public BaseItemScriptableObject testBow;
-    public BaseItemScriptableObject testStaff;
-    public BaseItemScriptableObject testShield;
-    public BaseItemScriptableObject testHelm;
-    public BaseItemScriptableObject testChest;
-    public BaseItemScriptableObject testHands;
-    public BaseItemScriptableObject testLegs;
-    public BaseItemScriptableObject testFeet;
-    public BaseItemScriptableObject testAmulet;
-    public BaseItemScriptableObject testRingOne;
-    public BaseItemScriptableObject testRingTwo;
-
     private static GameItems _i;
 
     public static GameItems i

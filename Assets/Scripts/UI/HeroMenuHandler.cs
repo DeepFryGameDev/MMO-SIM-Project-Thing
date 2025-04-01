@@ -151,9 +151,9 @@ public class HeroMenuHandler : MonoBehaviour
     public void RefreshUI()
     {
         ClearInventoryUI();
-        DrawInventory();
+        //DrawInventory();
 
-        DrawEquipment();
+        //DrawEquipment();
 
         DrawStats();
     }
@@ -223,11 +223,11 @@ public class HeroMenuHandler : MonoBehaviour
     /// </summary>
     void StartupInventory()
     {
-        InventoryManager.Startup();
-        EquipmentManager.Startup();
+        //InventoryManager.Startup();
+        //EquipmentManager.Startup();
 
         ClearInventoryUI();
-        DrawInventory();
+        //DrawInventory();
     }
 
     /// <summary>
@@ -246,6 +246,8 @@ public class HeroMenuHandler : MonoBehaviour
             Destroy(transform.gameObject);
         }
     }
+
+    /*
 
     /// <summary>
     /// Instantiates an inventoryItemPrefab into the inventory grid for every item in player's inventory
@@ -434,4 +436,5 @@ public class HeroMenuHandler : MonoBehaviour
 
         #endregion
     }
+    */
 }

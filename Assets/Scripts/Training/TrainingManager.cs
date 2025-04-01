@@ -85,7 +85,7 @@ public class TrainingManager : MonoBehaviour
 
         // For debugging purposes.  Once scheduling is built in, this can be removed.
         BaseTraining testTraining = new BaseTraining();
-        testTraining.SetTrainingType(BaseTraining.TrainingTypes.STRENGTH);
+        testTraining.SetTrainingType(EnumHandler.TrainingTypes.STRENGTH);
         testTraining.SetTrainingLevel(1);
 
         heroManager.HeroTraining().SetCurrentTraining(testTraining);
@@ -234,7 +234,7 @@ public class TrainingManager : MonoBehaviour
     /// <param name="trainingType">The training type that should be displayed</param>
     /// <param name="heroManager">The HeroManager for the Hero to be displayed</param>
     /// <returns>Fills the bar over DateSettings.trainingResultsFillSeconds</returns>
-    IEnumerator UpdateExpFill(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
+    IEnumerator UpdateExpFill(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         float timer = 0;
 
@@ -369,21 +369,21 @@ public class TrainingManager : MonoBehaviour
     /// <param name="trainingType">Stat to return</param>
     /// <param name="heroManager">HeroManager of the Hero in question</param>
     /// <returns>Experience points of given stat</returns>
-    int GetHeroExpByType(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
+    int GetHeroExpByType(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 return heroManager.HeroTraining().GetStrengthExp();
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 return heroManager.HeroTraining().GetEnduranceExp();
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 return heroManager.HeroTraining().GetAgilityExp();
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 return heroManager.HeroTraining().GetDexterityExp();
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 return heroManager.HeroTraining().GetIntelligenceExp();
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 return heroManager.HeroTraining().GetFaithExp();
             default:
                 Debug.LogWarning("TrainingManager: GetHeroExpByType - no trainingType found");
@@ -395,24 +395,24 @@ public class TrainingManager : MonoBehaviour
     /// Simply just multiplies the hero's trained stat by the modifier in TrainingSettings
     /// </summary>
     /// <returns>Stat level * TrainingSettings.heroStatExpFromTrainingMod</returns>
-    float GetExpRequiredForLevelUp(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
+    float GetExpRequiredForLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 //Debug.Log("Hero strength: " + heroManager.Hero().GetStrength() + " * " + TrainingSettings.heroStatExpFromTrainingMod + " = "
                 //    + heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod);
 
                 return heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 return heroManager.Hero().GetEndurance() * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 return heroManager.Hero().GetAgility() * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 return heroManager.Hero().GetDexterity() * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 return heroManager.Hero().GetIntelligence() * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 return heroManager.Hero().GetFaith() * TrainingSettings.heroStatExpFromTrainingMod;
             default:
                 return 0;
@@ -423,24 +423,24 @@ public class TrainingManager : MonoBehaviour
     /// Used to get the last level's exp required
     /// </summary>
     /// <returns>Stat level * TrainingSettings.heroStatExpFromTrainingMod</returns>
-    float GetExpRequiredForPriorLevelUp(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
+    float GetExpRequiredForPriorLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 //Debug.Log("Hero strength: " + heroManager.Hero().GetStrength() + " * " + TrainingSettings.heroStatExpFromTrainingMod + " = "
                 //    + heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod);
 
                 return (heroManager.Hero().GetStrength() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 return (heroManager.Hero().GetEndurance() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 return (heroManager.Hero().GetAgility() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 return (heroManager.Hero().GetDexterity() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 return (heroManager.Hero().GetIntelligence() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 return (heroManager.Hero().GetFaith() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             default:
                 return 0;
@@ -452,21 +452,21 @@ public class TrainingManager : MonoBehaviour
     /// </summary>
     /// <param name="trainingType">Stat to return the prefix</param>
     /// <returns>Prefix in 3 letter string format</returns>
-    string GetStatPrefixByType(BaseTraining.TrainingTypes trainingType)
+    string GetStatPrefixByType(EnumHandler.TrainingTypes trainingType)
     {
         switch (trainingType)
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 return "STR";
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 return "END";
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 return "AGI";
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 return "DEX";
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 return "INT";
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 return "FTH";
             default:
                 return "NA";
@@ -481,112 +481,112 @@ public class TrainingManager : MonoBehaviour
     {
         switch (heroManager.HeroTraining().GetCurrentTraining().GetTrainingType())
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 // increase strength exp
                 heroManager.HeroTraining().SetStrengthExp(heroManager.HeroTraining().GetStrengthExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if strength exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetStrengthExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.STRENGTH, heroManager))
+                if (heroManager.HeroTraining().GetStrengthExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager))
                 {
                     // get difference from tempExp and to next level
-                    float originLevelExp = GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.STRENGTH, heroManager) - heroManager.HeroTraining().GetTempExp(); // this is the exp given before levelup
+                    float originLevelExp = GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager) - heroManager.HeroTraining().GetTempExp(); // this is the exp given before levelup
                     // subtract it from the total result
                     float spillOverExp = heroManager.HeroTraining().GetTrainingResult() - originLevelExp; // This is the exp given after levelup
 
                     // process strength stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.STRENGTH, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager);
 
                     // Set exp to spill over
                     heroManager.HeroTraining().SetStrengthExp(Mathf.RoundToInt(spillOverExp));
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s strength EXP is: " + heroManager.HeroTraining().GetStrengthExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.STRENGTH, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s strength EXP is: " + heroManager.HeroTraining().GetStrengthExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager)
                     + " and strength level is: " + heroManager.Hero().GetStrength());
 
                 break;
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 // increase endurance exp
                 heroManager.HeroTraining().SetStrengthExp(heroManager.HeroTraining().GetEnduranceExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if endurance exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetEnduranceExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.ENDURANCE, heroManager))
+                if (heroManager.HeroTraining().GetEnduranceExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager))
                 {
                     // process endurance stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.ENDURANCE, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager);
 
                     // reset endurance exp to 0 (should be spill over value to go into the next level.  That logic should come soon.)
                     heroManager.HeroTraining().SetEnduranceExp(0);
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s endurance EXP is: " + heroManager.HeroTraining().GetEnduranceExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.ENDURANCE, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s endurance EXP is: " + heroManager.HeroTraining().GetEnduranceExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager)
                     + " and endurance level is: " + heroManager.Hero().GetEndurance());
                 break;
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 // increase agility exp
                 heroManager.HeroTraining().SetAgilityExp(heroManager.HeroTraining().GetAgilityExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if agility exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetAgilityExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.AGILITY, heroManager))
+                if (heroManager.HeroTraining().GetAgilityExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager))
                 {
                     // process agility stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.AGILITY, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager);
 
                     // reset agility exp to 0 (should be spill over value to go into the next level.  That logic should come soon.)
                     heroManager.HeroTraining().SetAgilityExp(0);
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s agility EXP is: " + heroManager.HeroTraining().GetAgilityExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.AGILITY, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s agility EXP is: " + heroManager.HeroTraining().GetAgilityExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager)
                     + " and agility level is: " + heroManager.Hero().GetAgility());
                 break;
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 // increase Dexterity exp
                 heroManager.HeroTraining().SetDexterityExp(heroManager.HeroTraining().GetDexterityExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if agility exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetDexterityExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.DEXTERITY, heroManager))
+                if (heroManager.HeroTraining().GetDexterityExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager))
                 {
                     // process agility stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.DEXTERITY, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager);
 
                     // reset agility exp to 0 (should be spill over value to go into the next level.  That logic should come soon.)
                     heroManager.HeroTraining().SetDexterityExp(0);
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s dexterity EXP is: " + heroManager.HeroTraining().GetDexterityExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.DEXTERITY, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s dexterity EXP is: " + heroManager.HeroTraining().GetDexterityExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager)
                     + " and dexterity level is: " + heroManager.Hero().GetDexterity());
                 break;
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 // increase intelligence exp
                 heroManager.HeroTraining().SetIntelligenceExp(heroManager.HeroTraining().GetIntelligenceExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if intelligence exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetIntelligenceExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.INTELLIGENCE, heroManager))
+                if (heroManager.HeroTraining().GetIntelligenceExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager))
                 {
                     // process intelligence stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.INTELLIGENCE, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager);
 
                     // reset intelligence exp to 0 (should be spill over value to go into the next level.  That logic should come soon.)
                     heroManager.HeroTraining().SetIntelligenceExp(0);
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s intelligence EXP is: " + heroManager.HeroTraining().GetIntelligenceExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.INTELLIGENCE, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s intelligence EXP is: " + heroManager.HeroTraining().GetIntelligenceExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager)
                     + " and intelligence level is: " + heroManager.Hero().GetIntelligence());
                 break;
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 // increase faith exp
                 heroManager.HeroTraining().SetFaithExp(heroManager.HeroTraining().GetFaithExp() + heroManager.HeroTraining().GetTrainingResult());
 
                 // if faith exp >= GetExpRequiredForLevelUp()
-                if (heroManager.HeroTraining().GetFaithExp() >= GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.FAITH, heroManager))
+                if (heroManager.HeroTraining().GetFaithExp() >= GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager))
                 {
                     // process faith stat level up
-                    StatLevelUp(BaseTraining.TrainingTypes.FAITH, heroManager);
+                    StatLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager);
 
                     // reset faith exp to 0 (should be spill over value to go into the next level.  That logic should come soon.)
                     heroManager.HeroTraining().SetFaithExp(0);
                 }
 
-                Debug.Log(heroManager.Hero().name + "'s faith EXP is: " + heroManager.HeroTraining().GetFaithExp() + "/" + GetExpRequiredForLevelUp(BaseTraining.TrainingTypes.FAITH, heroManager)
+                Debug.Log(heroManager.Hero().name + "'s faith EXP is: " + heroManager.HeroTraining().GetFaithExp() + "/" + GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager)
                     + " and faith level is: " + heroManager.Hero().GetFaith());
 
                 break;
@@ -598,29 +598,29 @@ public class TrainingManager : MonoBehaviour
     /// </summary>
     /// <param name="trainingType">The stat that should be leveled up</param>
     /// <param name="heroManager">HeroManager for the hero that should have their stat leveled up</param>
-    void StatLevelUp(BaseTraining.TrainingTypes trainingType, HeroManager heroManager)
+    void StatLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         Debug.Log(heroManager.Hero().name + " - LEVELUP");
         heroManager.HeroTraining().SetLevelingUp(true);
 
         switch (trainingType)
         {
-            case BaseTraining.TrainingTypes.STRENGTH:
+            case EnumHandler.TrainingTypes.STRENGTH:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetStrength() + 1);
                 break;
-            case BaseTraining.TrainingTypes.ENDURANCE:
+            case EnumHandler.TrainingTypes.ENDURANCE:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetEndurance() + 1);
                 break;
-            case BaseTraining.TrainingTypes.AGILITY:
+            case EnumHandler.TrainingTypes.AGILITY:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetAgility() + 1);
                 break;
-            case BaseTraining.TrainingTypes.DEXTERITY:
+            case EnumHandler.TrainingTypes.DEXTERITY:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetDexterity() + 1);
                 break;
-            case BaseTraining.TrainingTypes.INTELLIGENCE:
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetIntelligence() + 1);
                 break;
-            case BaseTraining.TrainingTypes.FAITH:
+            case EnumHandler.TrainingTypes.FAITH:
                 heroManager.Hero().SetStrength(heroManager.Hero().GetFaith() + 1);
                 break;
         }

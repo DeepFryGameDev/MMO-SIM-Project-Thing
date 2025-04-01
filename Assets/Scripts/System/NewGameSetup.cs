@@ -76,9 +76,9 @@ public class NewGameSetup : MonoBehaviour
 
         PlayerManagerSetup(newPlayerObject);
 
-        EquipmentManager.Startup();
+        //EquipmentManager.Startup();
 
-        InventoryManager.Startup();
+        //InventoryManager.Startup();
 
         if (!debugging) // Starting from main menu
         {

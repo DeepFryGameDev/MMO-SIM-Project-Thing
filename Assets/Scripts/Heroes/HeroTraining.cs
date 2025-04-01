@@ -64,7 +64,7 @@ public class HeroTraining : MonoBehaviour
     {
         // For debugging purposes.  Once scheduling is built in, this can be removed.
         BaseTraining testTraining = new BaseTraining();
-        testTraining.SetTrainingType(BaseTraining.TrainingTypes.STRENGTH);
+        testTraining.SetTrainingType(EnumHandler.TrainingTypes.STRENGTH);
         testTraining.SetTrainingLevel(1);
 
         currentTraining = testTraining;
