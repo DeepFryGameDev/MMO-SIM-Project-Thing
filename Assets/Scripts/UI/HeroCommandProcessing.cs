@@ -81,6 +81,26 @@ public class HeroCommandProcessing : MonoBehaviour
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
 
+    public void OpenTrainingEquipmentMenu()
+    {
+
+    }
+
+    public void CloseTrainingEquipmentMenu()
+    {
+
+    }
+
+    public void OpenTrainingEquipmentList()
+    {
+
+    }
+
+    public void CloseTrainingEquipmentList()
+    {
+
+    }
+
     /// <summary>
     /// Simply displays/hides the command menu and allows the player to interact with it
     /// </summary>

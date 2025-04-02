@@ -6,5 +6,7 @@ using UnityEngine;
 
 public class HeroTrainingEquipment : MonoBehaviour
 {
-
+    int trainingEquipmentSlots = 2; // Will eventually be controlled by hero level or something
+    public int GetTrainingEquipmentSlots() { return trainingEquipmentSlots; }
+    public void SetTrainingEquipmentSlots(int slots) { trainingEquipmentSlots = slots; }
 }

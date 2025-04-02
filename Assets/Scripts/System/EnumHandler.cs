@@ -42,4 +42,19 @@ public static class EnumHandler
         INTELLIGENCE,
         FAITH
     }
+
+
+    // --- UI ---
+    public enum HeroCommandMenuStates
+    {
+        IDLE,
+        ROOT,
+        TRAININGEQUIP
+    }
+
+    public enum PlayerCommandMenuStates
+    {
+        IDLE,
+        ROOT
+    }
 }
