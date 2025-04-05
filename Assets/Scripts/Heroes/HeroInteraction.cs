@@ -22,7 +22,7 @@ public class HeroInteraction : InteractionProcessing
     {        
         base.OnInteract();
 
-        hcp.SetHeroPathing(heroManager.HeroPathing());
+        hcp.SetHeroManager(heroManager);
 
         // look at player
 

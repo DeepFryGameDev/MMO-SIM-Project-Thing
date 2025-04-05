@@ -15,4 +15,6 @@ public class TrainingEquipment : Equipment
 
     [Tooltip("The GameObject that should be instantiated into the world when this is equipped by a hero.")]
     public GameObject worldPrefab;
+
+    public Sprite icon;
 }

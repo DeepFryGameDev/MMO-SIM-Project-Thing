@@ -12,6 +12,9 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab for TrainingResults to be shown when advancing weeks")]
     public GameObject TrainingResult;
 
+    public GameObject TrainingEquipmentButton;
+    public GameObject TrainingEquipmentListButton;
+
     private void Awake()
     {
         Singleton();

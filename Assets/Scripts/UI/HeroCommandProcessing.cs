@@ -8,14 +8,14 @@ public class HeroCommandProcessing : MonoBehaviour
 {  
     CanvasGroup CommandCanvasGroup; // Set to the canvasGroup attached to the HeroCommand UI panel
 
-    HeroPathing heroPathing; // Used to manipulate the pathingState for the given hero
-    public void SetHeroPathing(HeroPathing heroPathing) { this.heroPathing = heroPathing; }
+    HeroManager heroManager;
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
 
     PlayerMovement playerMovement; // Just used to toggle player's movement when command window is opened
 
-    ThirdPersonCam cam; // Used to disable camera rotating when the player's movement is disabled
-
     PlayerInteraction playerInteraction; // Used to hide/show the interaction graphic
+
+    TrainingEquipmentMenu trainingEquipmentMenu;
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
 
-        cam = FindFirstObjectByType<ThirdPersonCam>();
+        trainingEquipmentMenu = FindFirstObjectByType<TrainingEquipmentMenu>();
     }
 
     /// <summary>
@@ -56,10 +56,10 @@ public class HeroCommandProcessing : MonoBehaviour
         playerMovement.ToggleMovement(false);
 
         //2. Set pathing to idle on heroPathing.
-        heroPathing.StopPathing();
+        heroManager.HeroPathing().StopPathing();
 
         //3. ToggleCommandMenu to open it
-        ToggleCommandMenu(true);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 
     /// <summary>
@@ -70,9 +70,9 @@ public class HeroCommandProcessing : MonoBehaviour
     {
         Debug.Log("Closing command window");
 
-        ToggleCommandMenu(false);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.IDLE);
 
-        heroPathing.StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
+        heroManager.HeroPathing().StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
 
         playerMovement.ToggleMovement(true);
 
@@ -83,50 +83,29 @@ public class HeroCommandProcessing : MonoBehaviour
 
     public void OpenTrainingEquipmentMenu()
     {
+        // draw 'equip' slots for HeroTrainingEquipment.trainingEquipmentSlots
 
+        trainingEquipmentMenu.InstantiateEquipmentSlots(heroManager);
+
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIP);
     }
 
     public void CloseTrainingEquipmentMenu()
     {
-
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 
     public void OpenTrainingEquipmentList()
     {
+        // generate list of training equipment in inventory
 
+        // instantiate them to the list group
+
+        // Show the Training Equipment List menu
     }
 
     public void CloseTrainingEquipmentList()
     {
-
-    }
-
-    /// <summary>
-    /// Simply displays/hides the command menu and allows the player to interact with it
-    /// </summary>
-    /// <param name="toggle">True to show the command menu, False to hide it</param>
-    void ToggleCommandMenu(bool toggle)
-    { 
-        if (toggle)
-        {
-            CommandCanvasGroup.alpha = 1;
-            CommandCanvasGroup.interactable = true;
-            CommandCanvasGroup.blocksRaycasts = true;
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            cam.ToggleCameraRotation(false);
-        } else
-        {
-            CommandCanvasGroup.alpha = 0;
-            CommandCanvasGroup.interactable = false;
-            CommandCanvasGroup.blocksRaycasts = false;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            cam.ToggleCameraRotation(true);
-        }
+        // Just close the training equipment list menu
     }
 }

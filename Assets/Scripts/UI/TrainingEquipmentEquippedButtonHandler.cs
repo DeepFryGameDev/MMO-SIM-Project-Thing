@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Purpose: 
 // Directions: 
@@ -6,20 +8,37 @@ using UnityEngine;
 
 public class TrainingEquipmentEquippedButtonHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    TrainingEquipmentMenu trainingEquipMenu;
+    public void SetTrainingEquipMenu(TrainingEquipmentMenu trainingEquipMenu) { this.trainingEquipMenu = trainingEquipMenu; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    HeroManager heroManager;
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
+
+    int equipSlot;
+    public void SetEquipSlot(int equipSlot) { this.equipSlot = equipSlot; }
+    public int GetEquipSlot() { return equipSlot; }
+
+    public void SetIcon(Sprite icon) { transform.Find("Icon").GetComponent<Image>().sprite = icon; }
+    public void SetLevelText(int level) { transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = level.ToString(); }
 
     public void OnClick()
     {
+        if (heroManager.HeroInventory().GetTrainingEquipmentCount() > 0)
+        {
+            Debug.Log("Should show some kind of highlight on object " + trainingEquipMenu.GetClickedEquippedTrainingButton());
+            trainingEquipMenu.SetClickedEquippedTrainingButtonHandler(this);
 
+            if (MenuProcessingHandler.i.GetHeroCommandMenuState() != EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
+            {
+                // instantiate all training equipment from inventory into list
+                trainingEquipMenu.InstantiateEquipmentInventoryList(heroManager);
+
+                // open the list menu
+                MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST);
+            }
+        } else // No training equipment in hero's inventory
+        {
+            Debug.Log("Play 'nope' error SE or something");
+        }       
     }
 }

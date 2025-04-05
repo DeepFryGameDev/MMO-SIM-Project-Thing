@@ -49,7 +49,8 @@ public static class EnumHandler
     {
         IDLE,
         ROOT,
-        TRAININGEQUIP
+        TRAININGEQUIP,
+        TRAININGEQUIPLIST
     }
 
     public enum PlayerCommandMenuStates

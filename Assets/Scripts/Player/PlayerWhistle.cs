@@ -95,7 +95,7 @@ public class PlayerWhistle : MonoBehaviour
         heroManagerWhistled.HeroPathing().ToggleRun(false);
 
         // open command menu
-        hcp.SetHeroPathing(heroManagerWhistled.HeroPathing());
+        hcp.SetHeroManager(heroManagerWhistled);
         hcp.OpenHeroCommand();
     }    
 }

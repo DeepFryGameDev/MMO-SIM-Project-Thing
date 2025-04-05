@@ -27,6 +27,12 @@ public class HeroManager : MonoBehaviour
     HeroTraining heroTraining;
     public HeroTraining HeroTraining() { return heroTraining; }
 
+    HeroTrainingEquipment heroTrainingEquipment;
+    public HeroTrainingEquipment HeroTrainingEquipment() { return heroTrainingEquipment; }
+
+    HeroInventory heroInventory;
+    public HeroInventory HeroInventory() { return heroInventory; }
+
     new Collider collider;
     public Collider Collider() { return collider; }
 
@@ -61,7 +67,11 @@ public class HeroManager : MonoBehaviour
         navMeshAgent = transform.GetComponent<NavMeshAgent>();
         heroPathing = transform.GetComponent<HeroPathing>();
         heroInteraction = transform.GetComponent<HeroInteraction>();
+
         heroTraining = transform.GetComponent<HeroTraining>();
+
+        heroTrainingEquipment = transform.GetComponent<HeroTrainingEquipment>();
+        heroInventory = transform.GetComponent<HeroInventory>();
 
         collider = transform.GetComponent<Collider>();
 
