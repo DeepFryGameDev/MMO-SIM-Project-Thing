@@ -23,22 +23,16 @@ public class TrainingEquipmentEquippedButtonHandler : MonoBehaviour
 
     public void OnClick()
     {
-        if (heroManager.HeroInventory().GetTrainingEquipmentCount() > 0)
-        {
-            Debug.Log("Should show some kind of highlight on object " + trainingEquipMenu.GetClickedEquippedTrainingButton());
-            trainingEquipMenu.SetClickedEquippedTrainingButtonHandler(this);
+        Debug.Log("Should show some kind of highlight on object " + trainingEquipMenu.GetClickedEquippedTrainingButton());
+        trainingEquipMenu.SetClickedEquippedTrainingButtonHandler(this);
 
-            if (MenuProcessingHandler.i.GetHeroCommandMenuState() != EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
-            {
-                // instantiate all training equipment from inventory into list
-                trainingEquipMenu.InstantiateEquipmentInventoryList(heroManager);
-
-                // open the list menu
-                MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST);
-            }
-        } else // No training equipment in hero's inventory
+        if (MenuProcessingHandler.i.GetHeroCommandMenuState() != EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
         {
-            Debug.Log("Play 'nope' error SE or something");
-        }       
+            // instantiate all training equipment from inventory into list
+            trainingEquipMenu.InstantiateEquipmentInventoryList(heroManager);
+
+            // open the list menu
+            MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST);
+        }
     }
 }

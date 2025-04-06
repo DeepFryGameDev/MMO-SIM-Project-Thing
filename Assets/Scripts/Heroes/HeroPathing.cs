@@ -156,8 +156,12 @@ public class HeroPathing : MonoBehaviour
     void PathToRandomPosition()
     {
         if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Setting new destination");
-        agent.SetDestination(GetRandomPositionInBounds());
-        randPathingActive = true;
+        Vector3 tryPos = GetRandomPositionInBounds();
+        if (tryPos != new Vector3(0,0,0))
+        {
+            agent.SetDestination(GetRandomPositionInBounds());
+            randPathingActive = true;
+        }
     }
 
     /// <summary>
@@ -166,11 +170,24 @@ public class HeroPathing : MonoBehaviour
     /// <returns>Position within the hero's HomeZone collider</returns>
     Vector3 GetRandomPositionInBounds()
     {
-        return new Vector3(
+        Vector3 tryPos = new Vector3(
             Random.Range(homeZoneCollider.bounds.min.x, homeZoneCollider.bounds.max.x),
             Random.Range(homeZoneCollider.bounds.min.y, homeZoneCollider.bounds.max.y),
             Random.Range(homeZoneCollider.bounds.min.z, homeZoneCollider.bounds.max.z)
             );
+
+        // ensure it didn't hit any home zones first, then return it.  if it hit a home zone, set to 0,0,0 so we can retry.
+        RaycastHit hit;
+        if (Physics.Raycast(tryPos, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
+        {
+            if (hit.transform.CompareTag("PrefabZone"))
+            {
+                Debug.LogWarning("Hit prefab zone.  Getting a new position");
+                return new Vector3(0,0,0);
+            }
+        }
+
+        return tryPos;
     }
 
     /// <summary>

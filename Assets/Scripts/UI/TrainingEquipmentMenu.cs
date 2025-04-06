@@ -54,6 +54,20 @@ public class TrainingEquipmentMenu : MonoBehaviour
     {
         ClearEquipmentInventoryList(); // should be run when closing inventory list
 
+        // instantiate a blank one for unequipping
+        GameObject blankButton = Instantiate(PrefabManager.i.TrainingEquipmentListButton, listButtonGroup.transform);
+        TrainingEquipmentListButtonHandler blankButtonHandler = blankButton.GetComponent<TrainingEquipmentListButtonHandler>();
+
+        blankButtonHandler.SetTrainingEquipmentMenu(this);
+        blankButtonHandler.SetHeroManager(heroManager);
+
+        blankButtonHandler.SetTrainingEquipment(null);
+
+        // set icon, etc. tooltip will be needed eventually
+        blankButtonHandler.SetIcon(null);
+        blankButtonHandler.SetLevelText(0);
+
+
         for (int i = 0; i < heroManager.HeroInventory().GetInventory().Count; i++)
         {
             GameObject newListButton = Instantiate(PrefabManager.i.TrainingEquipmentListButton, listButtonGroup.transform);

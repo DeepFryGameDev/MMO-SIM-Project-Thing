@@ -32,16 +32,24 @@ public class TrainingEquipmentListButtonHandler : MonoBehaviour
 
     public void OnClick()
     {
-        // equip the training equipment
-        Debug.Log("Equip the " + trainingEquipment.name + " to " + trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot());
-        trainingEquipmentManager.Equip(trainingEquipment, trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot(), heroManager);
+        if (trainingEquipment != null) // Clicked on a valid equipment button
+        {
+            // equip the training equipment
+            Debug.Log("Equip the " + trainingEquipment.name + " to " + trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot());
+            trainingEquipmentManager.Equip(trainingEquipment, trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot(), heroManager);
+        }
+        else // Clicked the unequip button
+        {
+            trainingEquipmentManager.Equip(null, trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot(), heroManager);
+        }
 
         // generate new equipment slots in equip menu
         trainingEquipmentMenu.InstantiateEquipmentSlots(heroManager);
 
+        // Instantiate prefab zones
+        heroManager.HomeZone().InstantiateTrainingEquipmentPrefabs();
+
         // hide the List window
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIP);
     }
-
-    
 }

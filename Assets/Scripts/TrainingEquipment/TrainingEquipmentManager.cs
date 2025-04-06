@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 // Purpose: 
@@ -15,25 +16,45 @@ public class TrainingEquipmentManager : MonoBehaviour
 
     public void Equip(TrainingEquipment trainingEquipment, int equipSlot, HeroManager heroManager)
     {
-        // if something already exists in this slot, add it back to inventory
-        if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()) != null)
+        if (trainingEquipment != null) // equipping valid equipment
         {
-            Debug.Log("Return " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()).name + " to hero's inventory");
-            heroManager.HeroInventory().AddToInventory(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()));
-        }
+            // if something already exists in this slot, add it back to inventory
+            if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()) != null)
+            {
+                Debug.Log("Return " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()).name + " to hero's inventory");
+                heroManager.HeroInventory().AddToInventory(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()));
+            }
 
-        switch (equipSlot)
+            switch (equipSlot)
+            {
+                case 0:
+                    heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot0(trainingEquipment);
+                    break;
+                case 1:
+                    heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot1(trainingEquipment);
+                    break;
+            }
+
+            // remove equipment from inventory
+            Debug.Log("removing " + trainingEquipment.name + " from inventory");
+            heroManager.HeroInventory().RemoveFromInventory(trainingEquipment);
+        } else // unequipping
         {
-            case 0:
-                heroManager.HeroTrainingEquipment().SetTrainingEquipSlot0(trainingEquipment);
-                break;
-            case 1:
-                heroManager.HeroTrainingEquipment().SetTrainingEquipSlot1(trainingEquipment);
-                break;
-        }
+            if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()) != null)
+            {
+                Debug.Log("Return " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()).name + " to hero's inventory");
+                heroManager.HeroInventory().AddToInventory(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()));
 
-        // remove equipment from inventory
-        Debug.Log("removing " + trainingEquipment.name + " from inventory");
-        heroManager.HeroInventory().RemoveFromInventory(trainingEquipment);
+                switch (equipSlot)
+                {
+                    case 0:
+                        heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot0(null);
+                        break;
+                    case 1:
+                        heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot1(null);
+                        break;
+                }
+            }            
+        }
     }
 }

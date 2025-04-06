@@ -12,13 +12,13 @@ public class HeroTrainingEquipment : MonoBehaviour
 
     HeroManager heroManager;
 
-    TrainingEquipment trainingEquipSlot0;
-    public void SetTrainingEquipSlot0(TrainingEquipment trainingEquipment) { this.trainingEquipSlot0 = trainingEquipment; }
-    public TrainingEquipment GetTrainingEquipSlot0() { return trainingEquipSlot0; }
+    TrainingEquipment trainingEquipmentSlot0;
+    public void SetTrainingEquipmentSlot0(TrainingEquipment trainingEquipment) { this.trainingEquipmentSlot0 = trainingEquipment; }
+    public TrainingEquipment GetTrainingEquipmentSlot0() { return trainingEquipmentSlot0; }
 
-    TrainingEquipment trainingEquipSlot1;
-    public void SetTrainingEquipSlot1(TrainingEquipment trainingEquipment) { this.trainingEquipSlot1 = trainingEquipment; }
-    public TrainingEquipment GetTrainingEquipmentSlot1() { return trainingEquipSlot1; }
+    TrainingEquipment trainingEquipmentSlot1;
+    public void SetTrainingEquipmentSlot1(TrainingEquipment trainingEquipment) { this.trainingEquipmentSlot1 = trainingEquipment; }
+    public TrainingEquipment GetTrainingEquipmentSlot1() { return trainingEquipmentSlot1; }
 
     private void Awake()
     {
@@ -40,9 +40,9 @@ public class HeroTrainingEquipment : MonoBehaviour
         switch (slot)
         {
             case 0:
-                return trainingEquipSlot0;
+                return trainingEquipmentSlot0;
             case 1:
-                return trainingEquipSlot1;
+                return trainingEquipmentSlot1;
             default:
                 return null;
         }
