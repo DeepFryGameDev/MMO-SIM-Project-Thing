@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 // Purpose: Contains prefabs to be manipulated by script
 // Directions: Attach to [UI] object and call PrefabManager.i to reference prefabs
@@ -12,7 +11,9 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab for TrainingResults to be shown when advancing weeks")]
     public GameObject TrainingResult;
 
+    [Tooltip("Set this to the prefab for TrainingEquipmentButtons to be instantiated when clicking the 'Training Equipment' button in the HeroZone Menu.")]
     public GameObject TrainingEquipmentButton;
+    [Tooltip("Set this to the prefab for TrainingEquipmentListButtons to be instantiated when clicking the one of the TrainingEquipmentButtons")]
     public GameObject TrainingEquipmentListButton;
 
     private void Awake()

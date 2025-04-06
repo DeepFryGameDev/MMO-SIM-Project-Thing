@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Handles player inventory.  Not used yet.
+// Directions: Just attach to [System]
 // Other notes: 
 
 public class InventoryManager : MonoBehaviour

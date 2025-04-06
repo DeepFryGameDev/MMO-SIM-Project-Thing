@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates control of which menu is available to the user at a given time
+// Directions: Attach to the [UI] object
 // Other notes: 
 
 public class MenuProcessingHandler : MonoBehaviour
@@ -41,6 +41,9 @@ public class MenuProcessingHandler : MonoBehaviour
         if (tempHeroCommandMenuState != heroCommandMenuState) ProcessHeroCommandMenu();
     }
 
+    /// <summary>
+    /// Opens/closes menus based on the menu state - this gives easy control to outside scripts to open any given menu
+    /// </summary>
     void ProcessHeroCommandMenu()
     { 
         switch (heroCommandMenuState)
@@ -72,10 +75,10 @@ public class MenuProcessingHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Opens the given menu
     /// </summary>
-    /// <param name="canvasGroup"></param>
-    /// <param name="closePrevious"></param>
+    /// <param name="canvasGroup">CanvasGroup of the menu to be opened</param>
+    /// <param name="closePrevious">If the previous menu should be closed, set this to true.</param>
     public void TransitionToMenu(CanvasGroup canvasGroup, bool closePrevious)
     {
         if (closePrevious && tempCanvasGroup != null)

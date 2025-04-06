@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates all procedures to be run within the Training Equipment Menu
+// Directions: Attach to '[UI]/HeroZoneCanvas/TrainingEquipmentMenu'
 // Other notes: 
 
 public class TrainingEquipmentMenu : MonoBehaviour
@@ -24,6 +24,10 @@ public class TrainingEquipmentMenu : MonoBehaviour
         listButtonGroup = GameObject.Find("HeroZoneCanvas/TrainingEquipmentMenu/EquipmentListHolder/ListButtonGroup").GetComponent<GridLayoutGroup>();
     }
 
+    /// <summary>
+    /// When opening the Training Equipment menu, this method will generate the slot buttons the user can click to change the equipped Training Equipment
+    /// </summary>
+    /// <param name="heroManager">HeroManager of hero to check for already equipped Training Equipment</param>
     public void InstantiateEquipmentSlots(HeroManager heroManager)
     {
         ClearEquipmentSlots(); // should be run when closing equipment slots
@@ -50,6 +54,10 @@ public class TrainingEquipmentMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When clicking on a Training Equipment button to change the equipment in that slot, this method will be called to generate the inventory list the user can choose from.
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the hero in question - this checks their inventory and sets the hero manager to each button generated</param>
     public void InstantiateEquipmentInventoryList(HeroManager heroManager)
     {
         ClearEquipmentInventoryList(); // should be run when closing inventory list
@@ -86,6 +94,9 @@ public class TrainingEquipmentMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Simply just clears any existing equipment slots in the UI
+    /// </summary>
     void ClearEquipmentSlots()
     {
         foreach (Transform transform in equipmentButtonGroup.transform)
@@ -94,6 +105,9 @@ public class TrainingEquipmentMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Simply just clears the inventory list in the UI
+    /// </summary>
     void ClearEquipmentInventoryList()
     {
         foreach (Transform transform in listButtonGroup.transform)
@@ -102,6 +116,9 @@ public class TrainingEquipmentMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When clicking 'back' in the Training Equipment Menu, this function is called.  It just goes back to the HeroCommand root menu.
+    /// </summary>
     public void OnBackClick()
     {
         if (MenuProcessingHandler.i.GetHeroCommandMenuState() == EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)

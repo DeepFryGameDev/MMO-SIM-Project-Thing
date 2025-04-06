@@ -8,7 +8,7 @@ public class HeroHomeZone : MonoBehaviour
 {
     public HeroManager heroManager; // Used to set the home zone in HeroManager to this.  The HomeZone inside heroManager isn't being used right now, but this will allow access.
 
-    Transform prefabZones;
+    Transform prefabZones; // Used to instantiate the prefabs from training equipment
 
     private void Awake()
     {
@@ -33,6 +33,9 @@ public class HeroHomeZone : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the prefabs from equipped TrainingEquipment into the hero's home zone
+    /// </summary>
     public void InstantiateTrainingEquipmentPrefabs()
     {
         ClearPrefabZones();
@@ -48,6 +51,9 @@ public class HeroHomeZone : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Simply just clears any prefabs from training equipment before instantiating new ones.
+    /// </summary>
     void ClearPrefabZones()
     {
         foreach (Transform transform in prefabZones)

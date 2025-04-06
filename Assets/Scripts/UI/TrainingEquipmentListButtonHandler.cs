@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used to manipulate the behavior for buttons in the training equipment list - this is when the user clicks the "TrainingEquipment" button in the hero command menu to display the hero's inventory of training equipment.
+// Directions: Just make sure this is attached to the Training Equipment List Button prefab.
 // Other notes: 
 
 public class TrainingEquipmentListButtonHandler : MonoBehaviour

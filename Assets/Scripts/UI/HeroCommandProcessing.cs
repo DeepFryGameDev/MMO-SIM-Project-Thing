@@ -81,31 +81,22 @@ public class HeroCommandProcessing : MonoBehaviour
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
 
+    /// <summary>
+    /// Used to open the Training Equipment menu for the player to equip to a hero
+    /// </summary>
     public void OpenTrainingEquipmentMenu()
     {
         // draw 'equip' slots for HeroTrainingEquipment.trainingEquipmentSlots
-
         trainingEquipmentMenu.InstantiateEquipmentSlots(heroManager);
 
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIP);
     }
 
+    /// <summary>
+    /// Just goes back to the root Hero Command menu
+    /// </summary>
     public void CloseTrainingEquipmentMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
-    }
-
-    public void OpenTrainingEquipmentList()
-    {
-        // generate list of training equipment in inventory
-
-        // instantiate them to the list group
-
-        // Show the Training Equipment List menu
-    }
-
-    public void CloseTrainingEquipmentList()
-    {
-        // Just close the training equipment list menu
     }
 }

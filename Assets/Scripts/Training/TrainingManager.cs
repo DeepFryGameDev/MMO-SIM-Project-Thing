@@ -6,7 +6,6 @@ using UnityEngine;
 // Directions: Just attach to [System]
 // Other notes: 
 
-
 public class TrainingManager : MonoBehaviour
 {
     [HideInInspector] public List<HeroManager> heroManagers = new List<HeroManager>(); // Used to manage all active heroes

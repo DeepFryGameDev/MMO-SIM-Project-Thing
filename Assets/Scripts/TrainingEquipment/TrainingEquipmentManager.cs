@@ -1,8 +1,7 @@
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates equipping to hero and other training equipment mechanisms
+// Directions: Just attach to [System]
 // Other notes: 
 
 public class TrainingEquipmentManager : MonoBehaviour
@@ -14,6 +13,12 @@ public class TrainingEquipmentManager : MonoBehaviour
         trainingEquipmentMenu = FindFirstObjectByType<TrainingEquipmentMenu>();
     }
 
+    /// <summary>
+    /// Equips the given training equipment into the given equip slot
+    /// </summary>
+    /// <param name="trainingEquipment">The equipment to be equipped</param>
+    /// <param name="equipSlot">The equipment slot for the hero in which this should go</param>
+    /// <param name="heroManager">HeroManager for the hero to have equipment equipped</param>
     public void Equip(TrainingEquipment trainingEquipment, int equipSlot, HeroManager heroManager)
     {
         if (trainingEquipment != null) // equipping valid equipment

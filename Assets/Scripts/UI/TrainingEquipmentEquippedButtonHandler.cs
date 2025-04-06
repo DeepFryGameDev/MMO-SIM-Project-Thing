@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Handles all UI interaction with the Training Equipment 'Equipped' button
+// Directions: Attach to the Training Equipment Equipped Button prefab
 // Other notes: 
 
 public class TrainingEquipmentEquippedButtonHandler : MonoBehaviour

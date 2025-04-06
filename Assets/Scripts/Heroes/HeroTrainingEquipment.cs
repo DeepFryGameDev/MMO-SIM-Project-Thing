@@ -35,6 +35,11 @@ public class HeroTrainingEquipment : MonoBehaviour
         heroManager.HeroInventory().AddToInventory(TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[1]);
     }
 
+    /// <summary>
+    /// Just returns the TrainingEquipment in the given slot that is equipped to the hero
+    /// </summary>
+    /// <param name="slot">Slot # to return the equipment</param>
+    /// <returns>TrainingEquipment that is equipped by the hero in the given slot</returns>
     public TrainingEquipment GetTrainingEquipmentBySlot(int slot)
     {
         switch (slot)

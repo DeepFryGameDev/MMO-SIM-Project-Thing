@@ -24,6 +24,9 @@ public static class EnumHandler
         TOPDOWN
     }
     
+    /// <summary>
+    /// Not really being used for anything important yet.
+    /// </summary>
     public enum EquipmentRarities
     {
         COMMON, // (For training Equipment, there is no physical object the hero interacts with, prefab may be null.)
@@ -33,6 +36,9 @@ public static class EnumHandler
         LEGENDARY
     }
 
+    /// <summary>
+    /// Types of training that can be used by heros
+    /// </summary>
     public enum TrainingTypes
     {
         STRENGTH,
@@ -45,6 +51,10 @@ public static class EnumHandler
 
 
     // --- UI ---
+
+    /// <summary>
+    /// Used to navigate through the hero command menu.
+    /// </summary>
     public enum HeroCommandMenuStates
     {
         IDLE,
@@ -53,6 +63,9 @@ public static class EnumHandler
         TRAININGEQUIPLIST
     }
 
+    /// <summary>
+    /// Used to navigate through the player command menu. Not yet implemented.
+    /// </summary>
     public enum PlayerCommandMenuStates
     {
         IDLE,
