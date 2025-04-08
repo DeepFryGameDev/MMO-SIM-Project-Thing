@@ -8,7 +8,7 @@ using UnityEngine;
 public class TrainingEquipment : Equipment
 {
     [Tooltip("Affects the result of training while having this equipped by a hero.  Leave at 0 for a 'basic' training that does not require any physical objects to interact with the hero.")]
-    [Range(0, 5)] public int trainingLevel;
+    [Range(1, 5)] public int trainingLevel;
 
     [Tooltip("The stat that should be increased when training with this.")]
     public EnumHandler.TrainingTypes trainingType;

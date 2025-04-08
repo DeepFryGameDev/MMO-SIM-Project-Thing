@@ -60,7 +60,8 @@ public static class EnumHandler
         IDLE,
         ROOT,
         TRAININGEQUIP,
-        TRAININGEQUIPLIST
+        TRAININGEQUIPLIST,
+        SCHEDULE
     }
 
     /// <summary>

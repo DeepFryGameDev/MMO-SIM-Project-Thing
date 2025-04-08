@@ -115,18 +115,4 @@ public class TrainingEquipmentMenu : MonoBehaviour
             Destroy(transform.gameObject);
         }
     }
-
-    /// <summary>
-    /// When clicking 'back' in the Training Equipment Menu, this function is called.  It just goes back to the HeroCommand root menu.
-    /// </summary>
-    public void OnBackClick()
-    {
-        if (MenuProcessingHandler.i.GetHeroCommandMenuState() == EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
-        {
-            // hide the equip list
-            MenuProcessingHandler.i.TransitionToMenu(MenuProcessingHandler.i.GetTrainingEquipmentMenuCanvasGroup(), true);
-        }
-
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
-    }
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,52 +15,68 @@ public class HeroZoneUIHandler : MonoBehaviour
     RadarChartValueController valueController; // manages the values of the radar chart
     RadarChartController chartController; // used to update the chart in the UI    
 
+    [SerializeField] TrainingManager trainingManager;
+
+    [SerializeField] ScheduleManager scheduleManager;
+
     //------ UI objects----------
     [Tooltip("Set to the text object that will display the hero's name")]
-    public TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI nameText;
 
     [Tooltip("Set to the text object that will display the hero's level")]
-    public TextMeshProUGUI levelText;
+    [SerializeField] TextMeshProUGUI levelText;
 
     [Tooltip("Set to the fill Image object for the HP Parameter bar")]
-    public Image hpFill;
+    [SerializeField] Image hpFill;
     [Tooltip("Set to the text object that will display the hero's HP")]
-    public TextMeshProUGUI hpVal;
+    [SerializeField] TextMeshProUGUI hpVal;
 
     [Tooltip("Set to the fill Image object for the Mana Parameter bar")]
-    public Image manaFill;
+    [SerializeField] Image manaFill;
     [Tooltip("Set to the text object that will display the hero's Mana")]
-    public TextMeshProUGUI manaVal;
+    [SerializeField] TextMeshProUGUI manaVal;
 
     [Tooltip("Set to the fill Image object for the Strength Parameter bar")]
-    public Image strFill;
-    [Tooltip("Set to the text object that will display the hero's Strength")]
-    public TextMeshProUGUI strVal;
+    [SerializeField] Image strFill;
+    [Tooltip("Set to the text object that will display the hero's Strength Level")]
+    [SerializeField] TextMeshProUGUI strLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Strength Experience")]
+    [SerializeField] TextMeshProUGUI strExpVal;
 
     [Tooltip("Set to the fill Image object for the Endurance Parameter bar")]
-    public Image endFull;
-    [Tooltip("Set to the text object that will display the hero's Endurance")]
-    public TextMeshProUGUI endVal;
+    [SerializeField] Image endFill;
+    [Tooltip("Set to the text object that will display the hero's Endurance Level")]
+    [SerializeField] TextMeshProUGUI endLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Endurance Experience")]
+    [SerializeField] TextMeshProUGUI endExpVal;
 
     [Tooltip("Set to the fill Image object for the Agility Parameter bar")]
-    public Image agiFill;
-    [Tooltip("Set to the text object that will display the hero's Agility")]
-    public TextMeshProUGUI agiVal;
+    [SerializeField] Image agiFill;
+    [Tooltip("Set to the text object that will display the hero's Agility Level")]
+    [SerializeField] TextMeshProUGUI agiLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Agility Experience")]
+    [SerializeField] TextMeshProUGUI agiExpVal;
 
     [Tooltip("Set to the fill Image object for the Dexterity Parameter bar")]
-    public Image dexFill;
-    [Tooltip("Set to the text object that will display the hero's Dexterity")]
-    public TextMeshProUGUI dexVal;
+    [SerializeField] Image dexFill;
+    [Tooltip("Set to the text object that will display the hero's Dexterity Level")]
+    [SerializeField] TextMeshProUGUI dexLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Dexterity Experience")]
+    [SerializeField] TextMeshProUGUI dexExpVal;
 
     [Tooltip("Set to the fill Image object for the Intelligence Parameter bar")]
-    public Image intFill;
-    [Tooltip("Set to the text object that will display the hero's Intelligence")]
-    public TextMeshProUGUI intVal;
+    [SerializeField] Image intFill;
+    [Tooltip("Set to the text object that will display the hero's Intelligence Level")]
+    [SerializeField] TextMeshProUGUI intLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Intelligence Experience")]
+    [SerializeField] TextMeshProUGUI intExpVal;
 
     [Tooltip("Set to the fill Image object for the Faith Parameter bar")]
-    public Image fthFill;
-    [Tooltip("Set to the text object that will display the hero's Faith")]
-    public TextMeshProUGUI fthVal;
+    [SerializeField] Image fthFill;
+    [Tooltip("Set to the text object that will display the hero's Faith Level")]
+    [SerializeField] TextMeshProUGUI fthLevelVal;
+    [Tooltip("Set to the text object that will display the hero's Faith Experience")]
+    [SerializeField] TextMeshProUGUI fthExpVal;
 
     //-----------------------
     void Awake()
@@ -76,12 +93,43 @@ public class HeroZoneUIHandler : MonoBehaviour
     /// Sets the text objects for the HeroZone stat panel and calls SetRadarChart
     /// </summary>
     /// <param name="hero">Hero to set stats for</param>
-    public void DrawHeroStatsToPanel(BaseHero hero)
+    public void DrawHeroStatsToPanel(HeroManager heroManager)
     {
-        nameText.text = hero.name;
-        levelText.text = "Lv. " + "1"; // to update
+        nameText.text = heroManager.Hero().name;
+        levelText.text = "Lv. " + "1"; // to update - this is the hero's Hero Level
 
-        SetRadarChart(hero);
+        DrawStatBars(heroManager);
+
+        SetRadarChart(heroManager.Hero());
+    }
+
+    public void SetScheduleHeroManager(HeroManager heroManager)
+    {
+        scheduleManager.SetCurrentHeroManager(heroManager);
+    }
+
+    private void DrawStatBars(HeroManager heroManager)
+    {
+        strLevelVal.text = heroManager.Hero().GetStrength().ToString();
+        endLevelVal.text = heroManager.Hero().GetEndurance().ToString();
+        agiLevelVal.text = heroManager.Hero().GetAgility().ToString();
+        dexLevelVal.text = heroManager.Hero().GetDexterity().ToString();
+        intLevelVal.text = heroManager.Hero().GetIntelligence().ToString();
+        fthLevelVal.text = heroManager.Hero().GetFaith().ToString();
+
+        strExpVal.text = heroManager.HeroTraining().GetStrengthExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager).ToString();
+        endExpVal.text = heroManager.HeroTraining().GetEnduranceExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager).ToString();
+        agiExpVal.text = heroManager.HeroTraining().GetAgilityExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager).ToString();
+        dexExpVal.text = heroManager.HeroTraining().GetDexterityExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager).ToString();
+        intExpVal.text = heroManager.HeroTraining().GetIntelligenceExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager).ToString();
+        fthExpVal.text = heroManager.HeroTraining().GetFaithExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager).ToString();
+
+        strFill.fillAmount = heroManager.HeroTraining().GetStrengthExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager);
+        endFill.fillAmount = heroManager.HeroTraining().GetEnduranceExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager);
+        agiFill.fillAmount = heroManager.HeroTraining().GetAgilityExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager);
+        dexFill.fillAmount = heroManager.HeroTraining().GetDexterityExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager);
+        intFill.fillAmount = heroManager.HeroTraining().GetIntelligenceExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager);
+        fthFill.fillAmount = heroManager.HeroTraining().GetFaithExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager);
     }
 
     /// <summary>

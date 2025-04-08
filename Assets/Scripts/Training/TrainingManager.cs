@@ -394,7 +394,7 @@ public class TrainingManager : MonoBehaviour
     /// Simply just multiplies the hero's trained stat by the modifier in TrainingSettings
     /// </summary>
     /// <returns>Stat level * TrainingSettings.heroStatExpFromTrainingMod</returns>
-    float GetExpRequiredForLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
+    public float GetExpRequiredForLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
@@ -402,17 +402,17 @@ public class TrainingManager : MonoBehaviour
                 //Debug.Log("Hero strength: " + heroManager.Hero().GetStrength() + " * " + TrainingSettings.heroStatExpFromTrainingMod + " = "
                 //    + heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod);
 
-                return heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseStrength() * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.ENDURANCE:
-                return heroManager.Hero().GetEndurance() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseEndurance() * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.AGILITY:
-                return heroManager.Hero().GetAgility() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseAgility() * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.DEXTERITY:
-                return heroManager.Hero().GetDexterity() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseDexterity() * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.INTELLIGENCE:
-                return heroManager.Hero().GetIntelligence() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseIntelligence() * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.FAITH:
-                return heroManager.Hero().GetFaith() * TrainingSettings.heroStatExpFromTrainingMod;
+                return heroManager.Hero().GetBaseFaith() * TrainingSettings.heroStatExpFromTrainingMod;
             default:
                 return 0;
         }
@@ -430,17 +430,17 @@ public class TrainingManager : MonoBehaviour
                 //Debug.Log("Hero strength: " + heroManager.Hero().GetStrength() + " * " + TrainingSettings.heroStatExpFromTrainingMod + " = "
                 //    + heroManager.Hero().GetStrength() * TrainingSettings.heroStatExpFromTrainingMod);
 
-                return (heroManager.Hero().GetStrength() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseStrength() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.ENDURANCE:
-                return (heroManager.Hero().GetEndurance() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseEndurance() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.AGILITY:
-                return (heroManager.Hero().GetAgility() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseAgility() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.DEXTERITY:
-                return (heroManager.Hero().GetDexterity() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseDexterity() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.INTELLIGENCE:
-                return (heroManager.Hero().GetIntelligence() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseIntelligence() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             case EnumHandler.TrainingTypes.FAITH:
-                return (heroManager.Hero().GetFaith() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
+                return (heroManager.Hero().GetBaseFaith() - 1) * TrainingSettings.heroStatExpFromTrainingMod;
             default:
                 return 0;
         }
@@ -605,22 +605,22 @@ public class TrainingManager : MonoBehaviour
         switch (trainingType)
         {
             case EnumHandler.TrainingTypes.STRENGTH:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetStrength() + 1);
+                heroManager.Hero().SetBaseStrength(heroManager.Hero().GetBaseStrength() + 1);
                 break;
             case EnumHandler.TrainingTypes.ENDURANCE:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetEndurance() + 1);
+                heroManager.Hero().SetBaseEndurance(heroManager.Hero().GetBaseEndurance() + 1);
                 break;
             case EnumHandler.TrainingTypes.AGILITY:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetAgility() + 1);
+                heroManager.Hero().SetBaseAgility(heroManager.Hero().GetBaseAgility() + 1);
                 break;
             case EnumHandler.TrainingTypes.DEXTERITY:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetDexterity() + 1);
+                heroManager.Hero().SetBaseDexterity(heroManager.Hero().GetBaseDexterity() + 1);
                 break;
             case EnumHandler.TrainingTypes.INTELLIGENCE:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetIntelligence() + 1);
+                heroManager.Hero().SetBaseIntelligence(heroManager.Hero().GetBaseIntelligence() + 1);
                 break;
             case EnumHandler.TrainingTypes.FAITH:
-                heroManager.Hero().SetStrength(heroManager.Hero().GetFaith() + 1);
+                heroManager.Hero().SetBaseFaith(heroManager.Hero().GetBaseFaith() + 1);
                 break;
         }
     }

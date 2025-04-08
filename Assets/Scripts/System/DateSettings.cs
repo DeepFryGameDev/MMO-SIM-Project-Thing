@@ -15,4 +15,6 @@ public static class DateSettings
     public static float trainingResultsFillDelaySeconds;
 
     public static float trainingResultsFillSeconds;
+
+    public static int startingYear;
 }

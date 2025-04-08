@@ -12,7 +12,14 @@ public class DateManager : MonoBehaviour
     int[] month = new int[12]; // used to progress the date as well
 
     int currentWeek; // used as the index for week[] to determine the current week
+    public int GetRealCurrentWeek() { return currentWeek + 1; }
+
     int currentMonth; // used as the index for month[] to determine the current month
+    public int GetCurrentMonth() { return currentMonth; }
+    public int GetRealCurrentMonth() { return currentMonth + 1; }
+
+    int currentYear;
+    public int GetCurrentYear() { return currentYear; }
 
     CanvasGroup canvasGroup;
     TextMeshProUGUI weekText;
@@ -51,6 +58,10 @@ public class DateManager : MonoBehaviour
         trainingManager = FindFirstObjectByType<TrainingManager>();
 
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
+
+
+        // Setting some base vals
+        currentYear = DateSettings.startingYear;
     }
 
     void Start()
@@ -95,6 +106,7 @@ public class DateManager : MonoBehaviour
         if (currentMonth > 11)
         {
             currentMonth = 0;
+            currentYear++;
         }
     }
 
@@ -272,7 +284,7 @@ public class DateManager : MonoBehaviour
     void SetToastText()
     {
         weekText.text = week[currentWeek].ToString();
-        monthText.text = GetMonth();
+        monthText.text = GetMonthString(currentMonth);
     }
 
     /// <summary>
@@ -294,9 +306,9 @@ public class DateManager : MonoBehaviour
     /// Just used to display the month in text form
     /// </summary>
     /// <returns>String of the current month in text form</returns>
-    string GetMonth()
+    public string GetMonthString(int month)
     {
-        switch (currentMonth) 
+        switch (month) 
         {
             case 0:
                 return "January";
@@ -325,5 +337,50 @@ public class DateManager : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="weeksOut"></param>
+    /// <returns></returns>
+    public int GetWeekFromWeeksOut(int weeksOut)
+    {
+        int tempWeek = currentWeek;
+
+        for (int i=0; i < weeksOut; i++)
+        {
+            tempWeek++;
+
+            if (tempWeek > 3) // new month
+            {
+                tempWeek = 0;
+            }
+        }
+        
+        return tempWeek + 1;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="weeksOut"></param>
+    /// <returns></returns>
+    public string GetMonthFromWeeksOut(int weeksOut)
+    {
+        int tempMonth = currentMonth;
+        int tempWeek = currentWeek;
+
+        for (int i=0; i< weeksOut; i++)
+        {
+            tempWeek++;
+            
+            if (tempWeek > 3) // new month
+            {
+                return GetMonthString(currentMonth + 1);
+            }
+        }
+
+        return GetMonthString(currentMonth);
     }
 }

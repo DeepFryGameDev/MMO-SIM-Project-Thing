@@ -33,6 +33,9 @@ public class HeroManager : MonoBehaviour
     HeroInventory heroInventory;
     public HeroInventory HeroInventory() { return heroInventory; }
 
+    HeroSchedule heroSchedule;
+    public HeroSchedule HeroSchedule() { return heroSchedule; }
+
     new Collider collider;
     public Collider Collider() { return collider; }
 
@@ -72,6 +75,8 @@ public class HeroManager : MonoBehaviour
 
         heroTrainingEquipment = transform.GetComponent<HeroTrainingEquipment>();
         heroInventory = transform.GetComponent<HeroInventory>();
+
+        heroSchedule = transform.GetComponent<HeroSchedule>();
 
         collider = transform.GetComponent<Collider>();
 

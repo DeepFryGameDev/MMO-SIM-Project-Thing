@@ -10,7 +10,7 @@ public class HeroEnvironmentInteractionHandler : MonoBehaviour
 
     bool inHomeZone; // When home zone is detected, this is true
 
-    BaseHero hero; // The hero in which to display the stats
+    HeroManager heroManager; // The hero in which to display the stats
 
     LayerMask ZoneLayer; // The layer mask for "HomeZone" / Set in Setup()
 
@@ -80,10 +80,13 @@ public class HeroEnvironmentInteractionHandler : MonoBehaviour
     {
         if (active)
         {
-            hero = hit.collider.gameObject.GetComponent<HeroHomeZone>().heroManager.Hero();
-            if (hero != null)
+            heroManager = hit.collider.gameObject.GetComponent<HeroHomeZone>().heroManager;
+            if (heroManager != null)
             {
-                SetHeroVals(hero);
+                SetHeroVals(heroManager);
+
+                zoneUIHandler.SetScheduleHeroManager(heroManager);
+
                 inHomeZone = true;
             }
         } else
@@ -97,10 +100,10 @@ public class HeroEnvironmentInteractionHandler : MonoBehaviour
     /// Called when the hero stats should be displayed to the player
     /// </summary>
     /// <param name="hero"></param>
-    void SetHeroVals(BaseHero hero)
+    void SetHeroVals(HeroManager heroManager)
     {
         // set UI stuff with hero vals
-        zoneUIHandler.DrawHeroStatsToPanel(hero);
+        zoneUIHandler.DrawHeroStatsToPanel(heroManager);
 
         zoneUIHandler.ShowPanel(true);
     }

@@ -1,8 +1,8 @@
-// Purpose: The base class for creating a new training event.
-// Directions: Create a new BaseTraining, 
-// Other notes: 
-
 using UnityEngine;
+
+// Purpose: The base class for creating a new training event.
+// Directions: Create a new BaseTraining with the schedule system.
+// Other notes:
 
 public class BaseTraining
 {

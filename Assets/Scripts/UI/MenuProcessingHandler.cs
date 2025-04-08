@@ -14,12 +14,19 @@ public class MenuProcessingHandler : MonoBehaviour
 
     EnumHandler.HeroCommandMenuStates tempHeroCommandMenuState; // Used so UI is only updated once.
 
+    // Schedule System
+    [SerializeField] ScheduleMenuHandler scheduleMenuHandler;
+
     // will need access to every canvas group
-    [SerializeField] CanvasGroup HeroCommandCanvasGroup;
-    [SerializeField] CanvasGroup TrainingEquipmentMenuCanvasGroup;
-    public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return TrainingEquipmentMenuCanvasGroup; }
-    [SerializeField] CanvasGroup TrainingEquipmentListCanvasGroup;
-    public CanvasGroup GetTrainingEquipmentListCanvasGroup() { return TrainingEquipmentListCanvasGroup; }
+    [SerializeField] CanvasGroup heroCommandCanvasGroup;
+    [SerializeField] CanvasGroup trainingEquipmentMenuCanvasGroup;
+    public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return trainingEquipmentMenuCanvasGroup; }
+    [SerializeField] CanvasGroup trainingEquipmentListCanvasGroup;
+    public CanvasGroup GetTrainingEquipmentListCanvasGroup() { return trainingEquipmentListCanvasGroup; }
+
+    [SerializeField] CanvasGroup scheduleCanvasGroup;
+    public CanvasGroup GetScheduleCanvasGroup() { return scheduleCanvasGroup; }
+    //----
 
     ThirdPersonCam cam; // Used to disable camera rotating when the player's movement is disabled
 
@@ -49,24 +56,31 @@ public class MenuProcessingHandler : MonoBehaviour
         switch (heroCommandMenuState)
         {
             case EnumHandler.HeroCommandMenuStates.IDLE: // Hide the hero command menu
-                ToggleMenu(HeroCommandCanvasGroup, false);
+                ToggleMenu(heroCommandCanvasGroup, false);
 
                 break;
             case EnumHandler.HeroCommandMenuStates.ROOT: // Display root contents of hero command menu
                 if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.IDLE) // coming from idle (no menu)
                 {
-                    ToggleMenu(HeroCommandCanvasGroup, true);
+                    ToggleMenu(heroCommandCanvasGroup, true);
+
+                    // should hide the current week toast here
                 } else
                 {
-                    TransitionToMenu(HeroCommandCanvasGroup, tempCanvasGroup);
+                    TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
                 }
                     break;
             case EnumHandler.HeroCommandMenuStates.TRAININGEQUIP: // Display training equipment menu
-                TransitionToMenu(TrainingEquipmentMenuCanvasGroup, true);
+                TransitionToMenu(trainingEquipmentMenuCanvasGroup, true);
 
                 break;
             case EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST:
-                TransitionToMenu(TrainingEquipmentListCanvasGroup, false);
+                TransitionToMenu(trainingEquipmentListCanvasGroup, false);
+
+                break;
+
+            case EnumHandler.HeroCommandMenuStates.SCHEDULE:
+                TransitionToMenu(scheduleCanvasGroup, true);
 
                 break;
         }
@@ -127,5 +141,48 @@ public class MenuProcessingHandler : MonoBehaviour
 
             cam.ToggleCameraRotation(true);
         }
+    }
+
+    // All button onClicks should be listed here
+
+    /// <summary>
+    /// 
+    /// Assigned to: 
+    /// </summary>
+    public void ScheduleMenuOnClick()
+    {
+        // generate dropdown lists
+        scheduleMenuHandler.GenerateDropdowns();
+
+        // Set ui texts
+        scheduleMenuHandler.SetTexts();
+
+        // Display the ScheduleCanvas
+        i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.SCHEDULE);
+    }
+
+    /// <summary>
+    /// 
+    /// Assigned to: 
+    /// </summary>
+    public void ScheduleMenuBackOnClick()
+    {
+        // Go back to root menu
+        i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+    }
+
+    /// <summary>
+    /// When clicking 'back' in the Training Equipment Menu, this function is called.  It just goes back to the HeroCommand root menu.
+    /// Assigned to: [UI]/TrainingEquipmentMenu/MenuButtonGroup/BackButton.OnClick()
+    /// </summary>
+    public void TrainingEquipmentMenuOnBackClick()
+    {
+        if (i.GetHeroCommandMenuState() == EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
+        {
+            // hide the equip list
+            i.TransitionToMenu(i.GetTrainingEquipmentMenuCanvasGroup(), true);
+        }
+
+        i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 }

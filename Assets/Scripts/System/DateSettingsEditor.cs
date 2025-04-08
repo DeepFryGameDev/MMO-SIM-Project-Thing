@@ -30,6 +30,9 @@ public class DateSettingsEditor : MonoBehaviour
     [Tooltip("The amount of time in seconds that the training result UI will animate the fill bars")]
     [Range(.25f, 5f)] public float trainingResultsFillSeconds = 3;
 
+    [Tooltip("The year that the game should start")]
+    public int startingYear = 2000;
+
     void Awake()
     {
         SetSettings();
@@ -50,5 +53,7 @@ public class DateSettingsEditor : MonoBehaviour
         DateSettings.trainingResultsFillDelaySeconds = trainingResultsFillDelaySeconds;
 
         DateSettings.trainingResultsFillSeconds = trainingResultsFillSeconds;
+
+        DateSettings.startingYear = startingYear;
     }
 }
