@@ -10,6 +10,9 @@ public class TrainingEquipment : Equipment
     [Tooltip("Name of the training that this will generate by scheduling it")]
     public string trainingName;
 
+    [Tooltip("Give it a unique ID.  We can start with 100")]
+    public int ID;
+
     [Tooltip("Affects the result of training while having this equipped by a hero.  Leave at 0 for a 'basic' training that does not require any physical objects to interact with the hero.")]
     [Range(1, 5)] public int trainingLevel;
 

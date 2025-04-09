@@ -37,18 +37,17 @@ public class HeroSchedule : MonoBehaviour
 
         for (int i = 0; i <= 7; i++)
         {
-            ScheduleEvent scheduleEvent = new ScheduleEvent();
+            RestScheduleEvent restScheduleEvent = new RestScheduleEvent();
 
-            scheduleEvent.SetName(scheduleManager.GetDefaultRestScheduleEvent().GetName());
-            scheduleEvent.SetID(scheduleManager.GetDefaultRestScheduleEvent().GetID());
-
-            SetScheduleSlot(i, scheduleEvent);
+            SetScheduleSlot(i, restScheduleEvent);
         }
     }
 
     public void SetScheduleSlot(int slot, ScheduleEvent scheduleEvent)
     {
         scheduleEvents[slot] = scheduleEvent;
+
+        Debug.Log("Setting " + slot + " to " + scheduleEvent.GetName());
 
         if (slot == 0) SetCurrentEvent();
     }

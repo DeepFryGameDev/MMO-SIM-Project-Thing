@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Purpose: 
@@ -6,5 +7,11 @@ using UnityEngine;
 
 public class RestScheduleEvent : ScheduleEvent
 {
-    
+    string name = "Rest";
+
+    public RestScheduleEvent()
+    {
+        SetName(name);
+        SetID(0);
+    }
 }

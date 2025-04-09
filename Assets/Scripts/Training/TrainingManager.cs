@@ -18,17 +18,17 @@ public class TrainingManager : MonoBehaviour
     CanvasGroup canvasGroup; // Used to hide/show the Training Results UI.
 
     // For training gen
-    string level1BasicStrengthTrainingName = "Lv1. Basic Strength Training";
+    string level1BasicStrengthTrainingName = "Lv. 1) Basic Strength Training";
     public string GetLevel1BasicStrengthTrainingName() { return level1BasicStrengthTrainingName; }
-    string level1BasicEnduranceTrainingName = "Lv1. Basic Endurance Training";
+    string level1BasicEnduranceTrainingName = "Lv. 1) Basic Endurance Training";
     public string GetLevel1BasicEnduranceTrainingName() { return level1BasicEnduranceTrainingName; }
-    string level1BasicAgilityTrainingName = "Lv1. Basic Agility Training";
+    string level1BasicAgilityTrainingName = "Lv. 1) Basic Agility Training";
     public string GetLevel1BasicAgilityTrainingName() { return level1BasicAgilityTrainingName; }
-    string level1BasicDexterityTrainingName = "Lv1. Basic Dexterity Training";
+    string level1BasicDexterityTrainingName = "Lv. 1) Basic Dexterity Training";
     public string GetLevel1BasicDexterityTrainingName() { return level1BasicDexterityTrainingName; }
-    string level1BasicIntelligenceTrainingName = "Lv1. Basic Intelligence Training";
+    string level1BasicIntelligenceTrainingName = "Lv. 1) Basic Intelligence Training";
     public string GetLevel1BasicIntelligenceTrainingName() { return level1BasicIntelligenceTrainingName; }
-    string level1BasicFaithTrainingName = "Lv1. Basic Faith Training";
+    string level1BasicFaithTrainingName = "Lv. 1) Basic Faith Training";
     public string GetLevel1BasicFaithTrainingName() { return level1BasicFaithTrainingName; }
 
     private void Awake()
@@ -680,7 +680,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicStrengthTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicStrengthTrainingName());
+
         trainingScheduleEvent.SetID(1);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.STRENGTH);
@@ -694,7 +695,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicEnduranceTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicEnduranceTrainingName());
+
         trainingScheduleEvent.SetID(2);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.ENDURANCE);
@@ -708,7 +710,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicAgilityTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicAgilityTrainingName());
+
         trainingScheduleEvent.SetID(3);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.AGILITY);
@@ -722,7 +725,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicDexterityTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicDexterityTrainingName());
+
         trainingScheduleEvent.SetID(4);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.DEXTERITY);
@@ -736,7 +740,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicIntelligenceTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicIntelligenceTrainingName());
+
         trainingScheduleEvent.SetID(5);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.INTELLIGENCE);
@@ -750,7 +755,8 @@ public class TrainingManager : MonoBehaviour
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
 
-        trainingScheduleEvent.SetName(GetLevel1BasicFaithTrainingName());
+        trainingScheduleEvent.SetTrainingName(GetLevel1BasicFaithTrainingName());
+
         trainingScheduleEvent.SetID(6);
 
         trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.FAITH);
@@ -769,8 +775,9 @@ public class TrainingManager : MonoBehaviour
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
         TrainingEquipment trainingEquip = scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentBySlot(slot);
 
-        trainingScheduleEvent.SetName(trainingEquip.trainingName);
-        trainingScheduleEvent.SetID(slot + 7); // 7 or 8 for slot 0 and 1 respectively
+        trainingScheduleEvent.SetTrainingName("Lv. " + trainingEquip.trainingLevel + ") " + trainingEquip.trainingName);
+
+        trainingScheduleEvent.SetID(trainingEquip.ID);
 
         trainingScheduleEvent.SetTrainingLevel(trainingEquip.trainingLevel);
         trainingScheduleEvent.SetTrainingType(trainingEquip.trainingType);
