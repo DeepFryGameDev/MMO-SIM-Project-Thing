@@ -35,6 +35,8 @@ public class DateManager : MonoBehaviour
 
     TrainingManager trainingManager;
 
+    ScheduleManager scheduleManager;
+
     HeroManager[] heroManagers;
 
     void Awake()
@@ -56,6 +58,8 @@ public class DateManager : MonoBehaviour
         spawnManager = FindFirstObjectByType<SpawnManager>();
 
         trainingManager = FindFirstObjectByType<TrainingManager>();
+
+        scheduleManager = FindFirstObjectByType<ScheduleManager>();
 
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
 
@@ -151,11 +155,21 @@ public class DateManager : MonoBehaviour
         {
             trainingManager.AddToHeroManagers(heroManager);
 
-            Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + "-*-*-");
-            Debug.Log("Before exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
-            trainingManager.ProcessTraining(heroManager);
-            Debug.Log("After exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
-            Debug.Log("--------------------------------------------");
+            // Resting
+            if (heroManager.HeroSchedule().GetCurrentEvent() is RestScheduleEvent)
+            {
+                scheduleManager.ProcessResting();
+            }
+
+            // Training
+            if (heroManager.HeroSchedule().GetCurrentEvent() is TrainingScheduleEvent) // This needs to be updated to process every stat
+            {
+                Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + "-*-*-");
+                Debug.Log("Before exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+                trainingManager.ProcessTraining(heroManager);
+                Debug.Log("After exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+                Debug.Log("--------------------------------------------");
+            }
         }
 
         // display the training results to the player

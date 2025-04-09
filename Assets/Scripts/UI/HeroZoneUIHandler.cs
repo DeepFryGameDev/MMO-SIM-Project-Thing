@@ -105,7 +105,7 @@ public class HeroZoneUIHandler : MonoBehaviour
 
     public void SetScheduleHeroManager(HeroManager heroManager)
     {
-        scheduleManager.SetCurrentHeroManager(heroManager);
+        scheduleManager.SetHeroManager(heroManager);
     }
 
     private void DrawStatBars(HeroManager heroManager)

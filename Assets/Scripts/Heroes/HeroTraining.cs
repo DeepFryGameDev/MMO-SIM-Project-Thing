@@ -8,10 +8,6 @@ public class HeroTraining : MonoBehaviour
 {
     HeroManager heroManager;
 
-    BaseTraining currentTraining; // The training that the hero is performing for the week
-    public void SetCurrentTraining(BaseTraining training) { currentTraining = training; }
-    public BaseTraining GetCurrentTraining() { return currentTraining; }
-
     int trainingResult; // The exp value that is set when training has calculated.  Exp gained is defined in TrainingManager.CalculateTrainingResult
     public int GetTrainingResult() { return trainingResult; }
     public void SetTrainingResult(int trainingResult) { this.trainingResult = trainingResult; }
@@ -61,15 +57,7 @@ public class HeroTraining : MonoBehaviour
     /// Uncomment and as needed - these are simply to set values for testing purposes
     /// </summary>
     void TestThings()
-    {
-        // For debugging purposes.  Once scheduling is built in, this can be removed.
-        BaseTraining testTraining = new BaseTraining();
-        testTraining.SetTrainingType(EnumHandler.TrainingTypes.STRENGTH);
-        testTraining.SetTrainingLevel(1);
-
-        currentTraining = testTraining;
-
-        //SetStrengthExp(240); // testing levelup
+    {    //SetStrengthExp(240); // testing levelup
         //heroManager.Hero().SetEnergy(25); // Testing energy/effectiveness
     }
 }

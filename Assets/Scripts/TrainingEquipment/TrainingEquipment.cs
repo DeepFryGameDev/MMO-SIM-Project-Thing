@@ -7,6 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TrainingEquipment", menuName = "Training/Equipment")]
 public class TrainingEquipment : Equipment
 {
+    [Tooltip("Name of the training that this will generate by scheduling it")]
+    public string trainingName;
+
     [Tooltip("Affects the result of training while having this equipped by a hero.  Leave at 0 for a 'basic' training that does not require any physical objects to interact with the hero.")]
     [Range(1, 5)] public int trainingLevel;
 

@@ -7,10 +7,24 @@ using UnityEngine;
 // Directions: 
 // Other notes:
 
+/*
+ * DROPDOWN OPTIONS - This is the option number in the dropdown, but is also set manually when generating each schedule event
+ * 0 - REST
+ * 1 - BASIC STRENGTH TRAINING
+ * 2 - BASIC ENDURANCE TRAINING
+ * 3 - BASIC AGILITY TRAINING
+ * 4 - BASIC DEXTERITY TRAINING
+ * 5 - BASIC INTELLIGENCE TRAINING
+ * 6 - BASIC FAITH TRAINING
+ * 7 - HERO TRAINING EQUIP SLOT 1
+ * 8 - HERO TRAINING EQUIP SLOT 2
+ */
+
 public class ScheduleMenuHandler : MonoBehaviour
 {
     [SerializeField] DateManager dateManager;
     [SerializeField] ScheduleManager scheduleManager;
+    [SerializeField] TrainingManager trainingManager;
 
     [SerializeField] TextMeshProUGUI dateText;
 
@@ -53,15 +67,15 @@ public class ScheduleMenuHandler : MonoBehaviour
     private void SetDefaultScheduleOptions()
     {
         // Rest
-        defaultScheduleOptions.Add("Rest");
+        defaultScheduleOptions.Add(scheduleManager.GetRestEventName());
 
         // Add basic training STR - FTH
-        defaultScheduleOptions.Add("Lv1. Basic Strength Training");
-        defaultScheduleOptions.Add("Lv1. Basic Endurance Training");
-        defaultScheduleOptions.Add("Lv1. Basic Agility Training");
-        defaultScheduleOptions.Add("Lv1. Basic Dexterity Training");
-        defaultScheduleOptions.Add("Lv1. Basic Intelligence Training");
-        defaultScheduleOptions.Add("Lv1. Basic Faith Training");
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicStrengthTrainingName());
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicEnduranceTrainingName());
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicAgilityTrainingName());
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicDexterityTrainingName());
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicIntelligenceTrainingName());
+        defaultScheduleOptions.Add(trainingManager.GetLevel1BasicFaithTrainingName());
     }
 
     public void GenerateDropdowns()
@@ -71,17 +85,17 @@ public class ScheduleMenuHandler : MonoBehaviour
         List<String> options = new List<String>();
 
         // For any equipSlot that isn't null
-        if (scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
+        if (scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
         {
-            options.Add("Lv" + scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingLevel + ". " //"Lv[x]. "
-                + scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().name); // "name"
+            options.Add("Lv" + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingLevel + ". " //"Lv[x]. "
+                + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingName); // "name"
         }
 
         // For any equipSlot that isn't null
-        if (scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
+        if (scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
         {
-            options.Add("Lv" + scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingLevel + ". " //"Lv[x]. "
-                + scheduleManager.GetCurrentHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().name); // "name"
+            options.Add("Lv" + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingLevel + ". " //"Lv[x]. "
+                + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingName); // "name"
         }
 
         // add the options to the dropdowns
@@ -112,15 +126,73 @@ public class ScheduleMenuHandler : MonoBehaviour
 
     public void DisplayHeroSchedule()
     {
-        for (int i=1; i < scheduleManager.GetCurrentHeroManager().HeroSchedule().GetScheduleEvents().Length; i++)
-        {
-            Debug.Log(scheduleManager.GetCurrentHeroManager().HeroSchedule().GetScheduleEvents()[i]);
-        }
+        // Debug.Log(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1].GetName());
+        slot1Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1].GetID();
+        slot2Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[2].GetID();
+        slot3Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[3].GetID();
+        slot4Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[4].GetID();
+        slot5Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[5].GetID();
+        slot6Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[6].GetID();
+        slot7Dropdown.value = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[7].GetID();
     }
 
     public void SetHeroScheduleEventSlot(int slot)
     {
+        ScheduleEvent newScheduleEvent = null;
 
+        switch (slot)
+        {
+            case 1:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot1Dropdown.value);
+                break;
+            case 2:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot2Dropdown.value);
+                break;
+            case 3:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot3Dropdown.value);
+                break;
+            case 4:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot4Dropdown.value);
+                break;
+            case 5:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot5Dropdown.value);
+                break;
+            case 6:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot6Dropdown.value);
+                break;
+            case 7:
+                newScheduleEvent = CreateScheduleEventByOptionID(slot7Dropdown.value);
+                break;
+        }
+
+        scheduleManager.GetHeroManager().HeroSchedule().SetScheduleSlot(slot, newScheduleEvent);
+    }
+
+    ScheduleEvent CreateScheduleEventByOptionID(int ID)
+    {
+        switch (ID)
+        {
+            case 0: // REST
+                return scheduleManager.GetDefaultRestScheduleEvent();
+            case 1: // BASIC STRENGTH TRAINING
+                return trainingManager.GetBasicStrengthTrainingScheduleEvent();
+            case 2: // BASIC ENDURANCE TRAINING
+                return trainingManager.GetBasicEnduranceTrainingScheduleEvent();
+            case 3: // BASIC AGILITY TRAINING
+                return trainingManager.GetBasicAgilityTrainingScheduleEvent();
+            case 4: // BASIC DEXTERITY TRAINING
+                return trainingManager.GetBasicDexterityTrainingScheduleEvent();
+            case 5: // BASIC INTELLIGENCE TRAINING
+                return trainingManager.GetBasicIntelligenceTrainingScheduleEvent();
+            case 6: // BASIC FAITH TRAINING
+                return trainingManager.GetBasicFaithTrainingScheduleEvent();
+            case 7: // HERO TRAINING EQUIP SLOT 1
+                return trainingManager.GetTrainingEventFromEquipmentSlot(0);
+            case 8: // HERO TRAINING EQUIP SLOT 2
+                return trainingManager.GetTrainingEventFromEquipmentSlot(1);
+            default:
+                return null;
+        }
     }
 
     void ClearDropdowns()
