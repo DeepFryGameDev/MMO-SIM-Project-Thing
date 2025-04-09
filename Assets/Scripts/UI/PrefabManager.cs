@@ -10,6 +10,8 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the prefab for TrainingResults to be shown when advancing weeks")]
     public GameObject TrainingResult;
+    [Tooltip("Set this to the prefab for RestingResults to be shown when advancing weeks")]
+    public GameObject RestingResult;
 
     [Tooltip("Set this to the prefab for TrainingEquipmentButtons to be instantiated when clicking the 'Training Equipment' button in the HeroZone Menu.")]
     public GameObject TrainingEquipmentButton;

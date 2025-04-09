@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ScheduleSettings
+public static class ScheduleSettings
 {
-    
+    public static int BaseEnergyRestoredFromRest;
 }

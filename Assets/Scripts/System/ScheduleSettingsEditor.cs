@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class ScheduleSettingsEditor : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public int BaseEnergyRestoredFromRest;
+
+    private void Awake()
     {
-        
+        SetSettings();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SetSettings()
     {
-        
+        ScheduleSettings.BaseEnergyRestoredFromRest = BaseEnergyRestoredFromRest;
     }
 }

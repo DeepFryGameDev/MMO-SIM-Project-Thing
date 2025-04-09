@@ -64,19 +64,21 @@ public class ScheduleMenuHandler : MonoBehaviour
         ClearDropdowns();
 
         // Rest
-        scheduleOptions.Add("Rest"); // change
+        scheduleOptions.Add("Rest"); // change eventually. for now it is fine, rest will always be at ID 0.
 
         // Add basic training STR - FTH
-        scheduleOptions.Add(trainingManager.GetLevel1BasicStrengthTrainingName());
-        scheduleOptions.Add(trainingManager.GetLevel1BasicEnduranceTrainingName());
-        scheduleOptions.Add(trainingManager.GetLevel1BasicAgilityTrainingName());
-        scheduleOptions.Add(trainingManager.GetLevel1BasicDexterityTrainingName());
-        scheduleOptions.Add(trainingManager.GetLevel1BasicIntelligenceTrainingName());
-        scheduleOptions.Add(trainingManager.GetLevel1BasicFaithTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicStrengthTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicEnduranceTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicAgilityTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicDexterityTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicIntelligenceTrainingName());
+        scheduleOptions.Add(scheduleManager.GetLevel1BasicFaithTrainingName());
     }
 
     public void GenerateDropdowns()
     {
+        Debug.Log("Generating dropdowns");
+
         SetDefaultScheduleOptions();
 
         List<String> options = new List<String>();
@@ -112,6 +114,8 @@ public class ScheduleMenuHandler : MonoBehaviour
     {
         // Debug.Log(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1].GetName());
 
+        currentScheduleEventText.text = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[0].GetName();
+
         slot1Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1]);
         slot2Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[2]);
         slot3Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[3]);
@@ -126,33 +130,18 @@ public class ScheduleMenuHandler : MonoBehaviour
         int count = 0;
 
         bool found = false;
-
-        if (scheduleEvent is TrainingScheduleEvent)
+        
+        foreach (string option in scheduleOptions)
         {
-            TrainingScheduleEvent trainingScheduleEvent = scheduleEvent as TrainingScheduleEvent;
-            foreach (string option in scheduleOptions)
-            {                
-                if (option == trainingScheduleEvent.GetTrainingName())
-                {
-                    found = true;
-                    return count;
-                }
-
-                count++;
-            }
-        } else if (scheduleEvent is RestScheduleEvent)
-        {
-            foreach (string option in scheduleOptions)
+            //Debug.Log("Checking " + option + " compared to " + scheduleEvent.GetName());
+            if (option == scheduleEvent.GetName())
             {
-                if (option == scheduleEvent.GetName())
-                {
-                    found = true;
-                    return count;
-                }
-
-                count++;
+                found = true;
+                return count;
             }
-        }            
+
+            count++;
+        }      
 
         if (!found) // option not found.  Likely hero unequipped the training equipment or something.
         {
@@ -162,36 +151,6 @@ public class ScheduleMenuHandler : MonoBehaviour
 
         return count;
     } 
-
-    ScheduleEvent CreateScheduleEventByOptionID(int ID) // This has to be rewritten - we cannot check by ID, or it will interfere with the equip slots.
-        // make a new method to get an event ID by name.  Pass the name of the value clicked in the dropdown, and use the below to set the event.
-        // If the value is between 100-200 (saved for equipment slots) we can figure out which slot that was saved to and pull from that.
-    {
-        switch (ID)
-        {
-            case 0: // REST
-                Debug.Log("returning a rest event");
-                return new RestScheduleEvent();
-            case 1: // BASIC STRENGTH TRAINING
-                return trainingManager.GetBasicStrengthTrainingScheduleEvent();
-            case 2: // BASIC ENDURANCE TRAINING
-                return trainingManager.GetBasicEnduranceTrainingScheduleEvent();
-            case 3: // BASIC AGILITY TRAINING
-                return trainingManager.GetBasicAgilityTrainingScheduleEvent();
-            case 4: // BASIC DEXTERITY TRAINING
-                return trainingManager.GetBasicDexterityTrainingScheduleEvent();
-            case 5: // BASIC INTELLIGENCE TRAINING
-                return trainingManager.GetBasicIntelligenceTrainingScheduleEvent();
-            case 6: // BASIC FAITH TRAINING
-                return trainingManager.GetBasicFaithTrainingScheduleEvent();
-            case 7: // HERO TRAINING EQUIP SLOT 1
-                return trainingManager.GetTrainingEventFromEquipmentSlot(0);
-            case 8: // HERO TRAINING EQUIP SLOT 2
-                return trainingManager.GetTrainingEventFromEquipmentSlot(1);
-            default:
-                return null;
-        }
-    }
 
     void ClearDropdowns()
     {
@@ -228,6 +187,10 @@ public class ScheduleMenuHandler : MonoBehaviour
         slot7WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(7);
     }
 
+    /// <summary>
+    /// Set on the dropdowns 'OnChange()'.  The slot is which dropdown was clicked.
+    /// </summary>
+    /// <param name="slot"></param>
     public void SetHeroScheduleEventSlot(int slot)
     {
         ScheduleEvent newScheduleEvent = null;
@@ -235,27 +198,29 @@ public class ScheduleMenuHandler : MonoBehaviour
         switch (slot)
         {
             case 1:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot1Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot1Dropdown.options[slot1Dropdown.value].text));                
                 break;
             case 2:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot2Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot2Dropdown.options[slot2Dropdown.value].text));
                 break;
             case 3:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot3Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot3Dropdown.options[slot3Dropdown.value].text));
                 break;
             case 4:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot4Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot4Dropdown.options[slot4Dropdown.value].text));
                 break;
             case 5:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot5Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot5Dropdown.options[slot5Dropdown.value].text));
                 break;
             case 6:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot6Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot6Dropdown.options[slot6Dropdown.value].text));
                 break;
             case 7:
-                newScheduleEvent = CreateScheduleEventByOptionID(slot7Dropdown.value);
+                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot7Dropdown.options[slot7Dropdown.value].text));
                 break;
         }
+
+        Debug.LogWarning("*-*-*-* New event created: " + newScheduleEvent.GetName() + " into schedule slot " + slot + "*-*-*-*-*");
 
         scheduleManager.GetHeroManager().HeroSchedule().SetScheduleSlot(slot, newScheduleEvent);
     }

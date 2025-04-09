@@ -35,7 +35,7 @@ public class TrainingEquipmentListButtonHandler : MonoBehaviour
         if (trainingEquipment != null) // Clicked on a valid equipment button
         {
             // equip the training equipment
-            Debug.Log("Equip the " + trainingEquipment.name + " to " + trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot());
+            // Debug.Log("Equip the " + trainingEquipment.name + " to " + trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot());
             trainingEquipmentManager.Equip(trainingEquipment, trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot(), heroManager);
         }
         else // Clicked the unequip button

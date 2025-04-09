@@ -158,22 +158,30 @@ public class DateManager : MonoBehaviour
             // Resting
             if (heroManager.HeroSchedule().GetCurrentEvent() is RestScheduleEvent)
             {
-                scheduleManager.ProcessResting();
+                Debug.Log("-*-*- Resting Logs for " + heroManager.Hero().name + ", TrainingEvent: " + heroManager.HeroSchedule().GetCurrentEvent().GetName() + "-*-*-");
+                Debug.Log("Before rest: " + heroManager.Hero().GetEnergy());
+                scheduleManager.ProcessResting(heroManager);
+                Debug.Log("After rest: " + heroManager.Hero().GetEnergy());
+                Debug.Log("--------------------------------------------");
+                // need to show resting results
+                StartCoroutine(scheduleManager.ShowRestingResults(heroManager));
             }
 
             // Training
             if (heroManager.HeroSchedule().GetCurrentEvent() is TrainingScheduleEvent) // This needs to be updated to process every stat
             {
-                Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + "-*-*-");
-                Debug.Log("Before exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+                TrainingScheduleEvent trainingScheduleEvent = heroManager.HeroSchedule().GetCurrentEvent() as TrainingScheduleEvent;
+
+                Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + ", TrainingEvent: " + trainingScheduleEvent.GetTrainingName() + "-*-*-");
+                Debug.Log("Before exp: " + trainingManager.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + trainingManager.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
                 trainingManager.ProcessTraining(heroManager);
-                Debug.Log("After exp: " + heroManager.HeroTraining().GetStrengthExp() + ", level: " + heroManager.Hero().GetStrength());
+                Debug.Log("After exp: " + trainingManager.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + trainingManager.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
                 Debug.Log("--------------------------------------------");
+
+                // display the training results to the player
+                StartCoroutine(trainingManager.ShowTrainingResults(heroManager));
             }
         }
-
-        // display the training results to the player
-        StartCoroutine(trainingManager.ShowTrainingResults());        
 
         #endregion
 
@@ -203,6 +211,12 @@ public class DateManager : MonoBehaviour
         #endregion
 
         #region post-transition
+
+        // roll forward schedule
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            heroManager.HeroSchedule().RollForwardSchedule();
+        }
 
         // change all hero pathing to random again (should eventually be set to whatever the schedule has them doing)
         foreach (HeroManager heroManager in heroManagers)
@@ -322,6 +336,11 @@ public class DateManager : MonoBehaviour
     /// <returns>String of the current month in text form</returns>
     public string GetMonthString(int month)
     {
+        if (month > 11)
+        {
+            return GetMonthString(month - 12).ToString();
+        }
+
         switch (month) 
         {
             case 0:
@@ -385,16 +404,26 @@ public class DateManager : MonoBehaviour
         int tempMonth = currentMonth;
         int tempWeek = currentWeek;
 
-        for (int i=0; i< weeksOut; i++)
+        int tempWeeksOut = weeksOut;
+
+        for (int i=0; i < weeksOut; i++)
         {
             tempWeek++;
-            
-            if (tempWeek > 3) // new month
+            tempWeeksOut--;
+
+            //Debug.Log("TempWeek: " + tempWeek + ", tempWeeksOut: " + tempWeeksOut);
+
+            if (tempWeek > 3 && tempWeeksOut < 4) // 1 month out
             {
+                //Debug.Log("Returning one month out: " + GetMonthString(currentMonth + 1));
                 return GetMonthString(currentMonth + 1);
             }
+            else if (tempWeek >= 4) // 2 months out 
+            {
+                //Debug.Log("Returning two months out: " + GetMonthString(currentMonth + 2));
+                return GetMonthString(currentMonth + 2);
+            }                
         }
-
         return GetMonthString(currentMonth);
     }
 }

@@ -24,4 +24,17 @@ public class TrainingEquipment : Equipment
 
     [Tooltip("The icon to be used in various menus and UI")]
     public Sprite icon;
+
+    public TrainingScheduleEvent ScheduleEvent()
+    {
+        TrainingScheduleEvent newTrainingEvent = new TrainingScheduleEvent();
+
+        newTrainingEvent.SetTrainingName(trainingName);
+        newTrainingEvent.SetID(ID);
+
+        newTrainingEvent.SetTrainingLevel(trainingLevel);
+        newTrainingEvent.SetTrainingType(trainingType);
+
+        return newTrainingEvent;
+    }
 }

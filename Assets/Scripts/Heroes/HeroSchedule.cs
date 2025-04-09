@@ -18,6 +18,10 @@ public class HeroSchedule : MonoBehaviour
     HeroManager heroManager;
     ScheduleManager scheduleManager;
 
+    RestingResultHandler tempRRH; // Used to access the Training Result Handler script attached to the training result for the week.
+    public void SetTempRRH(RestingResultHandler rrh) { tempRRH = rrh; }
+    public RestingResultHandler GetTempRRH() { return tempRRH; }
+
     private void Awake()
     {
         heroManager = transform.GetComponent<HeroManager>();
@@ -29,6 +33,9 @@ public class HeroSchedule : MonoBehaviour
     {
         SetDefaultSchedule();
         SetCurrentEvent();
+
+        // for testing rests
+        heroManager.Hero().SetEnergy(25);
     }
 
     void SetDefaultSchedule()
@@ -47,7 +54,7 @@ public class HeroSchedule : MonoBehaviour
     {
         scheduleEvents[slot] = scheduleEvent;
 
-        Debug.Log("Setting " + slot + " to " + scheduleEvent.GetName());
+        //Debug.Log("Setting " + slot + " to " + scheduleEvent.GetName());
 
         if (slot == 0) SetCurrentEvent();
     }
@@ -55,5 +62,42 @@ public class HeroSchedule : MonoBehaviour
     public void SetCurrentEvent()
     {
         currentEvent = scheduleEvents[0];
+    }
+
+    public void RollForwardSchedule()
+    {
+        /*Debug.Log("-----RollForwardSchedule Before-----");
+        Debug.Log("RollForwardSchedule 0: " + scheduleEvents[0].GetName());
+        Debug.Log("RollForwardSchedule 1: " + scheduleEvents[1].GetName());
+        Debug.Log("RollForwardSchedule 2: " + scheduleEvents[2].GetName());
+        Debug.Log("RollForwardSchedule 3: " + scheduleEvents[3].GetName());
+        Debug.Log("RollForwardSchedule 4: " + scheduleEvents[4].GetName());
+        Debug.Log("RollForwardSchedule 5: " + scheduleEvents[5].GetName());
+        Debug.Log("RollForwardSchedule 6: " + scheduleEvents[6].GetName());
+        Debug.Log("RollForwardSchedule 7: " + scheduleEvents[7].GetName());*/
+
+        ScheduleEvent tempScheduleEvent = scheduleEvents[0];
+
+        SetScheduleSlot(0, scheduleEvents[1]);
+        SetCurrentEvent();
+
+        SetScheduleSlot(1, scheduleEvents[2]);
+        SetScheduleSlot(2, scheduleEvents[3]);
+        SetScheduleSlot(3, scheduleEvents[4]);
+        SetScheduleSlot(4, scheduleEvents[5]);
+        SetScheduleSlot(5, scheduleEvents[6]);
+        SetScheduleSlot(6, scheduleEvents[7]);
+        SetScheduleSlot(7, tempScheduleEvent);
+
+
+        /*Debug.Log("-----RollForwardSchedule After-----");
+        Debug.Log("RollForwardSchedule 0: " + scheduleEvents[0].GetName());
+        Debug.Log("RollForwardSchedule 1: " + scheduleEvents[1].GetName());
+        Debug.Log("RollForwardSchedule 2: " + scheduleEvents[2].GetName());
+        Debug.Log("RollForwardSchedule 3: " + scheduleEvents[3].GetName());
+        Debug.Log("RollForwardSchedule 4: " + scheduleEvents[4].GetName());
+        Debug.Log("RollForwardSchedule 5: " + scheduleEvents[5].GetName());
+        Debug.Log("RollForwardSchedule 6: " + scheduleEvents[6].GetName());
+        Debug.Log("RollForwardSchedule 7: " + scheduleEvents[7].GetName());*/
     }
 }

@@ -17,20 +17,6 @@ public class TrainingManager : MonoBehaviour
 
     CanvasGroup canvasGroup; // Used to hide/show the Training Results UI.
 
-    // For training gen
-    string level1BasicStrengthTrainingName = "Lv. 1) Basic Strength Training";
-    public string GetLevel1BasicStrengthTrainingName() { return level1BasicStrengthTrainingName; }
-    string level1BasicEnduranceTrainingName = "Lv. 1) Basic Endurance Training";
-    public string GetLevel1BasicEnduranceTrainingName() { return level1BasicEnduranceTrainingName; }
-    string level1BasicAgilityTrainingName = "Lv. 1) Basic Agility Training";
-    public string GetLevel1BasicAgilityTrainingName() { return level1BasicAgilityTrainingName; }
-    string level1BasicDexterityTrainingName = "Lv. 1) Basic Dexterity Training";
-    public string GetLevel1BasicDexterityTrainingName() { return level1BasicDexterityTrainingName; }
-    string level1BasicIntelligenceTrainingName = "Lv. 1) Basic Intelligence Training";
-    public string GetLevel1BasicIntelligenceTrainingName() { return level1BasicIntelligenceTrainingName; }
-    string level1BasicFaithTrainingName = "Lv. 1) Basic Faith Training";
-    public string GetLevel1BasicFaithTrainingName() { return level1BasicFaithTrainingName; }
-
     private void Awake()
     {
         layoutGroupTransform = GameObject.Find("TrainingResultsCanvas/Holder/LayoutGroup").transform; // hacky, will need a better solution eventually
@@ -122,53 +108,49 @@ public class TrainingManager : MonoBehaviour
     /// Coroutine - Displays the training results to the player with animated fill bars
     /// </summary>
     /// <returns>Yields for DateSettings.trainingResultsFillDelaySeconds and then animates the fill bars</returns>
-    public IEnumerator ShowTrainingResults()
-    {
-        // for each heroManager in heroManagers {
-        foreach (HeroManager heroManager in heroManagers)
+    public IEnumerator ShowTrainingResults(HeroManager heroManager)
+    {        
+        // Create new TrainingResult prefab and instantiate it in the LayoutGroup.
+        GameObject newTrainingResult = Instantiate(PrefabManager.i.TrainingResult, layoutGroupTransform);
+
+        TrainingResultHandler trh = newTrainingResult.GetComponent<TrainingResultHandler>();
+
+        heroManager.HeroTraining().SetTempTRH(trh);
+
+        // Set facePanel to hero face
+        trh.SetFaceImage(heroManager.faceImage);
+
+        // check if leveling up.  If so, set previous level vals as we already leveled up.
+        if (heroManager.HeroTraining().GetLevelingUp())
         {
-            // Create new TrainingResult prefab and instantiate it in the LayoutGroup.
-            GameObject newTrainingResult = Instantiate(PrefabManager.i.TrainingResult, layoutGroupTransform);
+            // should be tempExp / getExpRequiredForPriorLevelup
+            float expFillVal = heroManager.HeroTraining().GetTempExp() / GetExpRequiredForPriorLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
+            trh.SetExpFill(expFillVal);
 
-            TrainingResultHandler trh = newTrainingResult.GetComponent<TrainingResultHandler>();
-
-            heroManager.HeroTraining().SetTempTRH(trh);
-
-            // Set facePanel to hero face
-            trh.SetFaceImage(heroManager.faceImage);
-
-            // check if leveling up.  If so, set previous level vals as we already leveled up.
-            if (heroManager.HeroTraining().GetLevelingUp())
-            {
-                // should be tempExp / getExpRequiredForPriorLevelup
-                float expFillVal = heroManager.HeroTraining().GetTempExp() / GetExpRequiredForPriorLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
-                trh.SetExpFill(expFillVal);
-
-                string curExp = heroManager.HeroTraining().GetTempExp() + " / " + GetExpRequiredForPriorLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
-                trh.SetExpFillText(curExp);
-            }
-            else
-            {
-                // if not leveling up:
-                // Set fill to curExp/to level
-                float expFillVal = heroManager.HeroTraining().GetTempExp() / GetExpRequiredForLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
-                trh.SetExpFill(expFillVal);
-
-                // set TotalExpText to hero's current EXP + / + hero's next exp levelup
-                string curExp = heroManager.HeroTraining().GetTempExp() + " / " + GetExpRequiredForLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
-                trh.SetExpFillText(curExp);
-            }
-
-            // set EnergyFill to (hero's current energy / hero's max energy)
-            float energyFillVal = (float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy;
-            trh.SetEnergyFill(energyFillVal);
-
-            // set StatText to leveled stat
-            trh.SetStatText(GetStatPrefixByType(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType()));
-
-            // set expGainedText to training result exp
-            trh.SetExpText("+" + heroManager.HeroTraining().GetTrainingResult());
+            string curExp = heroManager.HeroTraining().GetTempExp() + " / " + GetExpRequiredForPriorLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
+            trh.SetExpFillText(curExp);
         }
+        else
+        {
+            // if not leveling up:
+            // Set fill to curExp/to level
+            float expFillVal = heroManager.HeroTraining().GetTempExp() / GetExpRequiredForLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
+            trh.SetExpFill(expFillVal);
+
+            // set TotalExpText to hero's current EXP + / + hero's next exp levelup
+            string curExp = heroManager.HeroTraining().GetTempExp() + " / " + GetExpRequiredForLevelUp(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager);
+            trh.SetExpFillText(curExp);
+        }
+
+        // set EnergyFill to (hero's current energy / hero's max energy)
+        float energyFillVal = (float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy;
+        trh.SetEnergyFill(energyFillVal);
+
+        // set StatText to leveled stat
+        trh.SetStatText(GetStatPrefixByType(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType()));
+
+        // set expGainedText to training result exp
+        trh.SetExpText("+" + heroManager.HeroTraining().GetTrainingResult());        
 
         // show panel after x seconds
         StartCoroutine(DisplayResultPanelAfterDelay());
@@ -176,12 +158,8 @@ public class TrainingManager : MonoBehaviour
         // wait x seconds
         yield return new WaitForSeconds(DateSettings.trainingResultsFillDelaySeconds);
 
-        // fill bars and update TotalExpText over x seconds
-        foreach (HeroManager heroManager in heroManagers)
-        {
-            StartCoroutine(UpdateExpFill(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager));
-            StartCoroutine(UpdateEnergyFill(heroManager));
-        }
+        StartCoroutine(UpdateExpFill(heroManager.HeroSchedule().GetCurrentEventAsTraining().GetTrainingType(), heroManager));
+        StartCoroutine(UpdateEnergyFill(heroManager));
 
         yield return new WaitForSeconds(DateSettings.trainingResultShowSeconds - DateSettings.trainingResultsDelaySeconds);
 
@@ -194,7 +172,7 @@ public class TrainingManager : MonoBehaviour
     /// <summary>
     /// Resets needed vars to be used on the next training.  Add as needed
     /// </summary>
-    void ResetVars()
+    public void ResetVars()
     {
         foreach (HeroManager heroManager in heroManagers)
         {
@@ -214,7 +192,7 @@ public class TrainingManager : MonoBehaviour
     /// Coroutine - simply just waits for DateSettings.trainingResultsDelaySeconds and then displays the Training Results panel.
     /// </summary>
     /// <returns>Just waits for DateSettings.trainingResultsDelaySeconds</returns>
-    IEnumerator DisplayResultPanelAfterDelay()
+    public IEnumerator DisplayResultPanelAfterDelay()
     {
         yield return new WaitForSeconds(DateSettings.trainingResultsDelaySeconds);
         ToggleCanvasGroup(true);
@@ -325,7 +303,7 @@ public class TrainingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Coroutine - Fills the energy bars
+    /// Coroutine - Fills the energy bars (should move this eventually..)
     /// </summary>
     /// <param name="heroManager">HeroManager for the hero to have energy bars filled</param>
     /// <returns>Fills the bar over DateSettings.trainingResultsFillSeconds</returns>
@@ -334,7 +312,6 @@ public class TrainingManager : MonoBehaviour
         float timer = 0;
 
         float startEnergy = ((float) heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy);
-        float endEnergy = ((float)(heroManager.HeroTraining().GetTempEnergy() - GetEnergyCost(heroManager)) / HeroSettings.maxEnergy);
 
         float tempFillBarEnergy = startEnergy;
 
@@ -352,7 +329,6 @@ public class TrainingManager : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-
     }
 
     /// <summary>
@@ -361,7 +337,7 @@ public class TrainingManager : MonoBehaviour
     /// <param name="trainingType">Stat to return</param>
     /// <param name="heroManager">HeroManager of the Hero in question</param>
     /// <returns>Experience points of given stat</returns>
-    int GetHeroExpByType(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
+    public int GetHeroExpByType(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
@@ -377,6 +353,34 @@ public class TrainingManager : MonoBehaviour
                 return heroManager.HeroTraining().GetIntelligenceExp();
             case EnumHandler.TrainingTypes.FAITH:
                 return heroManager.HeroTraining().GetFaithExp();
+            default:
+                Debug.LogWarning("TrainingManager: GetHeroExpByType - no trainingType found");
+                return 0;
+        }
+    }
+
+    /// <summary>
+    /// Just returns the hero's stat exp by the given training type
+    /// </summary>
+    /// <param name="trainingType">Stat to return</param>
+    /// <param name="heroManager">HeroManager of the Hero in question</param>
+    /// <returns>Experience points of given stat</returns>
+    public int GetHeroStatLevelByType(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
+    {
+        switch (trainingType)
+        {
+            case EnumHandler.TrainingTypes.STRENGTH:
+                return heroManager.Hero().GetStrength();
+            case EnumHandler.TrainingTypes.ENDURANCE:
+                return heroManager.Hero().GetEndurance();
+            case EnumHandler.TrainingTypes.AGILITY:
+                return heroManager.Hero().GetAgility();
+            case EnumHandler.TrainingTypes.DEXTERITY:
+                return heroManager.Hero().GetDexterity();
+            case EnumHandler.TrainingTypes.INTELLIGENCE:
+                return heroManager.Hero().GetIntelligence();
+            case EnumHandler.TrainingTypes.FAITH:
+                return heroManager.Hero().GetFaith();
             default:
                 Debug.LogWarning("TrainingManager: GetHeroExpByType - no trainingType found");
                 return 0;
@@ -415,7 +419,7 @@ public class TrainingManager : MonoBehaviour
     /// Used to get the last level's exp required
     /// </summary>
     /// <returns>Stat level * TrainingSettings.heroStatExpFromTrainingMod</returns>
-    float GetExpRequiredForPriorLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
+    public float GetExpRequiredForPriorLevelUp(EnumHandler.TrainingTypes trainingType, HeroManager heroManager)
     {
         switch (trainingType)
         {
@@ -660,130 +664,18 @@ public class TrainingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Just enables/disables the canvas group for Training Results. Move this eventually probably.
+    /// Just enables/disables the canvas group for Training Results. Move this eventually.
     /// </summary>
     /// <param name="toggle">True to show the Training Results canvas group.  False to hide it.</param>
-    void ToggleCanvasGroup(bool toggle)
+    public void ToggleCanvasGroup(bool toggle)
     {
         if (toggle)
         {
             canvasGroup.alpha = 1;
-        } else
+        }
+        else
         {
             canvasGroup.alpha = 0;
         }
     }
-
-    #region DEFINE LEVEL 1 BASIC TRAININGS HERE - check ScheduleMenuHandler for IDs if needed
-
-    public TrainingScheduleEvent GetBasicStrengthTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicStrengthTrainingName());
-
-        trainingScheduleEvent.SetID(1);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.STRENGTH);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    public TrainingScheduleEvent GetBasicEnduranceTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicEnduranceTrainingName());
-
-        trainingScheduleEvent.SetID(2);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.ENDURANCE);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    public TrainingScheduleEvent GetBasicAgilityTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicAgilityTrainingName());
-
-        trainingScheduleEvent.SetID(3);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.AGILITY);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    public TrainingScheduleEvent GetBasicDexterityTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicDexterityTrainingName());
-
-        trainingScheduleEvent.SetID(4);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.DEXTERITY);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    public TrainingScheduleEvent GetBasicIntelligenceTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicIntelligenceTrainingName());
-
-        trainingScheduleEvent.SetID(5);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.INTELLIGENCE);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    public TrainingScheduleEvent GetBasicFaithTrainingScheduleEvent()
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-
-        trainingScheduleEvent.SetTrainingName(GetLevel1BasicFaithTrainingName());
-
-        trainingScheduleEvent.SetID(6);
-
-        trainingScheduleEvent.SetTrainingType(EnumHandler.TrainingTypes.FAITH);
-
-        trainingScheduleEvent.SetTrainingLevel(1);
-
-        return trainingScheduleEvent;
-    }
-
-    #endregion
-
-    #region OTHER TRAINING GENS HERE
-
-    public TrainingScheduleEvent GetTrainingEventFromEquipmentSlot(int slot)
-    {
-        TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-        TrainingEquipment trainingEquip = scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentBySlot(slot);
-
-        trainingScheduleEvent.SetTrainingName("Lv. " + trainingEquip.trainingLevel + ") " + trainingEquip.trainingName);
-
-        trainingScheduleEvent.SetID(trainingEquip.ID);
-
-        trainingScheduleEvent.SetTrainingLevel(trainingEquip.trainingLevel);
-        trainingScheduleEvent.SetTrainingType(trainingEquip.trainingType);
-
-        return trainingScheduleEvent;
-    }
-
-    #endregion
 }

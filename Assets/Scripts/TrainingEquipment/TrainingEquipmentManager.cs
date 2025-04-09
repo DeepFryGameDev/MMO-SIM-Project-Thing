@@ -45,40 +45,44 @@ public class TrainingEquipmentManager : MonoBehaviour
             }
 
             // remove equipment from inventory
-            Debug.Log("removing " + trainingEquipment.name + " from inventory");
+            //Debug.Log("removing " + trainingEquipment.name + " from inventory");
             heroManager.HeroInventory().RemoveFromInventory(trainingEquipment);
         } else // unequipping
         {
-            // First Check if anything is scheduled for this hero that is using this training equipment.  If so, replace it with a rest.
-            if (scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID).Count > 0)
+            // first check if it's being used currently.  If it is, block the unequip.
+            if (heroManager.HeroSchedule().GetScheduleEvents()[0].GetID() != heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID)
             {
-                // Debug.LogWarning("You just unequipped something that was scheduled.  Setting to rest.");
-                // get training slots that event is scheduled
-                foreach (int slot in scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID))
+                // Then Check if anything is scheduled for this hero that is using this training equipment.  If so, replace it with a rest.
+                if (scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID).Count > 0)
                 {
-                    Debug.LogWarning("Replacing " + slot + " with rest");
-                    RestScheduleEvent newRestScheduleEvent = new RestScheduleEvent();
+                    // Debug.LogWarning("You just unequipped something that was scheduled.  Setting to rest.");
+                    // get training slots that event is scheduled
+                    foreach (int slot in scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID))
+                    {
+                        Debug.LogWarning("Replacing " + slot + " with rest");
+                        RestScheduleEvent newRestScheduleEvent = new RestScheduleEvent();
 
-                    scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[slot] = newRestScheduleEvent;
+                        scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[slot] = newRestScheduleEvent;
+                    }
                 }
-            }
 
-            // and then unequip it
-            if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()) != null)
-            {
-                Debug.Log("Return " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()).name + " to hero's inventory");
-                heroManager.HeroInventory().AddToInventory(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()));
-
-                switch (equipSlot)
+                // and then unequip it
+                if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()) != null)
                 {
-                    case 0:
-                        heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot0(null);
-                        break;
-                    case 1:
-                        heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot1(null);
-                        break;
+                    Debug.Log("Return " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()).name + " to hero's inventory");
+                    heroManager.HeroInventory().AddToInventory(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(trainingEquipmentMenu.GetClickedEquippedTrainingButton().GetEquipSlot()));
+
+                    switch (equipSlot)
+                    {
+                        case 0:
+                            heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot0(null);
+                            break;
+                        case 1:
+                            heroManager.HeroTrainingEquipment().SetTrainingEquipmentSlot1(null);
+                            break;
+                    }
                 }
-            }            
+            }                 
         }
     }
 }
