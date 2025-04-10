@@ -24,10 +24,16 @@ public class TrainingScheduleEvent : ScheduleEvent
         trainingLevel = level;
     }
 
+    /// <summary>
+    /// Currently set to the same as the Event Name.  This may have some use later.
+    /// </summary>
     string trainingName;
     public string GetTrainingName() { return trainingName; }
     public void SetTrainingName(string trainingName) { this.trainingName = trainingName; }
 
+    /// <summary>
+    /// The type of training that should be performed
+    /// </summary>
     EnumHandler.TrainingTypes trainingType;
     public EnumHandler.TrainingTypes GetTrainingType() { return trainingType; }
     public void SetTrainingType(EnumHandler.TrainingTypes trainingType) { this.trainingType = trainingType; }

@@ -60,6 +60,9 @@ public class HeroCommandProcessing : MonoBehaviour
 
         //3. ToggleCommandMenu to open it
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+
+        // Stop show toast
+        DateManager.i.StopNewWeekToast();
     }
 
     /// <summary>

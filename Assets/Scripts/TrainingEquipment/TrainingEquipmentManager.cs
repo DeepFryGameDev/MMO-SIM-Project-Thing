@@ -8,13 +8,13 @@ public class TrainingEquipmentManager : MonoBehaviour
 {
     TrainingEquipmentMenu trainingEquipmentMenu;
 
-    ScheduleManager scheduleManager;
+    public static TrainingEquipmentManager i;
 
     private void Awake()
     {
         trainingEquipmentMenu = FindFirstObjectByType<TrainingEquipmentMenu>();
 
-        scheduleManager = FindFirstObjectByType<ScheduleManager>();
+        i = this;
     }
 
     /// <summary>
@@ -53,16 +53,16 @@ public class TrainingEquipmentManager : MonoBehaviour
             if (heroManager.HeroSchedule().GetScheduleEvents()[0].GetID() != heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID)
             {
                 // Then Check if anything is scheduled for this hero that is using this training equipment.  If so, replace it with a rest.
-                if (scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID).Count > 0)
+                if (ScheduleManager.i.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID).Count > 0)
                 {
                     // Debug.LogWarning("You just unequipped something that was scheduled.  Setting to rest.");
                     // get training slots that event is scheduled
-                    foreach (int slot in scheduleManager.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID))
+                    foreach (int slot in ScheduleManager.i.GetTrainingSlotsFromEventID(heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(equipSlot).ID))
                     {
                         Debug.LogWarning("Replacing " + slot + " with rest");
                         RestScheduleEvent newRestScheduleEvent = new RestScheduleEvent();
 
-                        scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[slot] = newRestScheduleEvent;
+                        HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[slot] = newRestScheduleEvent;
                     }
                 }
 

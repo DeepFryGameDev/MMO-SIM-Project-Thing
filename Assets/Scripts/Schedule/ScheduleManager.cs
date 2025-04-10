@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +8,6 @@ using UnityEngine;
 
 public class ScheduleManager : MonoBehaviour
 {
-    HeroManager heroManager;
-    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
-    public HeroManager GetHeroManager() { return heroManager; }
-
-    TrainingManager trainingManager;
-
     // For training gen
     string level1BasicStrengthTrainingName = "Lv. 1) Basic Strength Training";
     public string GetLevel1BasicStrengthTrainingName() { return level1BasicStrengthTrainingName; }
@@ -31,13 +24,19 @@ public class ScheduleManager : MonoBehaviour
 
     Transform layoutGroupTransform; // Used to add TrainingResults to the UI
 
+    public static ScheduleManager i;
+
     private void Awake()
     {
-        trainingManager = transform.GetComponent<TrainingManager>();
-
         layoutGroupTransform = GameObject.Find("TrainingResultsCanvas/Holder/LayoutGroup").transform; // hacky, will need a better solution eventually
+
+        i = this;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="heroManager"></param>
     public void ProcessResting(HeroManager heroManager)
     {
         Debug.Log("Need to rest");
@@ -53,6 +52,11 @@ public class ScheduleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ID"></param>
+    /// <returns></returns>
     public List<int> GetTrainingSlotsFromEventID(int ID)
     {
         /*Debug.Log("Checking " + ID);
@@ -65,16 +69,16 @@ public class ScheduleManager : MonoBehaviour
         Debug.Log("6) " + heroManager.HeroSchedule().GetScheduleEvents()[6].GetID());
         Debug.Log("7) " + heroManager.HeroSchedule().GetScheduleEvents()[7].GetID());*/
 
-        if (heroManager.HeroSchedule().GetScheduleEvents()[1] == null) { Debug.Log("Null for some reason"); }
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[1] == null) { Debug.Log("Null for some reason"); }
         List<int> slots = new List<int>();
 
-        if (heroManager.HeroSchedule().GetScheduleEvents()[1].GetID() == ID) slots.Add(1);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[2].GetID() == ID) slots.Add(2);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[3].GetID() == ID) slots.Add(3);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[4].GetID() == ID) slots.Add(4);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[5].GetID() == ID) slots.Add(5);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[6].GetID() == ID) slots.Add(6);
-        if (heroManager.HeroSchedule().GetScheduleEvents()[7].GetID() == ID) slots.Add(7);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[1].GetID() == ID) slots.Add(1);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[2].GetID() == ID) slots.Add(2);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[3].GetID() == ID) slots.Add(3);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[4].GetID() == ID) slots.Add(4);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[5].GetID() == ID) slots.Add(5);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[6].GetID() == ID) slots.Add(6);
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[7].GetID() == ID) slots.Add(7);
 
         return slots;
     }
@@ -97,16 +101,16 @@ public class ScheduleManager : MonoBehaviour
         allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(5)); // basic intelligence training
         allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(6)); // basic faith training
 
-        if (GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
         {
             //Debug.Log("allAvailableScheduleEvents: Adding EquipmentSlot0: " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingName + " - ID: " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID);
-            allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID));
+            allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID));
         }
 
-        if (GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
         {
             //Debug.Log("allAvailableScheduleEvents: Adding EquipmentSlot1: " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingName + " - ID: " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID);
-            allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID));
+            allAvailableScheduleEvents.Add(CreateScheduleEventByEventID(HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID));
         }
 
         /*foreach (ScheduleEvent scheduleEvent in allAvailableScheduleEvents)
@@ -152,12 +156,12 @@ public class ScheduleManager : MonoBehaviour
     public ScheduleEvent CreateScheduleEventByEventID(int ID) 
     {
         // Debug.Log("CreateScheduleEventByEventID - Checking ID: " + ID + " compared to " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID);
-        if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null && heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID == ID)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null && (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID == ID))
         {
             return GetTrainingEventFromEquipmentSlot(0);
         }
 
-        if (heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null && heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID == ID)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null && (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID == ID))
             return GetTrainingEventFromEquipmentSlot(1);
 
         switch (ID)
@@ -206,7 +210,7 @@ public class ScheduleManager : MonoBehaviour
         rrh.SetEnergyFillText(heroManager.HeroTraining().GetTempEnergy() + " / " + HeroSettings.maxEnergy);
 
         // show panel after x seconds
-        StartCoroutine(trainingManager.DisplayResultPanelAfterDelay());
+        StartCoroutine(TrainingManager.i.DisplayResultPanelAfterDelay());
 
         // wait x seconds
         yield return new WaitForSeconds(DateSettings.trainingResultsFillDelaySeconds);
@@ -216,10 +220,10 @@ public class ScheduleManager : MonoBehaviour
 
         yield return new WaitForSeconds(DateSettings.trainingResultShowSeconds - DateSettings.trainingResultsDelaySeconds);
 
-        trainingManager.ToggleCanvasGroup(false);
+        TrainingManager.i.ToggleCanvasGroup(false);
 
         // reset stuff
-        trainingManager.ResetVars();
+        TrainingManager.i.ResetVars();
     }
 
     /// <summary>
@@ -262,6 +266,10 @@ public class ScheduleManager : MonoBehaviour
 
     #region DEFINE LEVEL 1 BASIC TRAININGS HERE - check ScheduleMenuHandler for IDs if needed
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicStrengthTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -278,6 +286,10 @@ public class ScheduleManager : MonoBehaviour
         return trainingScheduleEvent;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicEnduranceTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -294,6 +306,10 @@ public class ScheduleManager : MonoBehaviour
         return trainingScheduleEvent;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicAgilityTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -310,6 +326,10 @@ public class ScheduleManager : MonoBehaviour
         return trainingScheduleEvent;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicDexterityTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -326,6 +346,10 @@ public class ScheduleManager : MonoBehaviour
         return trainingScheduleEvent;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicIntelligenceTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -342,6 +366,10 @@ public class ScheduleManager : MonoBehaviour
         return trainingScheduleEvent;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public TrainingScheduleEvent GetBasicFaithTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -362,10 +390,15 @@ public class ScheduleManager : MonoBehaviour
 
     #region OTHER TRAINING GENS HERE
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns></returns>
     public TrainingScheduleEvent GetTrainingEventFromEquipmentSlot(int slot)
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
-        TrainingEquipment trainingEquip = heroManager.HeroTrainingEquipment().GetTrainingEquipmentBySlot(slot);
+        TrainingEquipment trainingEquip = HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentBySlot(slot);
 
         trainingScheduleEvent.SetName("Lv. " + trainingEquip.trainingLevel + ") " + trainingEquip.trainingName);
         trainingScheduleEvent.SetTrainingName("Lv. " + trainingEquip.trainingLevel + ") " + trainingEquip.trainingName);

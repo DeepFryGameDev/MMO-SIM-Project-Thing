@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 // Purpose: 
@@ -16,17 +15,14 @@ public class HeroSchedule : MonoBehaviour
     public TrainingScheduleEvent GetCurrentEventAsTraining() { return currentEvent as TrainingScheduleEvent; }
 
     HeroManager heroManager;
-    ScheduleManager scheduleManager;
 
-    RestingResultHandler tempRRH; // Used to access the Training Result Handler script attached to the training result for the week.
+    RestingResultHandler tempRRH; // Used to access the Resting Result Handler script attached to the resting result for the week.
     public void SetTempRRH(RestingResultHandler rrh) { tempRRH = rrh; }
     public RestingResultHandler GetTempRRH() { return tempRRH; }
 
     private void Awake()
     {
         heroManager = transform.GetComponent<HeroManager>();
-
-        scheduleManager = FindFirstObjectByType<ScheduleManager>();
     }
 
     private void Start()

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 // Purpose: Facilitates the processes for the player command menu
@@ -10,13 +11,15 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     bool commandMenuOpen;
 
-    DateManager dateManager;
-
     PlayerMovement playerMovement;
 
     ThirdPersonCam cam;
 
     PlayerWhistle playerWhistle;
+
+    [SerializeField] TextMeshProUGUI weekText;
+    [SerializeField] TextMeshProUGUI monthText;
+    [SerializeField] TextMeshProUGUI yearText;
 
     void Awake()
     {
@@ -26,7 +29,6 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     void Setup()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        dateManager = FindFirstObjectByType<DateManager>();
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
@@ -53,6 +55,9 @@ public class PlayerCommandMenuHandler : MonoBehaviour
             // disable player whistle ability
             playerWhistle.ToggleCanWhistle(false);
 
+            // Set the date text labels
+            SetDateTexts();
+
             // open menu
             ToggleCanvasGroup(true);
 
@@ -63,7 +68,16 @@ public class PlayerCommandMenuHandler : MonoBehaviour
             cam.ToggleCameraRotation(false);
 
             GlobalSettings.SetUIState(GlobalSettings.UIStates.PLAYERCOMMAND);
+
+            DateManager.i.StopNewWeekToast();
         }
+    }
+
+    void SetDateTexts()
+    {
+        weekText.text = "Week " + DateManager.i.GetRealCurrentWeek().ToString();
+        monthText.text = DateManager.i.GetMonthString(DateManager.i.GetCurrentMonth());
+        yearText.text = DateManager.i.GetCurrentYear().ToString();
     }
 
     /// <summary>
@@ -96,7 +110,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     public void NextWeekButtonClicked()
     {
-        StartCoroutine(dateManager.ProcessStartWeek());
+        StartCoroutine(DateManager.i.ProcessStartWeek());
 
         ToggleCanvasGroup(false);
     }

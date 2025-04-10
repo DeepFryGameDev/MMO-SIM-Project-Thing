@@ -7,25 +7,9 @@ using UnityEngine;
 // Directions: 
 // Other notes:
 
-/*
- * DROPDOWN OPTIONS - This is the option number in the dropdown, but is also set manually when generating each schedule event
- * 0 - REST
- * 1 - BASIC STRENGTH TRAINING
- * 2 - BASIC ENDURANCE TRAINING
- * 3 - BASIC AGILITY TRAINING
- * 4 - BASIC DEXTERITY TRAINING
- * 5 - BASIC INTELLIGENCE TRAINING
- * 6 - BASIC FAITH TRAINING
- * 7 - HERO TRAINING EQUIP SLOT 1
- * 8 - HERO TRAINING EQUIP SLOT 2
- */
 
 public class ScheduleMenuHandler : MonoBehaviour
 {
-    [SerializeField] DateManager dateManager;
-    [SerializeField] ScheduleManager scheduleManager;
-    [SerializeField] TrainingManager trainingManager;
-
     [SerializeField] TextMeshProUGUI dateText;
 
     [SerializeField] TextMeshProUGUI currentScheduleEventLabel;
@@ -67,12 +51,12 @@ public class ScheduleMenuHandler : MonoBehaviour
         scheduleOptions.Add("Rest"); // change eventually. for now it is fine, rest will always be at ID 0.
 
         // Add basic training STR - FTH
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicStrengthTrainingName());
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicEnduranceTrainingName());
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicAgilityTrainingName());
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicDexterityTrainingName());
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicIntelligenceTrainingName());
-        scheduleOptions.Add(scheduleManager.GetLevel1BasicFaithTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicStrengthTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicEnduranceTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicAgilityTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicDexterityTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicIntelligenceTrainingName());
+        scheduleOptions.Add(ScheduleManager.i.GetLevel1BasicFaithTrainingName());
     }
 
     public void GenerateDropdowns()
@@ -84,17 +68,17 @@ public class ScheduleMenuHandler : MonoBehaviour
         List<String> options = new List<String>();
 
         // For any equipSlot that isn't null
-        if (scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null)
         {
-            scheduleOptions.Add("Lv. " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingLevel + ") " //"Lv. [x]) "
-                + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingName); // "name"
+            scheduleOptions.Add("Lv. " + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingLevel + ") " //"Lv. [x]) "
+                + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingName); // "name"
         }
 
         // For any equipSlot that isn't null
-        if (scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
+        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null)
         {
-            scheduleOptions.Add("Lv. " + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingLevel + ") " //"Lv. [x]) "
-                + scheduleManager.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingName); // "name"
+            scheduleOptions.Add("Lv. " + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingLevel + ") " //"Lv. [x]) "
+                + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingName); // "name"
         }
 
         // add the options to the dropdowns
@@ -114,15 +98,15 @@ public class ScheduleMenuHandler : MonoBehaviour
     {
         // Debug.Log(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1].GetName());
 
-        currentScheduleEventText.text = scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[0].GetName();
+        currentScheduleEventText.text = HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[0].GetName();
 
-        slot1Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[1]);
-        slot2Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[2]);
-        slot3Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[3]);
-        slot4Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[4]);
-        slot5Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[5]);
-        slot6Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[6]);
-        slot7Dropdown.value = GetOptionValByScheduleEvent(scheduleManager.GetHeroManager().HeroSchedule().GetScheduleEvents()[7]);
+        slot1Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[1]);
+        slot2Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[2]);
+        slot3Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[3]);
+        slot4Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[4]);
+        slot5Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[5]);
+        slot6Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[6]);
+        slot7Dropdown.value = GetOptionValByScheduleEvent(HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[7]);
     }
 
     int GetOptionValByScheduleEvent(ScheduleEvent scheduleEvent)
@@ -167,24 +151,24 @@ public class ScheduleMenuHandler : MonoBehaviour
 
     public void SetTexts()
     {
-        dateText.text = dateManager.GetMonthString(dateManager.GetCurrentMonth()) + "\n" + dateManager.GetCurrentYear().ToString();
-        currentScheduleEventLabel.text = weekText + " " + dateManager.GetRealCurrentWeek() + ":";
+        dateText.text = DateManager.i.GetMonthString(DateManager.i.GetCurrentMonth()) + "\n" + DateManager.i.GetCurrentYear().ToString();
+        currentScheduleEventLabel.text = weekText + " " + DateManager.i.GetRealCurrentWeek() + ":";
 
-        slot1MonthLabel.text = dateManager.GetMonthFromWeeksOut(1);
-        slot2MonthLabel.text = dateManager.GetMonthFromWeeksOut(2);
-        slot3MonthLabel.text = dateManager.GetMonthFromWeeksOut(3);
-        slot4MonthLabel.text = dateManager.GetMonthFromWeeksOut(4);
-        slot5MonthLabel.text = dateManager.GetMonthFromWeeksOut(5);
-        slot6MonthLabel.text = dateManager.GetMonthFromWeeksOut(6);
-        slot7MonthLabel.text = dateManager.GetMonthFromWeeksOut(7);
+        slot1MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(1);
+        slot2MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(2);
+        slot3MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(3);
+        slot4MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(4);
+        slot5MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(5);
+        slot6MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(6);
+        slot7MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(7);
 
-        slot1WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(1);
-        slot2WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(2);
-        slot3WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(3);
-        slot4WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(4);
-        slot5WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(5);
-        slot6WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(6);
-        slot7WeekLabel.text = weekText + " " + dateManager.GetWeekFromWeeksOut(7);
+        slot1WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(1);
+        slot2WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(2);
+        slot3WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(3);
+        slot4WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(4);
+        slot5WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(5);
+        slot6WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(6);
+        slot7WeekLabel.text = weekText + " " + DateManager.i.GetWeekFromWeeksOut(7);
     }
 
     /// <summary>
@@ -198,30 +182,45 @@ public class ScheduleMenuHandler : MonoBehaviour
         switch (slot)
         {
             case 1:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot1Dropdown.options[slot1Dropdown.value].text));                
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot1Dropdown.options[slot1Dropdown.value].text));                
                 break;
             case 2:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot2Dropdown.options[slot2Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot2Dropdown.options[slot2Dropdown.value].text));
                 break;
             case 3:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot3Dropdown.options[slot3Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot3Dropdown.options[slot3Dropdown.value].text));
                 break;
             case 4:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot4Dropdown.options[slot4Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot4Dropdown.options[slot4Dropdown.value].text));
                 break;
             case 5:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot5Dropdown.options[slot5Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot5Dropdown.options[slot5Dropdown.value].text));
                 break;
             case 6:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot6Dropdown.options[slot6Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot6Dropdown.options[slot6Dropdown.value].text));
                 break;
             case 7:
-                newScheduleEvent = scheduleManager.CreateScheduleEventByEventID(scheduleManager.GetEventIDByScheduleEventName(slot7Dropdown.options[slot7Dropdown.value].text));
+                newScheduleEvent = ScheduleManager.i.CreateScheduleEventByEventID(ScheduleManager.i.GetEventIDByScheduleEventName(slot7Dropdown.options[slot7Dropdown.value].text));
                 break;
         }
 
         Debug.LogWarning("*-*-*-* New event created: " + newScheduleEvent.GetName() + " into schedule slot " + slot + "*-*-*-*-*");
 
-        scheduleManager.GetHeroManager().HeroSchedule().SetScheduleSlot(slot, newScheduleEvent);
+        HomeZoneManager.i.GetHeroManager().HeroSchedule().SetScheduleSlot(slot, newScheduleEvent);
+    }
+
+    public void OnForceRestClick()
+    {
+        if (HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[0].GetID() != 0) // If first schedule slot is not rest already
+        {
+            RestScheduleEvent newRestEvent = new RestScheduleEvent();
+
+            HomeZoneManager.i.GetHeroManager().HeroSchedule().SetScheduleSlot(0, newRestEvent);
+
+            currentScheduleEventText.text = HomeZoneManager.i.GetHeroManager().HeroSchedule().GetScheduleEvents()[0].GetName();
+        } else
+        {
+            // Play a Nope SE or something.
+        }     
     }
 }

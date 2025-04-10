@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class HeroTraining : MonoBehaviour
 {
-    HeroManager heroManager;
-
     int trainingResult; // The exp value that is set when training has calculated.  Exp gained is defined in TrainingManager.CalculateTrainingResult
     public int GetTrainingResult() { return trainingResult; }
     public void SetTrainingResult(int trainingResult) { this.trainingResult = trainingResult; }
@@ -48,8 +46,6 @@ public class HeroTraining : MonoBehaviour
 
     void Start()
     {
-        heroManager = GetComponent<HeroManager>();
-
         TestThings();
     }
 

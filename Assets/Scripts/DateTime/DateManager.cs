@@ -21,6 +21,8 @@ public class DateManager : MonoBehaviour
     int currentYear;
     public int GetCurrentYear() { return currentYear; }
 
+    IEnumerator nextWeekToast;
+
     CanvasGroup canvasGroup;
     TextMeshProUGUI weekText;
     TextMeshProUGUI monthText;
@@ -31,13 +33,11 @@ public class DateManager : MonoBehaviour
 
     ThirdPersonCam cam;
 
-    SpawnManager spawnManager;
-
-    TrainingManager trainingManager;
-
-    ScheduleManager scheduleManager;
-
     HeroManager[] heroManagers;
+
+    PlayerWhistle playerWhistle;
+
+    public static DateManager i;
 
     void Awake()
     {
@@ -54,25 +54,23 @@ public class DateManager : MonoBehaviour
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
-
-        spawnManager = FindFirstObjectByType<SpawnManager>();
-
-        trainingManager = FindFirstObjectByType<TrainingManager>();
-
-        scheduleManager = FindFirstObjectByType<ScheduleManager>();
+        playerWhistle = FindFirstObjectByType<PlayerWhistle>();
 
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
 
 
         // Setting some base vals
         currentYear = DateSettings.startingYear;
+
+        i = this;
     }
 
     void Start()
     {
         InitializeDates();
 
-        StartCoroutine(ShowToast());
+        nextWeekToast = ShowNewWeekToast();
+        StartCoroutine(nextWeekToast);
     }
 
     /// <summary>
@@ -147,24 +145,21 @@ public class DateManager : MonoBehaviour
 
         RollForwardDate();
 
-        // show graphic
-        StartCoroutine(ShowToast());
-
         // calculate and show training results
         foreach (HeroManager heroManager in heroManagers)
         {
-            trainingManager.AddToHeroManagers(heroManager);
+            TrainingManager.i.AddToHeroManagers(heroManager);
 
             // Resting
             if (heroManager.HeroSchedule().GetCurrentEvent() is RestScheduleEvent)
             {
                 Debug.Log("-*-*- Resting Logs for " + heroManager.Hero().name + ", TrainingEvent: " + heroManager.HeroSchedule().GetCurrentEvent().GetName() + "-*-*-");
                 Debug.Log("Before rest: " + heroManager.Hero().GetEnergy());
-                scheduleManager.ProcessResting(heroManager);
+                ScheduleManager.i.ProcessResting(heroManager);
                 Debug.Log("After rest: " + heroManager.Hero().GetEnergy());
                 Debug.Log("--------------------------------------------");
                 // need to show resting results
-                StartCoroutine(scheduleManager.ShowRestingResults(heroManager));
+                StartCoroutine(ScheduleManager.i.ShowRestingResults(heroManager));
             }
 
             // Training
@@ -173,13 +168,13 @@ public class DateManager : MonoBehaviour
                 TrainingScheduleEvent trainingScheduleEvent = heroManager.HeroSchedule().GetCurrentEvent() as TrainingScheduleEvent;
 
                 Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + ", TrainingEvent: " + trainingScheduleEvent.GetTrainingName() + "-*-*-");
-                Debug.Log("Before exp: " + trainingManager.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + trainingManager.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
-                trainingManager.ProcessTraining(heroManager);
-                Debug.Log("After exp: " + trainingManager.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + trainingManager.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
+                Debug.Log("Before exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
+                TrainingManager.i.ProcessTraining(heroManager);
+                Debug.Log("After exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
                 Debug.Log("--------------------------------------------");
 
                 // display the training results to the player
-                StartCoroutine(trainingManager.ShowTrainingResults(heroManager));
+                StartCoroutine(TrainingManager.i.ShowTrainingResults(heroManager));
             }
         }
 
@@ -194,6 +189,8 @@ public class DateManager : MonoBehaviour
 
         // -*-*-*-*- Start here -*-*-*-*-
 
+        Debug.Log("<color=blue>[DateManager] Starting week: " + week[currentWeek] + " of Month " + month[currentMonth] + "</color>");
+
         // move all heroes to starting position
         foreach (HeroManager heroManager in heroManagers)
         {
@@ -201,7 +198,7 @@ public class DateManager : MonoBehaviour
         }
 
         // move player to starting position
-        spawnManager.MovePlayerToSpawnPosition();
+        SpawnManager.i.MovePlayerToSpawnPosition();
 
         // -*-*-*-*- End here -*-*-*-*-
 
@@ -211,6 +208,10 @@ public class DateManager : MonoBehaviour
         #endregion
 
         #region post-transition
+
+        // show graphic
+        nextWeekToast = ShowNewWeekToast();
+        StartCoroutine(nextWeekToast);
 
         // roll forward schedule
         foreach (HeroManager heroManager in heroManagers)
@@ -229,6 +230,9 @@ public class DateManager : MonoBehaviour
 
         // enable camera movement
         cam.ToggleCameraRotation(true);
+
+        // enable player whistle
+        playerWhistle.ToggleCanWhistle(true);
 
         // brighten screen
         StartCoroutine(FadeToBlack(false));
@@ -259,14 +263,19 @@ public class DateManager : MonoBehaviour
     /// Coroutine to display the Date Toast to the user
     /// </summary>
     /// <returns>Waits for toast seconds between fade in/out</returns>
-    IEnumerator ShowToast()
+    IEnumerator ShowNewWeekToast()
     {
-        Debug.Log("<color=blue>[DateManager] Starting week: " + week[currentWeek] + " of Month " + month[currentMonth] + "</color>");
         SetToastText();
         ToggleToast(true);
 
         yield return new WaitForSeconds(DateSettings.toastSeconds);
 
+        ToggleToast(false);
+    }
+
+    public void StopNewWeekToast()
+    {
+        StopCoroutine(nextWeekToast);
         ToggleToast(false);
     }
 

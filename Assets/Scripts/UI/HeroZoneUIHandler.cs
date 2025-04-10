@@ -15,10 +15,6 @@ public class HeroZoneUIHandler : MonoBehaviour
     RadarChartValueController valueController; // manages the values of the radar chart
     RadarChartController chartController; // used to update the chart in the UI    
 
-    [SerializeField] TrainingManager trainingManager;
-
-    [SerializeField] ScheduleManager scheduleManager;
-
     //------ UI objects----------
     [Tooltip("Set to the text object that will display the hero's name")]
     [SerializeField] TextMeshProUGUI nameText;
@@ -35,6 +31,11 @@ public class HeroZoneUIHandler : MonoBehaviour
     [SerializeField] Image manaFill;
     [Tooltip("Set to the text object that will display the hero's Mana")]
     [SerializeField] TextMeshProUGUI manaVal;
+
+    [Tooltip("Set to the fill Image object for the Mana Parameter bar")]
+    [SerializeField] Image energyFill;
+    [Tooltip("Set to the text object that will display the hero's Mana")]
+    [SerializeField] TextMeshProUGUI energyVal;
 
     [Tooltip("Set to the fill Image object for the Strength Parameter bar")]
     [SerializeField] Image strFill;
@@ -98,17 +99,29 @@ public class HeroZoneUIHandler : MonoBehaviour
         nameText.text = heroManager.Hero().name;
         levelText.text = "Lv. " + "1"; // to update - this is the hero's Hero Level
 
+        DrawParameterBars(heroManager);
+
         DrawStatBars(heroManager);
 
         SetRadarChart(heroManager.Hero());
     }
 
-    public void SetScheduleHeroManager(HeroManager heroManager)
+    void DrawParameterBars(HeroManager heroManager)
     {
-        scheduleManager.SetHeroManager(heroManager);
+        // set HP bar fill (will come when setting up hero stats)
+        // set HP bar value (will come when setting up hero stats)
+
+        // set MP bar fill (will come when setting up hero stats)
+        // set MP bar value (will come when setting up hero stats)
+
+        // set energy bar fill
+        energyFill.fillAmount = (float)heroManager.Hero().GetEnergy() / HeroSettings.maxEnergy;
+
+        // set energy bar value
+        energyVal.text = heroManager.Hero().GetEnergy().ToString() + " / " + HeroSettings.maxEnergy;
     }
 
-    private void DrawStatBars(HeroManager heroManager)
+    void DrawStatBars(HeroManager heroManager)
     {
         strLevelVal.text = heroManager.Hero().GetStrength().ToString();
         endLevelVal.text = heroManager.Hero().GetEndurance().ToString();
@@ -117,19 +130,19 @@ public class HeroZoneUIHandler : MonoBehaviour
         intLevelVal.text = heroManager.Hero().GetIntelligence().ToString();
         fthLevelVal.text = heroManager.Hero().GetFaith().ToString();
 
-        strExpVal.text = heroManager.HeroTraining().GetStrengthExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager).ToString();
-        endExpVal.text = heroManager.HeroTraining().GetEnduranceExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager).ToString();
-        agiExpVal.text = heroManager.HeroTraining().GetAgilityExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager).ToString();
-        dexExpVal.text = heroManager.HeroTraining().GetDexterityExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager).ToString();
-        intExpVal.text = heroManager.HeroTraining().GetIntelligenceExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager).ToString();
-        fthExpVal.text = heroManager.HeroTraining().GetFaithExp() + "/" + trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager).ToString();
+        strExpVal.text = heroManager.HeroTraining().GetStrengthExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager).ToString();
+        endExpVal.text = heroManager.HeroTraining().GetEnduranceExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager).ToString();
+        agiExpVal.text = heroManager.HeroTraining().GetAgilityExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager).ToString();
+        dexExpVal.text = heroManager.HeroTraining().GetDexterityExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager).ToString();
+        intExpVal.text = heroManager.HeroTraining().GetIntelligenceExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager).ToString();
+        fthExpVal.text = heroManager.HeroTraining().GetFaithExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager).ToString();
 
-        strFill.fillAmount = heroManager.HeroTraining().GetStrengthExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager);
-        endFill.fillAmount = heroManager.HeroTraining().GetEnduranceExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager);
-        agiFill.fillAmount = heroManager.HeroTraining().GetAgilityExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager);
-        dexFill.fillAmount = heroManager.HeroTraining().GetDexterityExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager);
-        intFill.fillAmount = heroManager.HeroTraining().GetIntelligenceExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager);
-        fthFill.fillAmount = heroManager.HeroTraining().GetFaithExp() / trainingManager.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager);
+        strFill.fillAmount = heroManager.HeroTraining().GetStrengthExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager);
+        endFill.fillAmount = heroManager.HeroTraining().GetEnduranceExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager);
+        agiFill.fillAmount = heroManager.HeroTraining().GetAgilityExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.AGILITY, heroManager);
+        dexFill.fillAmount = heroManager.HeroTraining().GetDexterityExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.DEXTERITY, heroManager);
+        intFill.fillAmount = heroManager.HeroTraining().GetIntelligenceExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.INTELLIGENCE, heroManager);
+        fthFill.fillAmount = heroManager.HeroTraining().GetFaithExp() / TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.FAITH, heroManager);
     }
 
     /// <summary>

@@ -12,11 +12,15 @@ public class SpawnManager : MonoBehaviour
 
     GameObject player;
 
+    public static SpawnManager i;
+
     void Awake()
     {
         player = GameObject.FindWithTag("Player");
 
         playerSpawnPosition = player.transform.position;
+
+        i = this;
     }
 
     /// <summary>

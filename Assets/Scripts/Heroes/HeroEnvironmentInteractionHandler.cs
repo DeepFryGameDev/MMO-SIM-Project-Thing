@@ -85,12 +85,14 @@ public class HeroEnvironmentInteractionHandler : MonoBehaviour
             {
                 SetHeroVals(heroManager);
 
-                zoneUIHandler.SetScheduleHeroManager(heroManager);
+                HomeZoneManager.i.SetHeroManager(heroManager);
 
                 inHomeZone = true;
             }
         } else
         {
+            HomeZoneManager.i.SetHeroManager(null);
+
             inHomeZone = false;
             zoneUIHandler.ShowPanel(false);
         }

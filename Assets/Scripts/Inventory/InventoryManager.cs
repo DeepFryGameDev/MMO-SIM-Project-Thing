@@ -12,4 +12,11 @@ public class InventoryManager : MonoBehaviour
     public void AddToInventory(BaseItem item) { inventory.Add(item); }
     public void RemoveFromInventory(BaseItem item) { inventory.Remove(item); }
     public void ClearInventory() { inventory.Clear(); }
+
+    public static InventoryManager i;
+
+    private void Awake()
+    {
+        i = this;
+    }
 }

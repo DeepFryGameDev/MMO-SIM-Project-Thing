@@ -11,18 +11,18 @@ public class TrainingManager : MonoBehaviour
     [HideInInspector] public List<HeroManager> heroManagers = new List<HeroManager>(); // Used to manage all active heroes
     public void AddToHeroManagers(HeroManager heroManager) { heroManagers.Add(heroManager); }
 
-    ScheduleManager scheduleManager;
-
     Transform layoutGroupTransform; // Used to add TrainingResults to the UI
 
     CanvasGroup canvasGroup; // Used to hide/show the Training Results UI.
+
+    public static TrainingManager i;
 
     private void Awake()
     {
         layoutGroupTransform = GameObject.Find("TrainingResultsCanvas/Holder/LayoutGroup").transform; // hacky, will need a better solution eventually
         canvasGroup = GameObject.Find("TrainingResultsCanvas/Holder").GetComponent<CanvasGroup>(); // ^
 
-        scheduleManager = transform.GetComponent<ScheduleManager>();
+        i = this;
     }
 
     /// <summary>
