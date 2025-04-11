@@ -17,6 +17,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     PlayerWhistle playerWhistle;
 
+    Animator anim;
+
     [SerializeField] TextMeshProUGUI weekText;
     [SerializeField] TextMeshProUGUI monthText;
     [SerializeField] TextMeshProUGUI yearText;
@@ -32,6 +34,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
+
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -121,6 +125,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// <param name="toggle">True to show the menu, false to hide it</param>
     void ToggleCanvasGroup(bool toggle)
     {
+        anim.SetBool("toggleOn", toggle);
+
         if (toggle)
         {
             canvasGroup.alpha = 1;

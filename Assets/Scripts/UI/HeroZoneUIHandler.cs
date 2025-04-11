@@ -79,10 +79,13 @@ public class HeroZoneUIHandler : MonoBehaviour
     [Tooltip("Set to the text object that will display the hero's Faith Experience")]
     [SerializeField] TextMeshProUGUI fthExpVal;
 
+    Animator anim;
+
     //-----------------------
     void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        anim = GetComponent<Animator>();
     }
 
     void Start()
@@ -176,6 +179,8 @@ public class HeroZoneUIHandler : MonoBehaviour
     /// <param name="show">True to show panel, false to hide</param>
     public void ShowPanel(bool show)
     {
+        anim.SetBool("toggleOn", show);
+
         if (show) {
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;

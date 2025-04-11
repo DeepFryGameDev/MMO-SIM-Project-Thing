@@ -19,6 +19,7 @@ public class MenuProcessingHandler : MonoBehaviour
 
     // will need access to every canvas group
     [SerializeField] CanvasGroup heroCommandCanvasGroup;
+    [SerializeField] Animator heroCommandAnimator;
     [SerializeField] CanvasGroup trainingEquipmentMenuCanvasGroup;
     public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return trainingEquipmentMenuCanvasGroup; }
     [SerializeField] CanvasGroup trainingEquipmentListCanvasGroup;
@@ -63,6 +64,7 @@ public class MenuProcessingHandler : MonoBehaviour
                 if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.IDLE) // coming from idle (no menu)
                 {
                     ToggleMenu(heroCommandCanvasGroup, true);
+                    tempCanvasGroup = heroCommandCanvasGroup;
 
                     // should hide the current week toast here
                 } else
@@ -95,16 +97,19 @@ public class MenuProcessingHandler : MonoBehaviour
     /// <param name="closePrevious">If the previous menu should be closed, set this to true.</param>
     public void TransitionToMenu(CanvasGroup canvasGroup, bool closePrevious)
     {
+        
         if (closePrevious && tempCanvasGroup != null)
         {
             // close stuff from tempCanvasGroup
-            tempCanvasGroup.alpha = 0;
+            tempCanvasGroup.GetComponent<Animator>().SetBool("toggleOn", false);
+
             tempCanvasGroup.interactable = false;
             tempCanvasGroup.blocksRaycasts = false;
-        }        
+        }
 
         // open new stuff
-        canvasGroup.alpha = 1;
+        canvasGroup.GetComponent<Animator>().SetBool("toggleOn", true);
+
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
 
@@ -119,11 +124,12 @@ public class MenuProcessingHandler : MonoBehaviour
     /// <param name="toggle">True to show the command menu, False to hide it</param>
     public void ToggleMenu(CanvasGroup canvasGroup, bool toggle)
     {
+        heroCommandAnimator.SetBool("toggleOn", toggle);
+
         if (toggle)
         {
-            canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            canvasGroup.blocksRaycasts = true;            
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -132,7 +138,6 @@ public class MenuProcessingHandler : MonoBehaviour
         }
         else
         {
-            canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 

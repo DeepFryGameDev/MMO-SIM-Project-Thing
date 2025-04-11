@@ -39,6 +39,8 @@ public class DateManager : MonoBehaviour
 
     public static DateManager i;
 
+    Animator anim;
+
     void Awake()
     {
         Setup();
@@ -47,6 +49,8 @@ public class DateManager : MonoBehaviour
     void Setup()
     {
         canvasGroup = GameObject.Find("DateCanvas/DatePanel").GetComponent<CanvasGroup>(); // hacky, should change these later
+        anim = canvasGroup.GetComponent<Animator>();
+
         weekText = GameObject.Find("DateCanvas/DatePanel/WeekText").GetComponent<TextMeshProUGUI>();
         monthText = GameObject.Find("DateCanvas/DatePanel/MonthText").GetComponent<TextMeshProUGUI>();
 
@@ -57,7 +61,6 @@ public class DateManager : MonoBehaviour
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
 
         heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
-
 
         // Setting some base vals
         currentYear = DateSettings.startingYear;
@@ -330,12 +333,14 @@ public class DateManager : MonoBehaviour
     /// <param name="toggle">True to display the toast, false to hide it</param>
     void ToggleToast(bool toggle)
     {
-        if (toggle)
+        if (toggle && !anim.GetBool("ShowToast"))
         {
-            canvasGroup.alpha = 1;
-        } else
+            Debug.Log("Show toast");
+            anim.SetBool("ShowToast", true);
+        } else if (!toggle && anim.GetBool("ShowToast"))
         {
-            canvasGroup.alpha = 0;
+            Debug.Log("Hide toast");
+            anim.SetBool("ShowToast", false);
         }
     }
 
