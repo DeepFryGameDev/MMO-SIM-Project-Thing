@@ -25,6 +25,7 @@ public class TrainingEquipment : Equipment
     [Tooltip("The icon to be used in various menus and UI")]
     public Sprite icon;
 
+    /* can delete later if no issues come up
     public TrainingScheduleEvent ScheduleEvent()
     {
         TrainingScheduleEvent newTrainingEvent = new TrainingScheduleEvent();
@@ -36,5 +37,5 @@ public class TrainingEquipment : Equipment
         newTrainingEvent.SetTrainingType(trainingType);
 
         return newTrainingEvent;
-    }
+    } */
 }

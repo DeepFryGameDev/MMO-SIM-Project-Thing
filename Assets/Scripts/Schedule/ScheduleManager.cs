@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Handles functionality of the schedule, as well as basic resting.  Maybe the rest could be moved to a new script?  It's so small right now.
+// Directions: Attach to the [System] object
 // Other notes: 
 
 public class ScheduleManager : MonoBehaviour
@@ -34,7 +34,7 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// When the hero has 'rest' scheduled, this is 
     /// </summary>
     /// <param name="heroManager"></param>
     public void ProcessResting(HeroManager heroManager)
@@ -44,7 +44,7 @@ public class ScheduleManager : MonoBehaviour
         heroManager.HeroTraining().SetTempEnergy(heroManager.Hero().GetEnergy());
 
         // Increase energy
-        heroManager.Hero().SetEnergy(heroManager.Hero().GetEnergy() + ScheduleSettings.BaseEnergyRestoredFromRest);
+        heroManager.Hero().SetEnergy(heroManager.Hero().GetEnergy() + ScheduleSettings.baseEnergyRestoredFromRest);
 
         if (heroManager.Hero().GetEnergy() > HeroSettings.maxEnergy)
         {
@@ -53,10 +53,10 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns which slots the hero has currently scheduled using the given event ID
     /// </summary>
-    /// <param name="ID"></param>
-    /// <returns></returns>
+    /// <param name="ID">ID of the event to check</param>
+    /// <returns>A List of ints of which slots are currently set to the given event ID</returns>
     public List<int> GetTrainingSlotsFromEventID(int ID)
     {
         /*Debug.Log("Checking " + ID);
@@ -149,19 +149,28 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Creates a new schedule event by the given ID.  If the given ID is from a training equipment slot, that will be returned first.
+    /// <para>0: Rest</para>
+    /// <para>1: Basic Strength Training</para>
+    /// <para>2: Basic Endurance Training</para>
+    /// <para>3: Basic Agility Training</para>
+    /// <para>4: Basic Dexterity Training</para>
+    /// <para>5: Basic Intelligence Training</para>
+    /// <para>6. Basic Faith Training</para>
     /// </summary>
-    /// <param name="ID"></param>
-    /// <returns></returns>
+    /// <param name="ID">ID of the schedule event to be created.</param>
+    /// <returns>A new schedule event by the ID given.</returns>
     public ScheduleEvent CreateScheduleEventByEventID(int ID) 
     {
         // Debug.Log("CreateScheduleEventByEventID - Checking ID: " + ID + " compared to " + heroManager.HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID);
-        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null && (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID == ID))
+        if (HomeZoneManager.i.GetHeroManager() != null && HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null && 
+            (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID == ID))
         {
             return GetTrainingEventFromEquipmentSlot(0);
         }
 
-        if (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null && (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID == ID))
+        if (HomeZoneManager.i.GetHeroManager() != null && HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null && 
+            (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID == ID))
             return GetTrainingEventFromEquipmentSlot(1);
 
         switch (ID)
@@ -200,7 +209,7 @@ public class ScheduleManager : MonoBehaviour
         heroManager.HeroSchedule().SetTempRRH(rrh);
 
         // Set facePanel to hero face
-        rrh.SetFaceImage(heroManager.faceImage);
+        rrh.SetFaceImage(heroManager.GetFaceImage());
 
         // set EnergyFill to (hero's current energy / hero's max energy)
         float energyFillVal = (float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy;
@@ -249,11 +258,11 @@ public class ScheduleManager : MonoBehaviour
 
             //fillPercent = 1 - fillPercent;
 
-            tempFillBarEnergy = startEnergy + ((ScheduleSettings.BaseEnergyRestoredFromRest * .01f) * fillPercent);
+            tempFillBarEnergy = startEnergy + ((ScheduleSettings.baseEnergyRestoredFromRest * .01f) * fillPercent);
 
             heroManager.HeroSchedule().GetTempRRH().SetEnergyFill(tempFillBarEnergy);
 
-            float tempFillTextEnergy = ScheduleSettings.BaseEnergyRestoredFromRest * fillPercent;
+            float tempFillTextEnergy = ScheduleSettings.baseEnergyRestoredFromRest * fillPercent;
 
             int roundedTempEnergy = Mathf.RoundToInt(tempFillTextEnergy) + heroManager.HeroTraining().GetTempEnergy();
             if (roundedTempEnergy > HeroSettings.maxEnergy ) { roundedTempEnergy = HeroSettings.maxEnergy; }
@@ -267,9 +276,9 @@ public class ScheduleManager : MonoBehaviour
     #region DEFINE LEVEL 1 BASIC TRAININGS HERE - check ScheduleMenuHandler for IDs if needed
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Strength Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic strength training</returns>
     public TrainingScheduleEvent GetBasicStrengthTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -287,9 +296,9 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Endurance Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic endurance training</returns>
     public TrainingScheduleEvent GetBasicEnduranceTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -307,9 +316,9 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Agility Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic agility training</returns>
     public TrainingScheduleEvent GetBasicAgilityTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -327,9 +336,9 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Dexterity Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic dexterity training</returns>
     public TrainingScheduleEvent GetBasicDexterityTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -347,9 +356,9 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Intelligence Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic intelligence training</returns>
     public TrainingScheduleEvent GetBasicIntelligenceTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -367,9 +376,9 @@ public class ScheduleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the Basic Faith Training parameters.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>TrainingScheduleEvent for a basic faith training</returns>
     public TrainingScheduleEvent GetBasicFaithTrainingScheduleEvent()
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();
@@ -391,10 +400,10 @@ public class ScheduleManager : MonoBehaviour
     #region OTHER TRAINING GENS HERE
 
     /// <summary>
-    /// 
+    /// Returns a new TrainingScheduleEvent using the parameters contained in the equipped Training Equipment
     /// </summary>
-    /// <param name="slot"></param>
-    /// <returns></returns>
+    /// <param name="slot">Which slot is the training equipment equipped to?</param>
+    /// <returns>A new TrainingScheduleEvent using the equipment contained within the given slot</returns>
     public TrainingScheduleEvent GetTrainingEventFromEquipmentSlot(int slot)
     {
         TrainingScheduleEvent trainingScheduleEvent = new TrainingScheduleEvent();

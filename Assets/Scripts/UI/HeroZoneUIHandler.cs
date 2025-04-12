@@ -19,18 +19,8 @@ public class HeroZoneUIHandler : MonoBehaviour
     [Tooltip("Set to the text object that will display the hero's name")]
     [SerializeField] TextMeshProUGUI nameText;
 
-    [Tooltip("Set to the text object that will display the hero's level")]
-    [SerializeField] TextMeshProUGUI levelText;
-
-    [Tooltip("Set to the fill Image object for the HP Parameter bar")]
-    [SerializeField] Image hpFill;
-    [Tooltip("Set to the text object that will display the hero's HP")]
-    [SerializeField] TextMeshProUGUI hpVal;
-
-    [Tooltip("Set to the fill Image object for the Mana Parameter bar")]
-    [SerializeField] Image manaFill;
-    [Tooltip("Set to the text object that will display the hero's Mana")]
-    [SerializeField] TextMeshProUGUI manaVal;
+    [Tooltip("Set to the image object that will display the hero's face graphic")]
+    [SerializeField] Image faceImage;
 
     [Tooltip("Set to the fill Image object for the Mana Parameter bar")]
     [SerializeField] Image energyFill;
@@ -99,24 +89,23 @@ public class HeroZoneUIHandler : MonoBehaviour
     /// <param name="hero">Hero to set stats for</param>
     public void DrawHeroStatsToPanel(HeroManager heroManager)
     {
-        nameText.text = heroManager.Hero().name;
-        levelText.text = "Lv. " + "1"; // to update - this is the hero's Hero Level
+        nameText.text = heroManager.Hero().GetName();
 
-        DrawParameterBars(heroManager);
+        faceImage.sprite = heroManager.GetFaceImage();
+
+        DrawEnergyBar(heroManager);
 
         DrawStatBars(heroManager);
 
         SetRadarChart(heroManager.Hero());
     }
 
-    void DrawParameterBars(HeroManager heroManager)
+    /// <summary>
+    /// Sets the energy bar fill for the given hero
+    /// </summary>
+    /// <param name="heroManager">Hero to have energy drawn</param>
+    void DrawEnergyBar(HeroManager heroManager)
     {
-        // set HP bar fill (will come when setting up hero stats)
-        // set HP bar value (will come when setting up hero stats)
-
-        // set MP bar fill (will come when setting up hero stats)
-        // set MP bar value (will come when setting up hero stats)
-
         // set energy bar fill
         energyFill.fillAmount = (float)heroManager.Hero().GetEnergy() / HeroSettings.maxEnergy;
 
@@ -124,6 +113,10 @@ public class HeroZoneUIHandler : MonoBehaviour
         energyVal.text = heroManager.Hero().GetEnergy().ToString() + " / " + HeroSettings.maxEnergy;
     }
 
+    /// <summary>
+    /// Sets the strings and fills for stat levels/exp
+    /// </summary>
+    /// <param name="heroManager">Hero to have stats drawn</param>
     void DrawStatBars(HeroManager heroManager)
     {
         strLevelVal.text = heroManager.Hero().GetStrength().ToString();

@@ -7,9 +7,9 @@ using UnityEngine.AI;
 
 public class HeroManager : MonoBehaviour
 {
-    public new string name;
-    public Sprite faceImage;
-
+    [SerializeField] Sprite faceImage;
+    public Sprite GetFaceImage() { return faceImage; }
+    
     // Scripts attached to the hero - each of these should be set in the Setup() method
 
     BaseHero hero;

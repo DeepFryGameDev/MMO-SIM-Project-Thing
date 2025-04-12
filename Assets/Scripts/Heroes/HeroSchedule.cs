@@ -20,6 +20,10 @@ public class HeroSchedule : MonoBehaviour
     public void SetTempRRH(RestingResultHandler rrh) { tempRRH = rrh; }
     public RestingResultHandler GetTempRRH() { return tempRRH; }
 
+    // for testing for now.
+    [SerializeField] EnumHandler.TrainingTypes defaultTraining;
+    [SerializeField] bool defaultRestInstead;
+
     private void Awake()
     {
         heroManager = transform.GetComponent<HeroManager>();
@@ -28,10 +32,10 @@ public class HeroSchedule : MonoBehaviour
     private void Start()
     {
         SetDefaultSchedule();
+        
         SetCurrentEvent();
 
-        // for testing rests
-        heroManager.Hero().SetEnergy(25);
+        Debug.Log("-~*~-Default event for " + heroManager.Hero().GetName() + " is " + currentEvent.GetName() + "-~*~-");
     }
 
     void SetDefaultSchedule()
@@ -57,6 +61,34 @@ public class HeroSchedule : MonoBehaviour
 
     public void SetCurrentEvent()
     {
+        if (!defaultRestInstead)
+        {
+            switch (defaultTraining)
+            {
+                case EnumHandler.TrainingTypes.STRENGTH:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(1);
+                    break;
+                case EnumHandler.TrainingTypes.ENDURANCE:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(2);
+                    break;
+                case EnumHandler.TrainingTypes.AGILITY:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(3);
+                    break;
+                case EnumHandler.TrainingTypes.DEXTERITY:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(4);
+                    break;
+                case EnumHandler.TrainingTypes.INTELLIGENCE:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(5);
+                    break;
+                case EnumHandler.TrainingTypes.FAITH:
+                    scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(6);
+                    break;
+            }
+        } else // rest
+        {
+            scheduleEvents[0] = ScheduleManager.i.CreateScheduleEventByEventID(0);
+        }
+
         currentEvent = scheduleEvents[0];
     }
 

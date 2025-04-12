@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: The base class for creating a new training event.
-// Directions: Create a new BaseTraining with the schedule system.
+// Purpose: The class for creating a new training event.
+// Directions: Create a new TrainingScheduleEvent with the schedule system.  Generally used with ScheduleManager.i.CreateScheduleEventByID()
 // Other notes:
 
 public class TrainingScheduleEvent : ScheduleEvent

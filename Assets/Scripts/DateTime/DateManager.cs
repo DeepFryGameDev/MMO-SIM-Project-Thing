@@ -387,10 +387,10 @@ public class DateManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Gets the week in integer format for which week of the month it will be with the given number of weeks out from that date.  eg, in weeksOut weeks, which week of the month will it be?
     /// </summary>
-    /// <param name="weeksOut"></param>
-    /// <returns></returns>
+    /// <param name="weeksOut">How many weeks in the future you are checking</param>
+    /// <returns>Which week of the month it is</returns>
     public int GetWeekFromWeeksOut(int weeksOut)
     {
         int tempWeek = currentWeek;
@@ -409,10 +409,10 @@ public class DateManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Gets the month in string format for which month it will be after the given weeksOut.
     /// </summary>
-    /// <param name="weeksOut"></param>
-    /// <returns></returns>
+    /// <param name="weeksOut">How many weeks in the future are you checking?</param>
+    /// <returns>The month that it will be in weeksOut weeks</returns>
     public string GetMonthFromWeeksOut(int weeksOut)
     {
         int tempMonth = currentMonth;

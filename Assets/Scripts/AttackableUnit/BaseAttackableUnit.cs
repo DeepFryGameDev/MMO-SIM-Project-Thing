@@ -9,6 +9,7 @@ public class BaseAttackableUnit : MonoBehaviour
     // -- Name
     [Tooltip("The name of the unit")]
     [SerializeField] new string name;
+    public string GetName() { return name; }
 
     // -- Parameters --
     protected int currentHP;

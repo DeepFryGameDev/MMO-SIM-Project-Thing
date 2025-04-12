@@ -118,7 +118,7 @@ public class TrainingManager : MonoBehaviour
         heroManager.HeroTraining().SetTempTRH(trh);
 
         // Set facePanel to hero face
-        trh.SetFaceImage(heroManager.faceImage);
+        trh.SetFaceImage(heroManager.GetFaceImage());
 
         // check if leveling up.  If so, set previous level vals as we already leveled up.
         if (heroManager.HeroTraining().GetLevelingUp())

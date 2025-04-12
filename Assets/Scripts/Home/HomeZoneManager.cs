@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: At the moment doesn't do a lot - just holds the current hero that is active when the player steps on a corresponding home zone.
+// Directions: Attach to [System] object
 // Other notes: 
 
 public class HomeZoneManager : MonoBehaviour

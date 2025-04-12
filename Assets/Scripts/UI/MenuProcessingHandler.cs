@@ -151,8 +151,8 @@ public class MenuProcessingHandler : MonoBehaviour
     // All button onClicks should be listed here
 
     /// <summary>
-    /// 
-    /// Assigned to: 
+    /// Called when the user clicks the Schedule button in the hero command menu, opens the Schedule menu
+    /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/ScheduleButton
     /// </summary>
     public void ScheduleMenuOnClick()
     {
@@ -167,8 +167,8 @@ public class MenuProcessingHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 
-    /// Assigned to: 
+    /// Called when the user clicks in the Back button in the schedule menu.  Just goes back to the root menu.
+    /// Assigned to: [UI]/ScheduleCanvas/ScheduleHolder/BackButton
     /// </summary>
     public void ScheduleMenuBackOnClick()
     {
