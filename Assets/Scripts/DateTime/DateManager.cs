@@ -1,4 +1,8 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -33,7 +37,7 @@ public class DateManager : MonoBehaviour
 
     ThirdPersonCam cam;
 
-    HeroManager[] heroManagers;
+    List<HeroManager> heroManagers = new List<HeroManager>();
 
     PlayerWhistle playerWhistle;
 
@@ -60,7 +64,7 @@ public class DateManager : MonoBehaviour
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
 
-        heroManagers = FindObjectsByType<HeroManager>(FindObjectsSortMode.InstanceID);
+        heroManagers = NewGameSetup.i.GetActiveHeroes();
 
         // Setting some base vals
         currentYear = DateSettings.startingYear;
@@ -156,11 +160,11 @@ public class DateManager : MonoBehaviour
             // Resting
             if (heroManager.HeroSchedule().GetCurrentEvent() is RestScheduleEvent)
             {
-                Debug.Log("-*-*- Resting Logs for " + heroManager.Hero().name + ", TrainingEvent: " + heroManager.HeroSchedule().GetCurrentEvent().GetName() + "-*-*-");
-                Debug.Log("Before rest: " + heroManager.Hero().GetEnergy());
+                // Debug.Log("-*-*- Resting Logs for " + heroManager.Hero().name + ", TrainingEvent: " + heroManager.HeroSchedule().GetCurrentEvent().GetName() + "-*-*-");
+                // Debug.Log("Before rest: " + heroManager.Hero().GetEnergy());
                 ScheduleManager.i.ProcessResting(heroManager);
-                Debug.Log("After rest: " + heroManager.Hero().GetEnergy());
-                Debug.Log("--------------------------------------------");
+                // Debug.Log("After rest: " + heroManager.Hero().GetEnergy());
+                // Debug.Log("--------------------------------------------");
                 // need to show resting results
                 StartCoroutine(ScheduleManager.i.ShowRestingResults(heroManager));
             }
@@ -170,11 +174,11 @@ public class DateManager : MonoBehaviour
             {
                 TrainingScheduleEvent trainingScheduleEvent = heroManager.HeroSchedule().GetCurrentEvent() as TrainingScheduleEvent;
 
-                Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + ", TrainingEvent: " + trainingScheduleEvent.GetTrainingName() + "-*-*-");
-                Debug.Log("Before exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
+                // Debug.Log("-*-*- Training Logs for " + heroManager.Hero().name + ", TrainingEvent: " + trainingScheduleEvent.GetTrainingName() + "-*-*-");
+                // Debug.Log("Before exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
                 TrainingManager.i.ProcessTraining(heroManager);
-                Debug.Log("After exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
-                Debug.Log("--------------------------------------------");
+                // Debug.Log("After exp: " + TrainingManager.i.GetHeroExpByType(trainingScheduleEvent.GetTrainingType(), heroManager) + ", level: " + TrainingManager.i.GetHeroStatLevelByType(trainingScheduleEvent.GetTrainingType(), heroManager));
+                // Debug.Log("--------------------------------------------");
 
                 // display the training results to the player
                 StartCoroutine(TrainingManager.i.ShowTrainingResults(heroManager));
@@ -192,7 +196,8 @@ public class DateManager : MonoBehaviour
 
         // -*-*-*-*- Start here -*-*-*-*-
 
-        Debug.Log("<color=blue>[DateManager] Starting week: " + week[currentWeek] + " of Month " + month[currentMonth] + "</color>");
+        string debugOut = "Starting week: " + week[currentWeek] + " of Month " + month[currentMonth];
+        DebugManager.i.ScheduleDebugOut("DateManager", debugOut, false, false);
 
         // move all heroes to starting position
         foreach (HeroManager heroManager in heroManagers)
@@ -335,11 +340,11 @@ public class DateManager : MonoBehaviour
     {
         if (toggle && !anim.GetBool("ShowToast"))
         {
-            Debug.Log("Show toast");
+            // Debug.Log("Show toast");
             anim.SetBool("ShowToast", true);
         } else if (!toggle && anim.GetBool("ShowToast"))
         {
-            Debug.Log("Hide toast");
+            // Debug.Log("Hide toast");
             anim.SetBool("ShowToast", false);
         }
     }

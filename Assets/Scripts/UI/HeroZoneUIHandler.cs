@@ -119,12 +119,12 @@ public class HeroZoneUIHandler : MonoBehaviour
     /// <param name="heroManager">Hero to have stats drawn</param>
     void DrawStatBars(HeroManager heroManager)
     {
-        strLevelVal.text = heroManager.Hero().GetStrength().ToString();
-        endLevelVal.text = heroManager.Hero().GetEndurance().ToString();
-        agiLevelVal.text = heroManager.Hero().GetAgility().ToString();
-        dexLevelVal.text = heroManager.Hero().GetDexterity().ToString();
-        intLevelVal.text = heroManager.Hero().GetIntelligence().ToString();
-        fthLevelVal.text = heroManager.Hero().GetFaith().ToString();
+        strLevelVal.text = heroManager.Hero().GetBaseStrength().ToString();
+        endLevelVal.text = heroManager.Hero().GetBaseEndurance().ToString();
+        agiLevelVal.text = heroManager.Hero().GetBaseAgility().ToString();
+        dexLevelVal.text = heroManager.Hero().GetBaseDexterity().ToString();
+        intLevelVal.text = heroManager.Hero().GetBaseIntelligence().ToString();
+        fthLevelVal.text = heroManager.Hero().GetBaseFaith().ToString();
 
         strExpVal.text = heroManager.HeroTraining().GetStrengthExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.STRENGTH, heroManager).ToString();
         endExpVal.text = heroManager.HeroTraining().GetEnduranceExp() + "/" + TrainingManager.i.GetExpRequiredForLevelUp(EnumHandler.TrainingTypes.ENDURANCE, heroManager).ToString();

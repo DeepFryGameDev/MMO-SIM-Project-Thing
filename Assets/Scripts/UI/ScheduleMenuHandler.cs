@@ -222,7 +222,9 @@ public class ScheduleMenuHandler : MonoBehaviour
                 break;
         }
 
-        Debug.LogWarning("*-*-*-* New event created: " + newScheduleEvent.GetName() + " into schedule slot " + slot + "*-*-*-*-*");
+        //Debug.Log("<color=Green>[ScheduleMenuHandler]</color> New event created: " + newScheduleEvent.GetName() + " into schedule slot " + slot + "*-*-*-*-*");
+        String debugOut = newScheduleEvent.GetName() + " set into schedule slot " + slot;
+        DebugManager.i.UIDebugOut("ScheduleMenuHandler", debugOut, false, false);
 
         HomeZoneManager.i.GetHeroManager().HeroSchedule().SetScheduleSlot(slot, newScheduleEvent);
     }

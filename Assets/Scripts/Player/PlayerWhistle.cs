@@ -50,7 +50,7 @@ public class PlayerWhistle : MonoBehaviour
             {
                 // set heroWhistled
                 heroManagerWhistled = hit.transform.gameObject.GetComponent<HeroHomeZone>().heroManager;
-                Debug.Log("Hero manager: " + heroManagerWhistled.Hero().name);
+                // Debug.Log("Hero manager: " + heroManagerWhistled.Hero().name);
 
                 GlobalSettings.SetUIState(GlobalSettings.UIStates.HEROCOMMAND);
 
@@ -58,7 +58,7 @@ public class PlayerWhistle : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Player is not standing on home zone!");
+                DebugManager.i.HeroDebugOut("PlayerWhistle", "Player is not standing on home zone!", true, false);
             }
         }
     }
@@ -72,7 +72,7 @@ public class PlayerWhistle : MonoBehaviour
         heroManagerWhistled.HeroPathing().pathMode = HeroPathing.pathModes.WHISTLE;
 
         // play some whisle SE eventually here
-        Debug.Log("***PlayerWhistle: Whistling for " + heroManagerWhistled.Hero().name + "***");
+        DebugManager.i.HeroDebugOut("PlayerWhistle", "Whistling for " + heroManagerWhistled.Hero().name, false, false);
 
         // stop player movement
         pm.ToggleMovement(false);

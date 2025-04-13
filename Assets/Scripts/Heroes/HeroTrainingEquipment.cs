@@ -28,11 +28,11 @@ public class HeroTrainingEquipment : MonoBehaviour
     private void Start()
     {
         // for testing, add the 2 test training equips to inventory.
-        Debug.Log("Adding " + TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[0].name + " to inventory");
+        /*Debug.Log("Adding " + TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[0].name + " to inventory");
         heroManager.HeroInventory().AddToInventory(TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[0]);
 
         Debug.Log("Adding " + TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[1].name + " to inventory");
-        heroManager.HeroInventory().AddToInventory(TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[1]);
+        heroManager.HeroInventory().AddToInventory(TrainingEquipmentDatabase.db.GetBasicTrainingEquipment()[1]);*/
     }
 
     /// <summary>

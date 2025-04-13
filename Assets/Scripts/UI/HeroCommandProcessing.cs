@@ -47,8 +47,6 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void OpenHeroCommand()
     {
-        Debug.Log("Opening command window");
-
         // Turn off interaction image in UI
         playerInteraction.SetIgnoreRay(true);
 
@@ -71,8 +69,6 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseHeroCommand()
     {
-        Debug.Log("Closing command window");
-
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.IDLE);
 
         heroManager.HeroPathing().StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.

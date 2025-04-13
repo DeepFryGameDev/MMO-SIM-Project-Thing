@@ -39,7 +39,7 @@ public class ScheduleManager : MonoBehaviour
     /// <param name="heroManager"></param>
     public void ProcessResting(HeroManager heroManager)
     {
-        Debug.Log("Need to rest");
+        // Debug.Log("Need to rest");
 
         heroManager.HeroTraining().SetTempEnergy(heroManager.Hero().GetEnergy());
 
@@ -166,29 +166,41 @@ public class ScheduleManager : MonoBehaviour
         if (HomeZoneManager.i.GetHeroManager() != null && HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0() != null && 
             (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().ID == ID))
         {
+            Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: From Equipment Slot 0 - " + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot0().trainingName);
             return GetTrainingEventFromEquipmentSlot(0);
         }
 
         if (HomeZoneManager.i.GetHeroManager() != null && HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1() != null && 
             (HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().ID == ID))
+        {
+            Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: From Equipment Slot 1 - " + HomeZoneManager.i.GetHeroManager().HeroTrainingEquipment().GetTrainingEquipmentSlot1().trainingName);
             return GetTrainingEventFromEquipmentSlot(1);
+        }
+            
 
         switch (ID)
         {
             case 0: // REST
                 //Debug.Log("returning a rest event");
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Rest event created");
                 return new RestScheduleEvent();
             case 1: // BASIC STRENGTH TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Strength Training");
                 return GetBasicStrengthTrainingScheduleEvent();
             case 2: // BASIC ENDURANCE TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Endurance Training");
                 return GetBasicEnduranceTrainingScheduleEvent();
             case 3: // BASIC AGILITY TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Agility Training");
                 return GetBasicAgilityTrainingScheduleEvent();
             case 4: // BASIC DEXTERITY TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Dexterity Training");
                 return GetBasicDexterityTrainingScheduleEvent();
             case 5: // BASIC INTELLIGENCE TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Intelligence Training");
                 return GetBasicIntelligenceTrainingScheduleEvent();
             case 6: // BASIC FAITH TRAINING
+                //Debug.Log("<color=blue>[ScheduleManager]</color> CreateScheduleEventByID: Event created: Basic Faith Training");
                 return GetBasicFaithTrainingScheduleEvent();
             default:
                 return null;
@@ -213,7 +225,7 @@ public class ScheduleManager : MonoBehaviour
 
         // set EnergyFill to (hero's current energy / hero's max energy)
         float energyFillVal = (float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy;
-        Debug.Log(heroManager.HeroTraining().GetTempEnergy() + " / " + HeroSettings.maxEnergy + " = " + ((float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy));
+        // Debug.Log(heroManager.HeroTraining().GetTempEnergy() + " / " + HeroSettings.maxEnergy + " = " + ((float)heroManager.HeroTraining().GetTempEnergy() / HeroSettings.maxEnergy));
 
         rrh.SetEnergyFill(energyFillVal);
         rrh.SetEnergyFillText(heroManager.HeroTraining().GetTempEnergy() + " / " + HeroSettings.maxEnergy);
