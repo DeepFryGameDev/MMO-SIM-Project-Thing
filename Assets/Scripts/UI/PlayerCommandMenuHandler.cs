@@ -109,14 +109,23 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Set to the 'Next Week' button in the player command menu
     /// These are the functions that will run when the player clicks this button
+    /// Assigned to: PlayerCommandMenu/PlayerCommand/Holder/ButtonGroup/NextWeekButton.OnClick()
     /// </summary>
     public void NextWeekButtonClicked()
     {
         StartCoroutine(DateManager.i.ProcessStartWeek());
 
         ToggleCanvasGroup(false);
+    }
+
+    /// <summary>
+    /// Set to the 'Party' button in the player command menu
+    /// Assigned to: PlayerCommandMenu/PlayerCommand/Holder/ButtonGroup/PartyButton.OnClick()
+    /// </summary>
+    public void PartyButtonClicked()
+    {
+        
     }
 
     /// <summary>

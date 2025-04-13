@@ -72,7 +72,7 @@ public class PlayerWhistle : MonoBehaviour
         heroManagerWhistled.HeroPathing().pathMode = HeroPathing.pathModes.WHISTLE;
 
         // play some whisle SE eventually here
-        DebugManager.i.HeroDebugOut("PlayerWhistle", "Whistling for " + heroManagerWhistled.Hero().name, false, false);
+        DebugManager.i.HeroDebugOut("PlayerWhistle", "Whistling for " + heroManagerWhistled.Hero().GetName(), false, false);
 
         // stop player movement
         pm.ToggleMovement(false);
