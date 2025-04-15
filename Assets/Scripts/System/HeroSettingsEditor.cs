@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngineInternal;
 
 // Purpose: Used to tweak various settings related to Hero scripts - linked to the HeroSettings static class so that other scripts can simply reference that.
 // Directions: Attach to the [Editor] object
@@ -28,6 +29,9 @@ public class HeroSettingsEditor : MonoBehaviour
     [Tooltip("The movement speed that hero navMeshAgents should move at when they are running")]
     [Range(5.0f, 8.0f)] public float runSpeed = 6;
 
+    [Tooltip("The movement speed that hero navMeshAgents should move at when they are running")]
+    [Range(8.0f, 50.0f)] public float catchupSpeed = 30;
+
     [Space(10)]
     //-----------------------------------------------------------------
     [Header("-----Pathing-----")]
@@ -43,6 +47,9 @@ public class HeroSettingsEditor : MonoBehaviour
 
     [Tooltip("Used by various scripts to determine at which distance the hero's unit is away from the target, and is considered 'stopped'.  Probably do not need to tweak.")]
     public float stoppingDistance = .01f;
+
+    [Tooltip("When the hero is added to the party, before leaving the base, hero will sprint to this distance before going back to run mode")]
+    [Range(1f, 20f)] public float runToCatchupDistance = 10.0f;
 
     [Header("Debugging")] // Logging
 
@@ -80,6 +87,7 @@ public class HeroSettingsEditor : MonoBehaviour
         // Movement
         HeroSettings.walkSpeed = walkSpeed;
         HeroSettings.runSpeed = runSpeed;
+        HeroSettings.catchupSpeed = catchupSpeed;
 
         // Pathing
         HeroSettings.walkToTargetDistance = walkToTargetDistance;
@@ -88,6 +96,8 @@ public class HeroSettingsEditor : MonoBehaviour
         HeroSettings.stoppingDistance = stoppingDistance;
         HeroSettings.minLogDistance = minLogDistance;
         HeroSettings.logPathingStuff = logPathingStuff;
+
+        HeroSettings.runToCatchupDistance = runToCatchupDistance;
 
         // Whistle
         HeroSettings.whistleStoppingDistance = whistleStoppingDistance;

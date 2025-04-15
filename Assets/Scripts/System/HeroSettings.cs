@@ -7,11 +7,15 @@ public static class HeroSettings
 {
     public static float walkSpeed;
     public static float runSpeed;
+    public static float catchupSpeed;
 
     public static float walkToTargetDistance;
     public static float minRandomWaitSeconds;
     public static float maxRandomWaitSeconds;
     public static float stoppingDistance;
+
+    public static float runToCatchupDistance;
+
     public static float minLogDistance;
     public static bool logPathingStuff;
 

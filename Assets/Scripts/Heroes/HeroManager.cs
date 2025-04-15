@@ -7,6 +7,9 @@ using UnityEngine.AI;
 
 public class HeroManager : MonoBehaviour
 {
+    [SerializeField] EnumHandler.HeroClasses heroClass;
+    public EnumHandler.HeroClasses GetHeroClass() { return heroClass; }
+
     [SerializeField] Sprite faceImage;
     public Sprite GetFaceImage() { return faceImage; }
     
@@ -35,6 +38,9 @@ public class HeroManager : MonoBehaviour
 
     HeroSchedule heroSchedule;
     public HeroSchedule HeroSchedule() { return heroSchedule; }
+
+    HeroParty heroParty;
+    public HeroParty HeroParty() { return heroParty; }
 
     new Collider collider;
     public Collider Collider() { return collider; }
@@ -76,6 +82,8 @@ public class HeroManager : MonoBehaviour
         heroTrainingEquipment = transform.GetComponent<HeroTrainingEquipment>();
         heroInventory = transform.GetComponent<HeroInventory>();
 
+        heroParty = transform.GetComponent<HeroParty>();
+
         heroSchedule = transform.GetComponent<HeroSchedule>();
 
         collider = transform.GetComponent<Collider>();
@@ -87,32 +95,57 @@ public class HeroManager : MonoBehaviour
     {
         if (hero == null)
         {
-            Debug.LogError("*-*-*-*-* Hero null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "Hero null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (navMeshAgent == null)
         {
-            Debug.LogError("*-*-*-*-* navMeshAgent null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "navMeshAgent null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (heroPathing == null)
         {
-            Debug.LogError("*-*-*-*-* heroPathing null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "heroPathing null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (heroInteraction == null)
         {
-            Debug.LogError("*-*-*-*-* heroInteraction null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "heroInteraction null on HeroManager: " + gameObject.name, false, true);
+        }
+
+        if (heroTraining == null)
+        {
+            DebugManager.i.SystemDebugOut("HeroManager", "heroTraining null on HeroManager: " + gameObject.name, false, true);
+        }
+
+        if (heroTrainingEquipment == null)
+        {
+            DebugManager.i.SystemDebugOut("HeroManager", "heroTrainingEquipment null on HeroManager: " + gameObject.name, false, true);
+        }
+
+        if (heroSchedule == null)
+        {
+            DebugManager.i.SystemDebugOut("HeroManager", "heroSchedule null on HeroManager: " + gameObject.name, false, true);
+        }
+
+        if (heroInventory == null)
+        {
+            DebugManager.i.SystemDebugOut("HeroManager", "heroInventory null on HeroManager: " + gameObject.name, false, true);
+        }
+
+        if (heroParty == null)
+        {
+            DebugManager.i.SystemDebugOut("HeroManager", "heroParty null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (collider == null)
         {
-            Debug.LogError("*-*-*-*-* collider null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "collider null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (animHandler == null)
         {
-            Debug.LogError("*-*-*-*-* animHandler null on HeroManager: " + gameObject.name + "*-*-*-*-*");
+            DebugManager.i.SystemDebugOut("HeroManager", "animHandler null on HeroManager: " + gameObject.name, false, true);
         }
     }
 

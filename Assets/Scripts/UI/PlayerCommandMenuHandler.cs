@@ -19,6 +19,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     Animator anim;
 
+    [SerializeField] PartyMenuHandler partyMenuHandler;
+
     [SerializeField] TextMeshProUGUI weekText;
     [SerializeField] TextMeshProUGUI monthText;
     [SerializeField] TextMeshProUGUI yearText;
@@ -63,7 +65,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
             SetDateTexts();
 
             // open menu
-            ToggleCanvasGroup(true);
+            MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);
 
             // should fix later
             Cursor.lockState = CursorLockMode.None;
@@ -91,7 +93,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     public void CloseMenuButtonClicked()
     {
         // close menu
-        ToggleCanvasGroup(false);
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.IDLE);
 
         // enable player whistle ability
         playerWhistle.ToggleCanWhistle(true);
@@ -125,7 +127,12 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     public void PartyButtonClicked()
     {
-        
+        PartyManager.i.GenerateHeroLists();
+
+        PartyManager.i.SetPartyMenuUI();
+
+        // show party UI
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.PARTY);
     }
 
     /// <summary>

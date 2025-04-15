@@ -18,6 +18,9 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab for TrainingEquipmentListButtons to be instantiated when clicking the one of the TrainingEquipmentButtons")]
     public GameObject TrainingEquipmentListButton;
 
+    public GameObject PartyInactiveHeroFrame;
+    public GameObject PartyActiveHeroFrame;
+
     private void Awake()
     {
         Singleton();

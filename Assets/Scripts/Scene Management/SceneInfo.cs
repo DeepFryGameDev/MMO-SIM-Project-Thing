@@ -17,8 +17,6 @@ public class SceneInfo : MonoBehaviour
 
     HeroMenuHandler playerMenuHandler; // Used to disable the player's ability to open the player menu while on main menu, as well as refresh the UI when the scene is loaded
 
-    UIHandler uiHandler; // Used to generate the cooldown radials for the scene when it is loaded
-
     IEnumerator waitForGameSet; // Used to run methods when the game is fully loaded and scene is finished loading (can maybe remove)
 
     bool sceneSet; // Set to true when the scene setup has been completed
@@ -28,8 +26,6 @@ public class SceneInfo : MonoBehaviour
         cameraManager = FindFirstObjectByType<CameraManager>();
 
         playerMenuHandler = FindFirstObjectByType<HeroMenuHandler>();
-
-        uiHandler = FindFirstObjectByType<UIHandler>();
 
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
 

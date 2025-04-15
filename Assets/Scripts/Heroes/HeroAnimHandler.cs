@@ -30,21 +30,54 @@ public class HeroAnimHandler : MonoBehaviour
     {
         float distance = Vector3.Distance(heroManager.HeroPathing().GetAgent().destination, transform.position);
 
-        if (distance > HeroSettings.stoppingDistance) // Hero is en route to target
+        switch (heroManager.HeroPathing().GetRunMode())
         {
-            if (distance > HeroSettings.walkToTargetDistance && heroManager.HeroPathing().GetShouldRun()) // should be running
-            {
-                if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Running / Running Anim");
-                animator.SetBool("isWalking", false);
-                animator.SetBool("isRunning", true);
-            }
-            else // should be walking 
-            {
+            case EnumHandler.pathRunMode.WALK:
                 if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Walking / Walking Anim");
+
                 animator.SetBool("isWalking", true);
                 animator.SetBool("isRunning", false);
-            }
+
+                break;
+            case EnumHandler.pathRunMode.CANRUN:
+                if (distance > HeroSettings.stoppingDistance) // Hero is en route to target
+                {
+                    if (distance > HeroSettings.walkToTargetDistance) // should be running
+                    {
+                        if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Running / Running Anim");
+
+                        animator.SetBool("isWalking", false);
+                        animator.SetBool("isRunning", true);
+                    }
+                    else // should be walking 
+                    {
+                        if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Walking / Walking Anim");
+
+                        animator.SetBool("isWalking", true);
+                        animator.SetBool("isRunning", false);
+                    }
+                }
+                break;
+            case EnumHandler.pathRunMode.CATCHUP:
+                if (distance > HeroSettings.runToCatchupDistance) // should be running
+                {
+                    if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Running / Running Anim");
+
+                    animator.SetBool("isWalking", false);
+                    animator.SetBool("isRunning", true);
+                }
+                else // should be walking 
+                {
+                    if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Walking / Walking Anim");
+
+                    animator.SetBool("isWalking", true);
+                    animator.SetBool("isRunning", false);
+                }
+                break;
         }
+        
+
+        
 
         if (distance <= HeroSettings.stoppingDistance && animator.GetBool("isWalking")) // Hero has stopped moving
         {

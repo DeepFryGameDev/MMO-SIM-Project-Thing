@@ -14,6 +14,13 @@ public class MenuProcessingHandler : MonoBehaviour
 
     EnumHandler.HeroCommandMenuStates tempHeroCommandMenuState; // Used so UI is only updated once.
 
+
+    EnumHandler.PlayerCommandMenuStates playerCommandMenuState;
+    public void SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates menuState) { playerCommandMenuState = menuState; }
+    public EnumHandler.PlayerCommandMenuStates GetPlayerCommandMenuState() { return playerCommandMenuState; }
+
+    EnumHandler.PlayerCommandMenuStates tempPlayerCommandMenuState; // Used so UI is only updated once.
+
     // Schedule System
     [SerializeField] ScheduleMenuHandler scheduleMenuHandler;
 
@@ -21,6 +28,11 @@ public class MenuProcessingHandler : MonoBehaviour
     [SerializeField] CanvasGroup heroCommandCanvasGroup;
     [SerializeField] Animator heroCommandAnimator;
     [SerializeField] CanvasGroup trainingEquipmentMenuCanvasGroup;
+
+    [SerializeField] CanvasGroup playerCommandCanvasGroup;
+    [SerializeField] CanvasGroup partyMenuCanvasGroup;
+    [SerializeField] Animator playerCommandAnimator;
+
     public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return trainingEquipmentMenuCanvasGroup; }
     [SerializeField] CanvasGroup trainingEquipmentListCanvasGroup;
     public CanvasGroup GetTrainingEquipmentListCanvasGroup() { return trainingEquipmentListCanvasGroup; }
@@ -47,6 +59,8 @@ public class MenuProcessingHandler : MonoBehaviour
     void Update()
     {
         if (tempHeroCommandMenuState != heroCommandMenuState) ProcessHeroCommandMenu();
+
+        if (tempPlayerCommandMenuState != playerCommandMenuState) ProcessPlayerCommandMenu();
     }
 
     /// <summary>
@@ -65,8 +79,6 @@ public class MenuProcessingHandler : MonoBehaviour
                 {
                     ToggleMenu(heroCommandCanvasGroup, true);
                     tempCanvasGroup = heroCommandCanvasGroup;
-
-                    // should hide the current week toast here
                 } else
                 {
                     TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
@@ -88,6 +100,36 @@ public class MenuProcessingHandler : MonoBehaviour
         }
 
         tempHeroCommandMenuState = heroCommandMenuState;
+    }
+
+    /// <summary>
+    /// Opens/closes menus based on the menu state - this gives easy control to outside scripts to open any given menu
+    /// </summary>
+    void ProcessPlayerCommandMenu()
+    {
+        switch (playerCommandMenuState)
+        {
+            case EnumHandler.PlayerCommandMenuStates.IDLE: // Hide the player command menu
+                ToggleMenu(playerCommandCanvasGroup, false);
+
+                break;
+            case EnumHandler.PlayerCommandMenuStates.ROOT: // Display root contents of player command menu
+                if (tempPlayerCommandMenuState == EnumHandler.PlayerCommandMenuStates.IDLE) // coming from idle (no menu)
+                {
+                    ToggleMenu(playerCommandCanvasGroup, true);
+                    tempCanvasGroup = playerCommandCanvasGroup;
+                }
+                else
+                {
+                    TransitionToMenu(playerCommandCanvasGroup, tempCanvasGroup);
+                }
+                break;
+            case EnumHandler.PlayerCommandMenuStates.PARTY:
+                TransitionToMenu(partyMenuCanvasGroup, tempCanvasGroup);
+                break;
+        }
+
+        tempPlayerCommandMenuState = playerCommandMenuState;
     }
 
     /// <summary>
@@ -124,12 +166,13 @@ public class MenuProcessingHandler : MonoBehaviour
     /// <param name="toggle">True to show the command menu, False to hide it</param>
     public void ToggleMenu(CanvasGroup canvasGroup, bool toggle)
     {
-        heroCommandAnimator.SetBool("toggleOn", toggle);
+        if (canvasGroup == heroCommandCanvasGroup) heroCommandAnimator.SetBool("toggleOn", toggle);
+        else if (canvasGroup == playerCommandCanvasGroup) playerCommandAnimator.SetBool("toggleOn", toggle);
 
         if (toggle)
         {
             canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;            
+            canvasGroup.blocksRaycasts = true;
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

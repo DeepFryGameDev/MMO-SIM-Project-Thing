@@ -17,19 +17,14 @@ public class HeroPathing : MonoBehaviour
     float moveSpeed; // Is synchronized with the hero's NavMeshAgent movement speed
     public float GetMoveSpeed() { return moveSpeed; }
 
-    bool shouldRun; // Is set to true when the hero's running animation and run speed should be active. Essentially, when the hero should be running.
-    public bool GetShouldRun() { return shouldRun; }
-        
-    public enum pathModes 
-    {
-        IDLE, // Hero is not moving
-        RANDOM, // Hero is choosing random points within home zone and pathing to them
-        TARGET, // Hero is moving to a designated point (ie whistle command)
-        WHISTLE,
-        COMMAND // Not being used yet
-    }
+    EnumHandler.pathModes pathMode; // The behavior that the pathing should follow - what is the hero currently doing?
+    public void SetPathMode(EnumHandler.pathModes pathMode) { this.pathMode = pathMode; }
+    public EnumHandler.pathModes GetPathMode() { return pathMode; }
 
-    public pathModes pathMode; // The behavior that the pathing should follow - what is the hero currently doing?
+    EnumHandler.pathRunMode runMode;
+    public void SetRunMode(EnumHandler.pathRunMode runMode) { this.runMode = runMode; }
+    public EnumHandler.pathRunMode GetRunMode() { return runMode; }
+
 
     #region RandomPathing Vars
 
@@ -70,21 +65,61 @@ public class HeroPathing : MonoBehaviour
 
         agent.speed = HeroSettings.walkSpeed;
         moveSpeed = agent.speed; // just simply setting defaults to w/e the agent's speed is (which is coincidentally set from HeroSettings)
+
+        pathMode = EnumHandler.pathModes.RANDOM;
     }
 
     void Update()
     {
         switch (pathMode)
         {
-            case pathModes.RANDOM:
+            case EnumHandler.pathModes.RANDOM:
                 ProcessRandomPathing();
                 break;
-            case pathModes.WHISTLE:
+            case EnumHandler.pathModes.WHISTLE:
                 WhistlePathing();
                 break;
-        }    
+            case EnumHandler.pathModes.PARTYFOLLOW:
+                ProcessPartyFollowPathing();
+                break;
+            case EnumHandler.pathModes.SENDTOSTARTINGPOINT:
+
+                break;
+        }
+
+        HandleMoveSpeed();
 
         SyncMoveSpeed();        
+    }
+
+    void HandleMoveSpeed()
+    {
+        switch (runMode)
+        {
+            case EnumHandler.pathRunMode.WALK:
+                moveSpeed = HeroSettings.walkSpeed;
+
+                break;
+            case EnumHandler.pathRunMode.CANRUN:
+                // if distance > run distance, run speed
+                if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.walkToTargetDistance)
+                {
+                    moveSpeed = HeroSettings.runSpeed;
+                } else
+                {
+                    moveSpeed = HeroSettings.walkSpeed;
+                }
+                    break;
+            case EnumHandler.pathRunMode.CATCHUP:     
+                if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.runToCatchupDistance)  // if distance > catchup distance, catchup run speed
+                {
+                    moveSpeed = HeroSettings.catchupSpeed;
+                } else if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.walkToTargetDistance) // else if distance > run distance, can just run now
+                {
+                    runMode = EnumHandler.pathRunMode.CANRUN;
+                }
+                    break;
+        }
     }
 
     /// <summary>
@@ -121,7 +156,7 @@ public class HeroPathing : MonoBehaviour
 
         agent.isStopped = false;
 
-        pathMode = pathModes.RANDOM;
+        pathMode = EnumHandler.pathModes.RANDOM;
     }
 
     /// <summary>
@@ -182,7 +217,7 @@ public class HeroPathing : MonoBehaviour
         {
             if (hit.transform.CompareTag("PrefabZone"))
             {
-                Debug.LogWarning("Hit prefab zone.  Getting a new position");
+                DebugManager.i.HeroDebugOut("HeroPathing - GetRandomPositionInBounds", heroManager.Hero().GetName() + " hit prefab zone while checking for a point to path to.  Getting a new position.", true, false);
                 return new Vector3(0,0,0);
             }
         }
@@ -197,24 +232,6 @@ public class HeroPathing : MonoBehaviour
     float GetRandomWaitTime()
     {
         return Random.Range(HeroSettings.minRandomWaitSeconds, HeroSettings.maxRandomWaitSeconds);
-    }
-
-    /// <summary>
-    /// Stops the NavMeshAgent from moving and resets Pathing vars
-    /// </summary>
-    public void StopPathing()
-    {
-        agent.ResetPath();
-        agent.isStopped = true;
-
-        agent.velocity = new Vector3(0, 0, 0);
-
-        randPathingActive = false;
-        randomWaiting = false;
-
-        whistleTargetWithinRange = false;
-
-        pathMode = pathModes.IDLE;
     }
 
     #endregion
@@ -259,25 +276,53 @@ public class HeroPathing : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// Switches between Hero running and walking
-    /// </summary>
-    /// <param name="running">True if the hero should be running.  False if they should be walking.</param>
-    public void ToggleRun(bool running)
+
+    #region PartyPathing
+
+    void ProcessPartyFollowPathing()
     {
-        if (running)
+        // Debug.Log("Abs diff between " + transform.position + " and " + heroManager.HeroParty().GetPartyAnchor().GetPosition() + " is " + (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()))));
+
+        if (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition())) > HeroSettings.stoppingDistance)
         {
-            shouldRun = true;
-            moveSpeed = HeroSettings.runSpeed;
-        } else
-        {
-            shouldRun = false;
-            moveSpeed = HeroSettings.walkSpeed;
+            agent.SetDestination(heroManager.HeroParty().GetPartyAnchor().GetPosition());
         }
     }
+
+    /// <summary>
+    /// Begins new party pathing procedures.
+    /// </summary>
+    public void StartPartyPathing()
+    {
+        moveSpeed = HeroSettings.walkSpeed;
+
+        agent.isStopped = false;
+
+        pathMode = EnumHandler.pathModes.PARTYFOLLOW;
+    }
+
+    #endregion
 
     public void MoveToStartingPosition()
     {
         transform.position = heroManager.GetStartingPosition();
+    }
+
+    /// <summary>
+    /// Stops the NavMeshAgent from moving and resets Pathing vars
+    /// </summary>
+    public void StopPathing()
+    {
+        agent.ResetPath();
+        agent.isStopped = true;
+
+        agent.velocity = new Vector3(0, 0, 0);
+
+        randPathingActive = false;
+        randomWaiting = false;
+
+        whistleTargetWithinRange = false;
+
+        pathMode = EnumHandler.pathModes.IDLE;
     }
 }

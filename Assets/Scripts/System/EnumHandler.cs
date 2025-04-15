@@ -5,13 +5,15 @@
 public static class EnumHandler
 {
     /// <summary>
-    /// Used in many different functions to determine which class the player chose
+    /// Used in many different functions for the hero's class
     /// </summary>
-    public enum PlayerClasses
+    public enum HeroClasses
     {
-        WARRIOR,
+        FIGHTER,
         ARCHER,
-        MAGE
+        MAGE,
+        CLERIC,
+        KNIGHT
     }
 
     /// <summary>
@@ -49,6 +51,35 @@ public static class EnumHandler
         FAITH
     }
 
+    // --- PARTY ---
+
+    public enum PartyFollowStates
+    {
+        IDLE,
+        FOLLOWINBASE,
+        FOLLOW
+    }
+
+    // --- PATHING ---
+
+    public enum pathModes
+    {
+        IDLE, // Hero is not moving
+        RANDOM, // Hero is choosing random points within home zone and pathing to them
+        TARGET, // Hero is moving to a designated point (ie whistle command)
+        WHISTLE,
+        PARTYFOLLOW,
+        SENDTOSTARTINGPOINT,
+        COMMAND // Not being used yet
+    }
+
+    public enum pathRunMode
+    {
+        WALK,
+        CANRUN,
+        CATCHUP
+    }
+
 
     // --- UI ---
 
@@ -70,6 +101,7 @@ public static class EnumHandler
     public enum PlayerCommandMenuStates
     {
         IDLE,
+        PARTY,
         ROOT
     }
 }

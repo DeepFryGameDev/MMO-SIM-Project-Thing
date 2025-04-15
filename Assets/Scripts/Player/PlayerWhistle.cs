@@ -69,7 +69,7 @@ public class PlayerWhistle : MonoBehaviour
     IEnumerator StartCommandFromWhistle()
     {
         // Reset heroPathing
-        heroManagerWhistled.HeroPathing().pathMode = HeroPathing.pathModes.WHISTLE;
+        heroManagerWhistled.HeroPathing().SetPathMode(EnumHandler.pathModes.WHISTLE);
 
         // play some whisle SE eventually here
         DebugManager.i.HeroDebugOut("PlayerWhistle", "Whistling for " + heroManagerWhistled.Hero().GetName(), false, false);
@@ -78,7 +78,7 @@ public class PlayerWhistle : MonoBehaviour
         pm.ToggleMovement(false);
 
         // increase hero pathing run speed
-        heroManagerWhistled.HeroPathing().ToggleRun(true);
+        heroManagerWhistled.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
 
         // have hero run to player
         heroManagerWhistled.HeroPathing().WhistleMoveToTarget();
@@ -92,7 +92,7 @@ public class PlayerWhistle : MonoBehaviour
 
         heroManagerWhistled.HeroPathing().StopPathing();
 
-        heroManagerWhistled.HeroPathing().ToggleRun(false);
+        heroManagerWhistled.HeroPathing().SetRunMode(EnumHandler.pathRunMode.WALK);
 
         // open command menu
         hcp.SetHeroManager(heroManagerWhistled);

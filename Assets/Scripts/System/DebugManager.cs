@@ -101,4 +101,26 @@ public class DebugManager : MonoBehaviour
             Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
         }
     }
+
+    // <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
+    /// <param name="warning">If the output should show a warning</param>
+    /// <param name="error">If the output should show an error</param>
+    public void PartyDebugOut(string header, string debugOutput, bool warning, bool error)
+    {
+        if (error)
+        {
+            Debug.LogError("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        }
+        else if (warning)
+        {
+            Debug.LogWarning("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        }
+        else
+        {
+            Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        }
+    }
 }
