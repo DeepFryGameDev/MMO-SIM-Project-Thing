@@ -53,15 +53,21 @@ public static class EnumHandler
 
     // --- PARTY ---
 
+    /// <summary>
+    /// Used for hero pathing when in a party
+    /// </summary>
     public enum PartyFollowStates
     {
-        IDLE,
-        FOLLOWINBASE,
-        FOLLOW
+        IDLE, // In the home zone, not following the player
+        FOLLOWINBASE, // Following the player, but in base
+        FOLLOW // Following the player outside of base
     }
 
     // --- PATHING ---
 
+    /// <summary>
+    /// Used for various logic in the HeroPathing script
+    /// </summary>
     public enum pathModes
     {
         IDLE, // Hero is not moving
@@ -73,11 +79,14 @@ public static class EnumHandler
         COMMAND // Not being used yet
     }
 
+    /// <summary>
+    /// Used to determine how the hero's move speed and animation should be handled.
+    /// </summary>
     public enum pathRunMode
     {
-        WALK,
-        CANRUN,
-        CATCHUP
+        WALK, // If the hero should only be walking around
+        CANRUN, // If the hero should be able to run
+        CATCHUP // If the hero needs to catch up to their anchor on the player
     }
 
 

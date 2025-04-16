@@ -18,9 +18,12 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab for TrainingEquipmentListButtons to be instantiated when clicking the one of the TrainingEquipmentButtons")]
     public GameObject TrainingEquipmentListButton;
 
+    [Tooltip("Set this to the prefab to show inactive heroes in the Party switch menu")]
     public GameObject PartyInactiveHeroFrame;
+    [Tooltip("Set this to the prefab to show active heroes in the Party switch menu")]
     public GameObject PartyActiveHeroFrame;
 
+    [Tooltip("Set this to the prefab to the frame for the party HUD")]
     public GameObject PartyHUDFrame;
 
     private void Awake()

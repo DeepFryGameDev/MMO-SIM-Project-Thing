@@ -1,10 +1,8 @@
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates functionality for manipulating the active party
+// Directions: Attach to [System] object
 // Other notes: 
 
 public class PartyManager : MonoBehaviour
@@ -23,13 +21,13 @@ public class PartyManager : MonoBehaviour
     public void RemoveFromActiveHeroes(HeroManager heroManager) { activeHeroes.Remove(heroManager); }
     public void ClearActiveHeroes() { activeHeroes.Clear(); }
 
-    [SerializeField] List<HeroManager> tempInactiveHeroes = new List<HeroManager>(); // used to set the list before "confirm" is clicked
+    [SerializeField] List<HeroManager> tempInactiveHeroes = new List<HeroManager>(); // used to set the list before "confirm" is clicked.  Allows the user to cancel out of the party menu without saving the choices
     public List<HeroManager> GetTempInactiveHeroes() { return tempInactiveHeroes; }
     public void AddToTempInactiveHeroes(HeroManager heroManager) { tempInactiveHeroes.Add(heroManager); }
     public void RemoveFromTempInactiveHeroes(HeroManager heroManager) { tempInactiveHeroes.Remove(heroManager); }
     public void ClearTempInactiveHeroes() { tempInactiveHeroes.Clear(); }
 
-    [SerializeField] List<HeroManager> tempActiveHeroes = new List<HeroManager>(); // used to set the list before "confirm" is clicked
+    [SerializeField] List<HeroManager> tempActiveHeroes = new List<HeroManager>(); // used to set the list before "confirm" is clicked.  Allows the user to cancel out of the party menu without saving the choices
     public List<HeroManager> GetTempActiveHeroes() { return tempActiveHeroes; }
     public void AddToTempActiveHeroes(HeroManager heroManager) { tempActiveHeroes.Add(heroManager); }
     public void RemoveFromTempActiveHeroes(HeroManager heroManager) { tempActiveHeroes.Remove(heroManager); }
@@ -48,6 +46,9 @@ public class PartyManager : MonoBehaviour
         SetDefaultLists();
     }
 
+    /// <summary>
+    /// Sets the active heroes based on the NewGameSetup Active Heroes
+    /// </summary>
     void SetDefaultLists()
     {
         foreach (HeroManager heroManager in NewGameSetup.i.GetActiveHeroes())
@@ -61,7 +62,10 @@ public class PartyManager : MonoBehaviour
         }
     }
 
-    public void GenerateHeroLists()
+    /// <summary>
+    /// Prepares the Party menu by setting the temp lists based on the current active/inactive heroes.
+    /// </summary>
+    public void GenerateHeroManagerListsForMenu()
     {
         ClearTempActiveHeroes();
         ClearTempInactiveHeroes();
@@ -77,9 +81,12 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just sets the UI LayoutGroups with the temp lists
+    /// </summary>
     public void SetPartyMenuUI()
     {
-        partyMenuHandler.SetHomeHeroGroup(tempInactiveHeroes);
-        partyMenuHandler.SetPartyHeroGroup(tempActiveHeroes);
+        partyMenuHandler.SetPartyLayoutGroup(tempInactiveHeroes, 0);
+        partyMenuHandler.SetPartyLayoutGroup(tempActiveHeroes, 1);
     }
 }

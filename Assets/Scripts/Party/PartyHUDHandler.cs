@@ -1,6 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Purpose: Facilitates mainpulating the party HUD UI
+// Directions: Attach to [UI]/HUDCanvas/PartyPanel
+// Other notes: 
 
 public class PartyHUDHandler : MonoBehaviour
 {
@@ -20,6 +23,9 @@ public class PartyHUDHandler : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    /// <summary>
+    /// Sets the party HUD up by clearing the old HUD frames and adding new ones
+    /// </summary>
     public void SetPartyHUD()
     {
         ClearPartyHUD();
@@ -35,6 +41,9 @@ public class PartyHUDHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears the HUD frames under this object
+    /// </summary>
     void ClearPartyHUD()
     {
         foreach (Transform child in gameObject.transform)
@@ -43,6 +52,10 @@ public class PartyHUDHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just turns the HUD on and off
+    /// </summary>
+    /// <param name="toggle">True to turn it on, False to turn it off</param>
     public void ToggleHUD(bool toggle)
     {
         anim.SetBool("toggleOn", toggle);

@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Handles UI functionality for the party switch menu
+// Directions: Attach to the 'PartyActiveHeroFrame' and 'PartyInactiveHeroFrame' prefabs
 // Other notes: 
 
 public class PartySwitchButtonHandler : MonoBehaviour
@@ -12,11 +12,12 @@ public class PartySwitchButtonHandler : MonoBehaviour
     public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
     public HeroManager GetHeroManager() { return heroManager; }
 
-    public void SetNameText() { transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = heroManager.Hero().GetName(); }
-    public void SetClassText() { transform.Find("ClassText").GetComponent<TextMeshProUGUI>().text = UITasks.CapitalizeFirstLetter(heroManager.GetHeroClass().ToString()); }
-    public void SetFaceImage() { transform.Find("FacePanel").GetComponent<Image>().sprite = heroManager.GetFaceImage(); }
-    public void SetLevelText() { transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = "Lv. 1"; } // will obviously be updated when leveling up is functional.  For now, level 1 is fine.
+    void SetNameText() { transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = heroManager.Hero().GetName(); }
+    void SetClassText() { transform.Find("ClassText").GetComponent<TextMeshProUGUI>().text = UITasks.CapitalizeFirstLetter(heroManager.GetHeroClass().ToString()); }
+    void SetFaceImage() { transform.Find("FacePanel").GetComponent<Image>().sprite = heroManager.GetFaceImage(); }
+    void SetLevelText() { transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = "Lv. 1"; } // will obviously be updated when leveling up is functional.  For now, level 1 is fine.
 
+    // Just sets the UI objects based on the heroManager
     public void SetUI()
     {
         SetNameText();
@@ -25,6 +26,9 @@ public class PartySwitchButtonHandler : MonoBehaviour
         SetLevelText();
     }
 
+    /// <summary>
+    /// Called when the user clicks on the 'Join Party' button in the UI
+    /// </summary>
     public void JoinPartyButtonOnClick()
     {
         PartyManager.i.AddToTempActiveHeroes(heroManager);
@@ -33,6 +37,9 @@ public class PartySwitchButtonHandler : MonoBehaviour
         PartyManager.i.SetPartyMenuUI();
     }
 
+    /// <summary>
+    /// Called when the user clicks on the 'Leave Party' button in the UI
+    /// </summary>
     public void LeavePartyButtonOnClick()
     {
         PartyManager.i.AddToTempInactiveHeroes(heroManager);

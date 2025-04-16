@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,9 +68,10 @@ public class HeroZoneUIHandler : MonoBehaviour
     [Tooltip("Set to the text object that will display the hero's Faith Experience")]
     [SerializeField] TextMeshProUGUI fthExpVal;
 
+    [Tooltip("Set to the Party HUD Handler on the Party Panel")]
     [SerializeField] PartyHUDHandler partyHudHandler;
 
-    bool heroZoneUIShowing;
+    bool heroZoneUIShowing; // Is true when the hero zone interface is displayed
     public bool getHeroZoneUIShowing() { return heroZoneUIShowing; }
 
     Animator anim;

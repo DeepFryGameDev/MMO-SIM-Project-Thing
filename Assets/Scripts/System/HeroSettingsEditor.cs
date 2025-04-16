@@ -29,7 +29,7 @@ public class HeroSettingsEditor : MonoBehaviour
     [Tooltip("The movement speed that hero navMeshAgents should move at when they are running")]
     [Range(5.0f, 8.0f)] public float runSpeed = 6;
 
-    [Tooltip("The movement speed that hero navMeshAgents should move at when they are running")]
+    [Tooltip("The movement speed that hero navMeshAgents should move at when they are catching up to the player (when leaving home bounds, etc).")]
     [Range(8.0f, 50.0f)] public float catchupSpeed = 30;
 
     [Space(10)]

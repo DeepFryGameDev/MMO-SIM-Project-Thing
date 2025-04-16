@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -98,6 +97,9 @@ public class HeroPathing : MonoBehaviour
         SyncMoveSpeed();        
     }
 
+    /// <summary>
+    /// Sets the hero's move speed based on the current run mode and distance to their destination.
+    /// </summary>
     void HandleMoveSpeed()
     {
         switch (runMode)
@@ -287,6 +289,9 @@ public class HeroPathing : MonoBehaviour
 
     #region PartyPathing
 
+    /// <summary>
+    /// Keeps the hero anchored to their anchor on the player's object
+    /// </summary>
     void ProcessPartyFollowPathing()
     {
         // Debug.Log("Abs diff between " + transform.position + " and " + heroManager.HeroParty().GetPartyAnchor().GetPosition() + " is " + (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()))));
@@ -297,6 +302,10 @@ public class HeroPathing : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sends the hero back to their home point, and then starts random pathing.
+    /// This will eventually be updated to show their current activity.
+    /// </summary>
     void ProcessPartyRunHomePathing()
     {
         // Debug.Log("Abs diff between " + transform.position + " and " + spawnPos + " is " + (Mathf.Abs(Vector3.Distance(transform.position, spawnPos))));
@@ -338,6 +347,9 @@ public class HeroPathing : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Immediately sets the hero's position back to their starting position
+    /// </summary>
     public void MoveToStartingPosition()
     {
         transform.position = heroManager.GetStartingPosition();

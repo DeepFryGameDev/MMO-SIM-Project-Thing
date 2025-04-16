@@ -79,6 +79,9 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just sets the texts on the player command menu to the current date.
+    /// </summary>
     void SetDateTexts()
     {
         weekText.text = "Week " + DateManager.i.GetRealCurrentWeek().ToString();
@@ -127,7 +130,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     public void PartyButtonClicked()
     {
-        PartyManager.i.GenerateHeroLists();
+        PartyManager.i.GenerateHeroManagerListsForMenu();
 
         PartyManager.i.SetPartyMenuUI();
 

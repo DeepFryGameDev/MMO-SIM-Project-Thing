@@ -1,5 +1,8 @@
-using System;
 using UnityEngine;
+
+// Purpose: Handles checking if the player should be interacting with any objects in the world that will change party states
+// Directions: Attach to the [Player]/[PlayerThings]/PartyFollow object
+// Other notes: 
 
 public class PartyFollow : MonoBehaviour
 {
@@ -12,13 +15,13 @@ public class PartyFollow : MonoBehaviour
 
     private void Awake()
     {
-        leavingBaseZoneLayer = LayerMask.GetMask("LeavingBaseZone");
-        isFloorLayer = LayerMask.GetMask("whatIsBaseFloor");
+        Setup();
     }
 
-    void Start()
+    void Setup()
     {
-        
+        leavingBaseZoneLayer = LayerMask.GetMask("LeavingBaseZone");
+        isFloorLayer = LayerMask.GetMask("whatIsBaseFloor");
     }
 
     void Update()
@@ -29,9 +32,6 @@ public class PartyFollow : MonoBehaviour
                 CheckForLeavingBaseZone();
                 break;
             case EnumHandler.PartyFollowStates.FOLLOWINBASE:
-                // Check for base layer (make a new one)
-                // if base layer detected, disperse the heroes back to their home zone and change follow state back to idle
-
                 CheckForEnteringBaseZone();
                 break;
         }        
@@ -39,6 +39,9 @@ public class PartyFollow : MonoBehaviour
         //transform.localRotation = Quaternion.Euler(transform.parent.rotation.x, 0, transform.parent.rotation.z);
     }
 
+    /// <summary>
+    /// Just checks if the player is standing on the zone designated for heros to 'catch up' to them before leaving the base and out into the world
+    /// </summary>
     void CheckForLeavingBaseZone()
     {
         RaycastHit hit;
@@ -64,6 +67,9 @@ public class PartyFollow : MonoBehaviour
         // Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.TransformDirection(Vector3.down), Color.green);
     }
 
+    /// <summary>
+    /// Checks if the player is standing in the base, but not on a 'catch up' zone.  This is used to send the heros back to their home point if the player leave the exit area of the base.
+    /// </summary>
     void CheckForEnteringBaseZone()
     {
         RaycastHit hit;

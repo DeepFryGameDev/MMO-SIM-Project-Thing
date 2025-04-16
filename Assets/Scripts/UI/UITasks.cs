@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.Rendering;
-
 // Purpose: Handles various UI related processes
 // Directions:
 // Other notes:
