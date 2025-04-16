@@ -71,9 +71,18 @@ public class PartyFollow : MonoBehaviour
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z),
             transform.TransformDirection(Vector3.down), out hit, raycastDist, isFloorLayer))
         {
-             DebugManager.i.PartyDebugOut("PartyFollow", "HitEnteringBaseZone", false, false);
+             // DebugManager.i.PartyDebugOut("PartyFollow", "HitEnteringBaseZone", false, false);
 
             // Send all heroes back to their starting point
+
+            foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+            {
+                heroManager.HeroPathing().StopPathing();
+
+                heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
+
+                heroManager.HeroPathing().StartPartyRunHomePathing();
+            }
 
             partyFollowState = EnumHandler.PartyFollowStates.IDLE;
         }

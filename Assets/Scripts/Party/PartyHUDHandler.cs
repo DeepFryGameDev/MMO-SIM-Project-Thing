@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PartyHUDHandler : MonoBehaviour
+{
+    List<HeroManager> heroManagers = new List<HeroManager>();
+    public void ClearHeroManagers() { heroManagers.Clear(); }
+    public void SetHeroManagers(List<HeroManager> heroManagers) { foreach (HeroManager heroManager in heroManagers) this.heroManagers.Add(heroManager); }
+
+    Animator anim;
+
+    void Awake()
+    {
+        Setup();
+    }
+
+    void Setup()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    public void SetPartyHUD()
+    {
+        ClearPartyHUD();
+
+        // for each active hero
+        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        {
+            // instantiate new party hud frame
+            GameObject newPartyHudFrame = Instantiate(PrefabManager.i.PartyHUDFrame, transform);
+
+            // get access to its hud frame handler and set the UI
+            newPartyHudFrame.GetComponent<PartyHUDFrameHandler>().SetUI(heroManager);
+        }
+    }
+
+    void ClearPartyHUD()
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void ToggleHUD(bool toggle)
+    {
+        anim.SetBool("toggleOn", toggle);
+    }
+}

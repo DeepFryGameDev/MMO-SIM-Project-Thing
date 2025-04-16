@@ -69,6 +69,11 @@ public class HeroZoneUIHandler : MonoBehaviour
     [Tooltip("Set to the text object that will display the hero's Faith Experience")]
     [SerializeField] TextMeshProUGUI fthExpVal;
 
+    [SerializeField] PartyHUDHandler partyHudHandler;
+
+    bool heroZoneUIShowing;
+    public bool getHeroZoneUIShowing() { return heroZoneUIShowing; }
+
     Animator anim;
 
     //-----------------------
@@ -172,13 +177,25 @@ public class HeroZoneUIHandler : MonoBehaviour
     /// <param name="show">True to show panel, false to hide</param>
     public void ShowPanel(bool show)
     {
+        heroZoneUIShowing = show;
+
         anim.SetBool("toggleOn", show);
 
         if (show) {
+            if (PartyManager.i.GetActiveHeroes().Count > 0)
+            {
+                partyHudHandler.ToggleHUD(false); // hide the party HUD
+            }
+
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
         } else {
+            if (PartyManager.i.GetActiveHeroes().Count > 0)
+            {
+                partyHudHandler.ToggleHUD(true); // show the party HUD again
+            }
+
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;

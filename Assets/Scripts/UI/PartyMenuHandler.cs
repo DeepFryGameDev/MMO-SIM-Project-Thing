@@ -18,6 +18,9 @@ public class PartyMenuHandler : MonoBehaviour
     [SerializeField] PartyAnchor anchorSlot3;
     [SerializeField] PartyAnchor anchorSlot4;
 
+    [SerializeField] PartyHUDHandler partyHUDHandler;
+    [SerializeField] HeroZoneUIHandler heroZoneUIHandler;
+
     public void SetHomeHeroGroup(List<HeroManager> heroManagers)
     {
         // clear layout group
@@ -61,6 +64,15 @@ public class PartyMenuHandler : MonoBehaviour
     public void ConfirmButtonOnClick()
     {
         SavePartyGroups();
+
+        // Show party HUD
+        partyHUDHandler.SetHeroManagers(PartyManager.i.GetActiveHeroes());
+        partyHUDHandler.SetPartyHUD();
+
+        if (!heroZoneUIHandler.getHeroZoneUIShowing())
+        {
+            partyHUDHandler.ToggleHUD(true);
+        }        
 
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);
     }

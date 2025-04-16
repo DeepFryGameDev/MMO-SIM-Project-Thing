@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,6 +25,9 @@ public class HeroPathing : MonoBehaviour
     EnumHandler.pathRunMode runMode;
     public void SetRunMode(EnumHandler.pathRunMode runMode) { this.runMode = runMode; }
     public EnumHandler.pathRunMode GetRunMode() { return runMode; }
+
+    Vector3 spawnPos = new Vector3();
+    public Vector3 GetSpawnPos() { return spawnPos; }
 
 
     #region RandomPathing Vars
@@ -67,6 +71,8 @@ public class HeroPathing : MonoBehaviour
         moveSpeed = agent.speed; // just simply setting defaults to w/e the agent's speed is (which is coincidentally set from HeroSettings)
 
         pathMode = EnumHandler.pathModes.RANDOM;
+
+        spawnPos = transform.position;
     }
 
     void Update()
@@ -83,7 +89,7 @@ public class HeroPathing : MonoBehaviour
                 ProcessPartyFollowPathing();
                 break;
             case EnumHandler.pathModes.SENDTOSTARTINGPOINT:
-
+                ProcessPartyRunHomePathing();
                 break;
         }
 
@@ -139,10 +145,12 @@ public class HeroPathing : MonoBehaviour
     {
         if (!randPathingActive)
         {
+            //Debug.Log("should be pathing to random pos");
             PathToRandomPosition();
         }
         else if (randomWaiting == false)
         {
+            //Debug.Log("waiting");
             CheckForRandomWait();
         }
     }
@@ -152,7 +160,7 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     public void StartNewRandomPathing()
     {
-        moveSpeed = HeroSettings.walkSpeed;
+        runMode = EnumHandler.pathRunMode.WALK;
 
         agent.isStopped = false;
 
@@ -289,16 +297,43 @@ public class HeroPathing : MonoBehaviour
         }
     }
 
+    void ProcessPartyRunHomePathing()
+    {
+        // Debug.Log("Abs diff between " + transform.position + " and " + spawnPos + " is " + (Mathf.Abs(Vector3.Distance(transform.position, spawnPos))));
+
+        if (Mathf.Abs(transform.position.x - spawnPos.x) <= HeroSettings.stoppingDistance && Mathf.Abs(transform.position.z - spawnPos.z) <= HeroSettings.stoppingDistance) // If hero is standing at their spawn position
+        {
+            // set back to random
+
+            StopPathing();
+            StartNewRandomPathing();
+        }
+
+        if (Mathf.Abs(Vector3.Distance(transform.position, spawnPos)) > HeroSettings.stoppingDistance) // Otherwise, send them to spawn position
+        {
+            agent.SetDestination(spawnPos);
+        }
+    }
+
     /// <summary>
     /// Begins new party pathing procedures.
     /// </summary>
     public void StartPartyPathing()
     {
-        moveSpeed = HeroSettings.walkSpeed;
-
         agent.isStopped = false;
 
         pathMode = EnumHandler.pathModes.PARTYFOLLOW;
+        // Debug.Log("Setting to PARTYFOLLOW");
+    }
+
+    /// <summary>
+    /// Begins new party pathing procedures.
+    /// </summary>
+    public void StartPartyRunHomePathing()
+    {
+        agent.isStopped = false;
+
+        pathMode = EnumHandler.pathModes.SENDTOSTARTINGPOINT;
     }
 
     #endregion

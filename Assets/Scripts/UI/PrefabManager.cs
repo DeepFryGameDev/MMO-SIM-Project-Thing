@@ -21,6 +21,8 @@ public class PrefabManager : MonoBehaviour
     public GameObject PartyInactiveHeroFrame;
     public GameObject PartyActiveHeroFrame;
 
+    public GameObject PartyHUDFrame;
+
     private void Awake()
     {
         Singleton();
