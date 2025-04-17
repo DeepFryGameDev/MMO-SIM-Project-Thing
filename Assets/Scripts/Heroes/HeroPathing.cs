@@ -314,6 +314,7 @@ public class HeroPathing : MonoBehaviour
         {
             // set back to random
 
+            DebugManager.i.PartyDebugOut("HeroPathing", "Starting random pathing from PartyRunHomePathing()");
             StopPathing();
             StartNewRandomPathing();
         }

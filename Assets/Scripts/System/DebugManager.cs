@@ -36,6 +36,15 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
+    public void UIDebugOut(string header, string debugOutput)
+    {
+        Debug.Log("<#" + DebugSettings.uiDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+    }
+
     // <summary>
     /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
     /// </summary>
@@ -56,6 +65,15 @@ public class DebugManager : MonoBehaviour
         {
             Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
         }
+    }
+
+    // <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
+    public void ScheduleDebugOut(string header, string debugOutput)
+    {
+        Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
     }
 
     // <summary>
@@ -84,6 +102,15 @@ public class DebugManager : MonoBehaviour
     /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
     /// </summary>
     /// <param name="debugOutput">The string to output</param>
+    public void HeroDebugOut(string header, string debugOutput)
+    {
+        Debug.Log("<#" + DebugSettings.heroDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+    }
+
+    // <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
     /// <param name="warning">If the output should show a warning</param>
     /// <param name="error">If the output should show an error</param>
     public void SystemDebugOut(string header, string debugOutput, bool warning, bool error)
@@ -106,6 +133,15 @@ public class DebugManager : MonoBehaviour
     /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
     /// </summary>
     /// <param name="debugOutput">The string to output</param>
+    public void SystemDebugOut(string header, string debugOutput)
+    {
+        Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+    }
+
+    // <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
     /// <param name="warning">If the output should show a warning</param>
     /// <param name="error">If the output should show an error</param>
     public void PartyDebugOut(string header, string debugOutput, bool warning, bool error)
@@ -122,5 +158,14 @@ public class DebugManager : MonoBehaviour
         {
             Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
         }
+    }
+
+    // <summary>
+    /// Displays a debug log with UI font colors and other customizations - NOTE: Only mark one of the bools as true - if they are both true, it will default to error
+    /// </summary>
+    /// <param name="debugOutput">The string to output</param>
+    public void PartyDebugOut(string header, string debugOutput)
+    {
+        Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
     }
 }

@@ -157,9 +157,14 @@ public class PartyMenuHandler : MonoBehaviour
         partyHUDHandler.SetHeroManagers(PartyManager.i.GetActiveHeroes());
         partyHUDHandler.SetPartyHUD();
 
-        if (!heroZoneUIHandler.getHeroZoneUIShowing())
+        if (!heroZoneUIHandler.getHeroZoneUIShowing() && PartyManager.i.GetActiveHeroes().Count > 0)
         {
             partyHUDHandler.ToggleHUD(true);
+        }
+
+        if (PartyManager.i.GetActiveHeroes().Count == 0) // if user sets an empty party
+        {
+            partyHUDHandler.ToggleHUD(false);
         }
 
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);

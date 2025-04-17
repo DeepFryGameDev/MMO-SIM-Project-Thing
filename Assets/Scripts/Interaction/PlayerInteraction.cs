@@ -36,8 +36,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (ih.GetShowInteractionRay()) Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
 
-            ih.ToggleInteraction(true);
-            ih.SetInteractedObject(hit.transform.gameObject);
+            // if the target object is a hero, make sure their follow state is IDLE before allowing interaction
+            if (hit.transform.gameObject.CompareTag("Hero") && CheckForHeroInteractionAvailable(hit.transform.GetComponent<HeroManager>()))
+            {
+                ih.ToggleInteraction(true);
+                ih.SetInteractedObject(hit.transform.gameObject);
+            }            
         }
         else
         {
@@ -50,5 +54,19 @@ public class PlayerInteraction : MonoBehaviour
                 ih.SetInteractedObject(null);
             }
         }
+    }
+
+    /// <summary>
+    /// Checks if the given heroManager is currently outside of their home zone by checking their path mode.  This should be reworked eventually.
+    /// </summary>
+    /// <param name="heroManager">Hero to check</param>
+    /// <returns>True if they are in their home zone and not in party</returns>
+    bool CheckForHeroInteractionAvailable(HeroManager heroManager)
+    {
+        EnumHandler.pathModes pathMode = heroManager.HeroPathing().GetPathMode();
+
+        if (pathMode != EnumHandler.pathModes.PARTYFOLLOW && pathMode != EnumHandler.pathModes.SENDTOSTARTINGPOINT) return true;
+
+        return false;
     }
 }

@@ -102,7 +102,7 @@ public class NewGameSetup : MonoBehaviour
         // Set up stats for player
         //PlayerStatsSetup(newPlayerObject.GetComponent<BaseHero>());
 
-        DebugManager.i.SystemDebugOut("NewGameSetup", "Game Set!", false, false); 
+        DebugManager.i.SystemDebugOut("NewGameSetup", "Game Set!"); 
 
         GameManager.SetGameSet(true);
     }
