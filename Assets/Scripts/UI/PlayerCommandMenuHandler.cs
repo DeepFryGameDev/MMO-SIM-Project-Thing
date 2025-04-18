@@ -9,8 +9,6 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 {
     CanvasGroup canvasGroup;
 
-    bool commandMenuOpen;
-
     PlayerMovement playerMovement;
 
     ThirdPersonCam cam;
@@ -42,10 +40,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     void Update()
     {
-        if (!commandMenuOpen)
-        {
-            CheckForMenuKey();
-        }        
+            CheckForMenuKey();      
     }
 
     /// <summary>
@@ -95,20 +90,32 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseMenuButtonClicked()
     {
+        CloseMenu(true);
+    }
+
+    /// <summary>
+    /// Closes the menu and sets the menu states back to idle
+    /// </summary>
+    /// <param name="allowMovement">If the player simply closed the menu and can move again, or if the system is moving to the next day and blocks movement.</param>
+    void CloseMenu(bool allowMovement)
+    {
         // close menu
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.IDLE);
 
-        // enable player whistle ability
-        playerWhistle.ToggleCanWhistle(true);
+        if (allowMovement)
+        {
+            // enable player movement
+            playerMovement.ToggleMovement(true);
 
-        // enable player movement
-        playerMovement.ToggleMovement(true);
+            // enable player whistle ability
+            playerWhistle.ToggleCanWhistle(true);
+
+            cam.ToggleCameraRotation(true);
+        }               
 
         // should fix later
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        cam.ToggleCameraRotation(true);
+        Cursor.visible = false;        
 
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
     }
@@ -121,7 +128,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     {
         StartCoroutine(DateManager.i.ProcessStartWeek());
 
-        ToggleCanvasGroup(false);
+        CloseMenu(false);
     }
 
     /// <summary>
@@ -136,30 +143,5 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
         // show party UI
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.PARTY);
-    }
-
-    /// <summary>
-    /// Simply shows/hides the Player Command Menu
-    /// </summary>
-    /// <param name="toggle">True to show the menu, false to hide it</param>
-    void ToggleCanvasGroup(bool toggle)
-    {
-        anim.SetBool("toggleOn", toggle);
-
-        if (toggle)
-        {
-            canvasGroup.alpha = 1;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-
-            commandMenuOpen = true;            
-        } else
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-
-            commandMenuOpen = false;
-        }
     }
 }
