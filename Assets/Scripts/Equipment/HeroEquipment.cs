@@ -4,11 +4,7 @@ using UnityEngine;
 // Directions: This will not be called directly, but will be the base class for any equipment.
 // Other notes: 
 
-public class Equipment : BaseItem
+public class HeroEquipment : HeroItem
 {
-    [Tooltip("Name of the equipment.")]
-    public new string name;
-
-    [Tooltip("Affects the drop rate and color in UI tooltip")]
-    public EnumHandler.EquipmentRarities rarity;
+    
 }

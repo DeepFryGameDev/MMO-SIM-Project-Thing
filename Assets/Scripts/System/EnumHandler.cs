@@ -25,18 +25,64 @@ public static class EnumHandler
         COMBAT,
         TOPDOWN
     }
-    
+
+    // --- EQUIPMENT ---
+    public enum EquipmentArmorSlots
+    {
+        HEAD,
+        CHEST,
+        HANDS,
+        LEGS,
+        FEET
+    }
+
+    public enum EquipmentHandSlots
+    {
+        MAINHAND,
+        OFFHAND
+    }
+
+    public enum ArmorClasses
+    {
+        CLOTH,
+        LEATHER,
+        MAIL,
+        PLATE
+    }
+
+    public enum WeaponClasses
+    {
+        SWORD,
+        BOW,
+        MACE,
+        LANCE,
+        STAFF
+    }
+
+    public enum ShieldClasses
+    {
+        TARGE,
+        BUCKLER,
+        HEATER,
+        PAVISE
+    }
+
+    // --- INVENTORY ---
+
     /// <summary>
     /// Not really being used for anything important yet.
     /// </summary>
-    public enum EquipmentRarities
+    public enum InventoryRarities
     {
+        JUNK,
         COMMON, // (For training Equipment, there is no physical object the hero interacts with, prefab may be null.)
         UNCOMMON,
         RARE,
         EPIC,
         LEGENDARY
     }
+
+    // --- TRAINING ---
 
     /// <summary>
     /// Types of training that can be used by heros
@@ -99,6 +145,7 @@ public static class EnumHandler
     {
         IDLE,
         ROOT,
+        INVENTORY,
         TRAININGEQUIP,
         TRAININGEQUIPLIST,
         SCHEDULE

@@ -1,0 +1,18 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Equipment/New Shield")]
+public class ShieldEquipment : HandEquipment
+{
+    public EnumHandler.ShieldClasses shieldClass;
+
+    public int damageBlocked;
+
+    public int baseArmorValue;
+    public int baseMagicResistValue;
+
+    private void Awake()
+    {
+        equipSlot = EnumHandler.EquipmentHandSlots.OFFHAND;
+        rarity = EnumHandler.InventoryRarities.COMMON;
+    }
+}

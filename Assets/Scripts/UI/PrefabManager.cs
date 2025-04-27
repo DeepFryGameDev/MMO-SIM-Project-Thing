@@ -26,6 +26,9 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab to the frame for the party HUD")]
     public GameObject PartyHUDFrame;
 
+    [Tooltip("Set this to the prefab to display each item in the hero's inventory menu")]
+    public GameObject HeroInventoryButton;
+
     private void Awake()
     {
         Singleton();

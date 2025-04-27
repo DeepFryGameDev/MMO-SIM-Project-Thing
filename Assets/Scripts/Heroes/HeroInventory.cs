@@ -7,10 +7,10 @@ using UnityEngine;
 
 public class HeroInventory : MonoBehaviour
 {
-    [SerializeField] List<BaseItem> inventory = new List<BaseItem>(); // Used as the master inventory for each hero.  It is serialized simply so it is viewable in the inspector for testing.
-    public List<BaseItem> GetInventory() { return inventory; }
-    public void AddToInventory(BaseItem item) { inventory.Add(item); }
-    public void RemoveFromInventory(BaseItem item) { inventory.Remove(item); }
+    [SerializeField] List<HeroItem> inventory = new List<HeroItem>(); // Used as the master inventory for each hero.  It is serialized simply so it is viewable in the inspector for testing.
+    public List<HeroItem> GetInventory() { return inventory; }
+    public void AddToInventory(HeroItem item) { inventory.Add(item); }
+    public void RemoveFromInventory(HeroItem item) { inventory.Remove(item); }
     public void ClearInventory() { inventory.Clear(); }
 
     HeroManager heroManager;

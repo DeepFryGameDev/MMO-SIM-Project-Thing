@@ -15,4 +15,6 @@ public class DebugSettings
     public static Color systemDebugColor;
 
     public static Color partyDebugColor;
+
+    public static Color inventoryDebugColor;
 }

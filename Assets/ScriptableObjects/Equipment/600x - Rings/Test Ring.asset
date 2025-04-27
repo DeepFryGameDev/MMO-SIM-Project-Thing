@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adae593b8cfaaf840ae9a97f64a59f35, type: 3}
+  m_Name: Test Ring
+  m_EditorClassIdentifier: 
+  name: Test Ring
+  ID: 6001
+  icon: {fileID: 21300000, guid: 3a955cfc8aa60d54ab67f3eff105168f, type: 3}
+  description: 
+  rarity: 1
+  weight: 0
+  goldValue: 0

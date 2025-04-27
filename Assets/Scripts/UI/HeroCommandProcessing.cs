@@ -15,7 +15,9 @@ public class HeroCommandProcessing : MonoBehaviour
 
     PlayerInteraction playerInteraction; // Used to hide/show the interaction graphic
 
-    TrainingEquipmentMenu trainingEquipmentMenu;
+    [SerializeField] TrainingEquipmentMenu trainingEquipmentMenu;
+
+    [SerializeField] HeroInventoryUIHandler heroInventoryUIHandler;
 
     void Awake()
     {
@@ -28,8 +30,6 @@ public class HeroCommandProcessing : MonoBehaviour
         playerInteraction = FindFirstObjectByType<PlayerInteraction>(); // and this
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
-
-        trainingEquipmentMenu = FindFirstObjectByType<TrainingEquipmentMenu>();
     }
 
     /// <summary>
@@ -95,6 +95,29 @@ public class HeroCommandProcessing : MonoBehaviour
     /// Just goes back to the root Hero Command menu
     /// </summary>
     public void CloseTrainingEquipmentMenu()
+    {
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void OpenInventoryMenu()
+    {
+        // use HeroInventoryUIHandler to draw the inventory menu objects
+        heroInventoryUIHandler.ResetUI();
+        heroInventoryUIHandler.ClearUI();
+
+        heroInventoryUIHandler.SetHeroDetailsPanel(heroManager);
+        heroInventoryUIHandler.GenerateInventory(heroManager);
+
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.INVENTORY);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CloseInventoryMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }

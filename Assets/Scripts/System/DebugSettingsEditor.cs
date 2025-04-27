@@ -13,6 +13,8 @@ public class DebugSettingsEditor : MonoBehaviour
 
     public Color partyDebugColor;
 
+    public Color inventoryDebugColor;
+
     private void Awake()
     {
         SetSettings();
@@ -29,5 +31,7 @@ public class DebugSettingsEditor : MonoBehaviour
         DebugSettings.systemDebugColor = systemDebugColor;
 
         DebugSettings.partyDebugColor = partyDebugColor;
+
+        DebugSettings.inventoryDebugColor = inventoryDebugColor;
     }
 }

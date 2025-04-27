@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 
 // Purpose: Facilitates control of which menu is available to the user at a given time
@@ -32,6 +33,8 @@ public class MenuProcessingHandler : MonoBehaviour
     [SerializeField] CanvasGroup playerCommandCanvasGroup;
     [SerializeField] CanvasGroup partyMenuCanvasGroup;
     [SerializeField] Animator playerCommandAnimator;
+
+    [SerializeField] CanvasGroup heroInventoryCanvasGroup;
 
     public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return trainingEquipmentMenuCanvasGroup; }
     [SerializeField] CanvasGroup trainingEquipmentListCanvasGroup;
@@ -84,6 +87,9 @@ public class MenuProcessingHandler : MonoBehaviour
                     TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
                 }
                     break;
+            case EnumHandler.HeroCommandMenuStates.INVENTORY: // Display inventory menu for hero
+                TransitionToMenu(heroInventoryCanvasGroup, true);
+                break;
             case EnumHandler.HeroCommandMenuStates.TRAININGEQUIP: // Display training equipment menu
                 TransitionToMenu(trainingEquipmentMenuCanvasGroup, true);
 
