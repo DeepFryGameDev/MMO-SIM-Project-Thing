@@ -12,6 +12,8 @@ public class DebugSettings
 
     public static Color heroDebugColor;
 
+    public static Color classDebugColor;
+
     public static Color systemDebugColor;
 
     public static Color partyDebugColor;

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b1912b72a1a084fb5db7cba8d8040c, type: 3}
   m_Name: 1203 - Test Leather Gloves
   m_EditorClassIdentifier: 
-  name: Test Cloth Gloves
-  ID: 1103
+  name: Test Leather Gloves
+  ID: 1203
   icon: {fileID: 21300000, guid: ec6ba6d035cc9de4da658ca2fc824804, type: 3}
   description: Found from Debug Land!
   rarity: 1

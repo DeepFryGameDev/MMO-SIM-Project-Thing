@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b1912b72a1a084fb5db7cba8d8040c, type: 3}
   m_Name: 1302 - Test Mail Chest
   m_EditorClassIdentifier: 
-  name: Test Cloth Chest
+  name: Test Mail Chest
   ID: 1302
   icon: {fileID: 21300000, guid: 6dc349f9b95b42e4ca8ea0ddc212c7f6, type: 3}
   description: Found from Debug Land!
-  rarity: 2
+  rarity: 1
   weight: 0
   goldValue: 0
   armorClass: 2
   equipSlot: 1
-  baseArmorValue: 0
-  baseMagicResistValue: 0
-  strengthBonus: 0
-  enduranceBonus: 0
+  baseArmorValue: 8
+  baseMagicResistValue: 3
+  strengthBonus: 2
+  enduranceBonus: 1
   agilityBonus: 0
   dexterityBonus: 0
   intelligenceBonus: 0

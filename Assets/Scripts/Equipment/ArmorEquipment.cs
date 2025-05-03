@@ -5,7 +5,7 @@ using UnityEngine;
 // Other notes: 
 
 [CreateAssetMenu(menuName = "Equipment/New Armor")]
-public class ArmorEquipment : HeroEquipment
+public class ArmorEquipment : HeroBaseEquipment
 {
     [Header("---Base Armor Values---")]
     public EnumHandler.ArmorClasses armorClass;

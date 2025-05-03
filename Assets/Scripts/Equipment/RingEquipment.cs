@@ -5,7 +5,7 @@ using UnityEngine;
 // Other notes: 
 
 [CreateAssetMenu(menuName = "Equipment/New Ring")]
-public class RingEquipment : HeroEquipment
+public class RingEquipment : HeroBaseEquipment
 {
     private void Awake()
     {

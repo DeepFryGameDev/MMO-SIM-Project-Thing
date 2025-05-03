@@ -19,6 +19,8 @@ public class HeroCommandProcessing : MonoBehaviour
 
     [SerializeField] HeroInventoryUIHandler heroInventoryUIHandler;
 
+    [SerializeField] HeroEquipMenuHandler heroEquipMenuHandler;
+
     void Awake()
     {
         Setup();
@@ -118,6 +120,20 @@ public class HeroCommandProcessing : MonoBehaviour
     /// 
     /// </summary>
     public void CloseInventoryMenu()
+    {
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+    }
+
+    public void OpenEquipMenu()
+    {
+        // set any already equipped items to the EquipButtonsPanel
+        heroEquipMenuHandler.GenerateEquippedEquipmentButtons(heroManager);
+
+        // display HeroEquipCanvas
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.EQUIP);
+    }
+
+    public void CloseEquipMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }

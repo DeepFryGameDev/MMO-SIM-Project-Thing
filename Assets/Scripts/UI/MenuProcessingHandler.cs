@@ -36,6 +36,8 @@ public class MenuProcessingHandler : MonoBehaviour
 
     [SerializeField] CanvasGroup heroInventoryCanvasGroup;
 
+    [SerializeField] CanvasGroup heroEquipCanvasGroup;
+
     public CanvasGroup GetTrainingEquipmentMenuCanvasGroup() { return trainingEquipmentMenuCanvasGroup; }
     [SerializeField] CanvasGroup trainingEquipmentListCanvasGroup;
     public CanvasGroup GetTrainingEquipmentListCanvasGroup() { return trainingEquipmentListCanvasGroup; }
@@ -89,6 +91,9 @@ public class MenuProcessingHandler : MonoBehaviour
                     break;
             case EnumHandler.HeroCommandMenuStates.INVENTORY: // Display inventory menu for hero
                 TransitionToMenu(heroInventoryCanvasGroup, true);
+                break;
+            case EnumHandler.HeroCommandMenuStates.EQUIP:
+                TransitionToMenu(heroEquipCanvasGroup, true);
                 break;
             case EnumHandler.HeroCommandMenuStates.TRAININGEQUIP: // Display training equipment menu
                 TransitionToMenu(trainingEquipmentMenuCanvasGroup, true);

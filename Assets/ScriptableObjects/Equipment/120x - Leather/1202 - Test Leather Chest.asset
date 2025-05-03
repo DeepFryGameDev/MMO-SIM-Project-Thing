@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b1912b72a1a084fb5db7cba8d8040c, type: 3}
   m_Name: 1202 - Test Leather Chest
   m_EditorClassIdentifier: 
-  name: Test Cloth Chest
-  ID: 1102
+  name: Test Leather Chest
+  ID: 1202
   icon: {fileID: 21300000, guid: 892b99601d43f844b9db045259194445, type: 3}
   description: Found from Debug Land!
   rarity: 1
@@ -21,8 +21,8 @@ MonoBehaviour:
   goldValue: 0
   armorClass: 1
   equipSlot: 1
-  baseArmorValue: 0
-  baseMagicResistValue: 0
+  baseArmorValue: 4
+  baseMagicResistValue: 2
   strengthBonus: 0
   enduranceBonus: 0
   agilityBonus: 0

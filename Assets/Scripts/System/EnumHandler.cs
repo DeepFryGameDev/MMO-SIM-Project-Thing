@@ -9,6 +9,7 @@ public static class EnumHandler
     /// </summary>
     public enum HeroClasses
     {
+        RECRUIT,
         FIGHTER,
         ARCHER,
         MAGE,
@@ -146,6 +147,7 @@ public static class EnumHandler
         IDLE,
         ROOT,
         INVENTORY,
+        EQUIP,
         TRAININGEQUIP,
         TRAININGEQUIPLIST,
         SCHEDULE

@@ -29,6 +29,8 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab to display each item in the hero's inventory menu")]
     public GameObject HeroInventoryButton;
 
+    public GameObject EquipToHeroButton;
+
     private void Awake()
     {
         Singleton();

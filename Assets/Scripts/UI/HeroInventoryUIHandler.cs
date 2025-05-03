@@ -181,7 +181,7 @@ public class HeroInventoryUIHandler : MonoBehaviour
         equipmentArmorDetailsCanvasGroup.alpha = 1;
     }
 
-    public void DrawEquipmentJewelryUI(HeroEquipment heroEquipment)
+    public void DrawEquipmentJewelryUI(HeroBaseEquipment heroEquipment)
     {
         
     }

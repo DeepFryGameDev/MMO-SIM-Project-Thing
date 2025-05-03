@@ -19,9 +19,32 @@ public class BaseHero : BaseAttackableUnit
     public int GetEnergy() { return energy; }
     public void SetEnergy(int energy) { this.energy = energy; }
 
-    float currentStamina; // Used to track what the player's current stamina at any given point is
-    public float GetCurrentStamina() { return currentStamina; }
-    public void SetCurrentStamina(float stamina) { currentStamina = stamina;}
+    // -- Primary Stats --
+    int strength; // Current Strength Level
+    public void SetStrength(int strength) { this.strength = strength; } // This takes into account equipment, perks, etc
+    public int GetStrength() { return strength; }
+
+    int endurance;
+    public void SetEndurance(int endurance) { this.endurance = endurance; } // This takes into account equipment, perks, etc
+    public int GetEndurance() { return endurance; }
+
+    int agility;
+    public void SetAgility(int agility) { this.agility = agility; } // This takes into account equipment, perks, etc
+    public int GetAgility() { return agility; }
+
+    int dexterity;
+    public void SetDexterity(int dexterity) { this.dexterity = dexterity; } // This takes into account equipment, perks, etc
+    public int GetDexterity() { return dexterity; }
+
+    int intelligence;
+    public void SetIntelligence(int intelligence) { this.intelligence = intelligence; } // This takes into account equipment, perks, etc
+    public int GetIntelligence() { return intelligence; }
+
+    int faith;
+    public void SetFaith(int faith) { this.faith = faith; } // This takes into account equipment, perks, etc
+    public int GetFaith() { return faith; }
+
+
 
     float resistToArmorMod = .5f; // Makes armor more effective based on player's resistance
 
@@ -64,8 +87,6 @@ public class BaseHero : BaseAttackableUnit
 
         SetCurrentHP(GetMaxHP());
 
-        UpdateStaminaForMax();
-
         energy = HeroSettings.maxEnergy;
 
         // ReportStats();
@@ -95,14 +116,6 @@ public class BaseHero : BaseAttackableUnit
     public float GetMaxStamina()
     {
         return (baseStamina * (GetEndurance() * enduranceToStaminaMod));
-    }
-
-    /// <summary>
-    /// Simply sets current stamina to player's max stamina
-    /// </summary>
-    public void UpdateStaminaForMax()
-    {
-        currentStamina = GetMaxStamina();
     }
 
     /// <summary>
@@ -154,7 +167,6 @@ public class BaseHero : BaseAttackableUnit
     {
         Debug.Log("--Stats Report--");
         Debug.Log("MaxHP: " + GetMaxHP());
-        Debug.Log("MaxStamina: " + GetMaxStamina());
         Debug.Log("-----");
         Debug.Log("Armor: " + GetArmor());
         Debug.Log("Magic Resist: " + GetMagicResist());
@@ -170,357 +182,6 @@ public class BaseHero : BaseAttackableUnit
 
     #region Get attribute/stat values from Equipment functions
     // These functions return the player's attributes by adding the base value together with all equipped equipment values
-
-    public override int GetStrength()
-    {
-        int totalStrength = base.GetStrength();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalStrength += GetEquippedMainHand().strength;
-        }
-
-        if (GetEquippedOffHand() != null)
-        {
-            totalStrength += GetEquippedOffHand().strength;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalStrength += GetEquippedHelm().strength;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalStrength += GetEquippedChest().strength;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalStrength += GetEquippedHands().strength;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalStrength += GetEquippedLegs().strength;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalStrength += GetEquippedFeet().strength;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalStrength += GetEquippedAmulet().strength;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalStrength += GetEquippedRingOne().strength;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalStrength += GetEquippedRingTwo().strength;
-        }
-        */
-
-        return totalStrength; // calculate strength including equipped gear here
-    }
-
-    public override int GetEndurance()
-    {
-        int totalEndurance = base.GetEndurance();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalEndurance += GetEquippedMainHand().endurance;
-        }
-
-        if (GetEquippedOffHand() != null)
-        {
-            totalEndurance += GetEquippedOffHand().endurance;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalEndurance += GetEquippedHelm().endurance;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalEndurance += GetEquippedChest().endurance;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalEndurance += GetEquippedHands().endurance;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalEndurance += GetEquippedLegs().endurance;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalEndurance += GetEquippedFeet().endurance;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalEndurance += GetEquippedAmulet().endurance;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalEndurance += GetEquippedRingOne().endurance;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalEndurance += GetEquippedRingTwo().endurance;
-        }
-        */
-
-        return totalEndurance; // calculate endurance including equipped gear here
-    }
-
-    public override int GetAgility()
-    {
-        int totalAgility = base.GetAgility();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalAgility += GetEquippedMainHand().agility;
-        }
-
-        if (GetEquippedOffHand() != null)
-        {
-            totalAgility += GetEquippedOffHand().agility;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalAgility += GetEquippedHelm().agility;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalAgility += GetEquippedChest().agility;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalAgility += GetEquippedHands().agility;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalAgility += GetEquippedLegs().agility;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalAgility += GetEquippedFeet().agility;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalAgility += GetEquippedAmulet().agility;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalAgility += GetEquippedRingOne().agility;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalAgility += GetEquippedRingTwo().agility;
-        }
-        */
-
-        return totalAgility; // calculate strength including equipped gear here
-    }
-
-    public override int GetDexterity()
-    {
-        int totalDexterity = base.GetDexterity();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalDexterity += GetEquippedMainHand().dexterity;
-        }
-        if (GetEquippedOffHand() != null)
-        {
-            totalDexterity += GetEquippedOffHand().dexterity;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalDexterity += GetEquippedHelm().dexterity;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalDexterity += GetEquippedChest().dexterity;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalDexterity += GetEquippedHands().dexterity;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalDexterity += GetEquippedLegs().dexterity;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalDexterity += GetEquippedFeet().dexterity;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalDexterity += GetEquippedAmulet().dexterity;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalDexterity += GetEquippedRingOne().dexterity;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalDexterity += GetEquippedRingTwo().dexterity;
-        }
-        */
-
-        return totalDexterity; // calculate strength including equipped gear here
-    }
-
-    public override int GetIntelligence()
-    {
-        int totalIntelligence = base.GetIntelligence();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalIntelligence += GetEquippedMainHand().intelligence;
-        }
-        if (GetEquippedOffHand() != null)
-        {
-            totalIntelligence += GetEquippedOffHand().intelligence;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalIntelligence += GetEquippedHelm().intelligence;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalIntelligence += GetEquippedChest().intelligence;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalIntelligence += GetEquippedHands().intelligence;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalIntelligence += GetEquippedLegs().intelligence;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalIntelligence += GetEquippedFeet().intelligence;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalIntelligence += GetEquippedAmulet().intelligence;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalIntelligence += GetEquippedRingOne().intelligence;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalIntelligence += GetEquippedRingTwo().intelligence;
-        }
-        */
-
-        return totalIntelligence; // calculate strength including equipped gear here
-    }
-
-    public override int GetFaith()
-    {
-        int totalFaith = base.GetFaith();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalFaith += GetEquippedMainHand().faith;
-        }
-        if (GetEquippedOffHand() != null)
-        {
-            totalFaith += GetEquippedOffHand().faith;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalFaith += GetEquippedHelm().faith;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalFaith += GetEquippedChest().faith;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalFaith += GetEquippedHands().faith;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalFaith += GetEquippedLegs().faith;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalFaith += GetEquippedFeet().faith;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalFaith += GetEquippedAmulet().faith;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalFaith += GetEquippedRingOne().faith;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalFaith += GetEquippedRingTwo().faith;
-        }
-        */
-
-        return totalFaith; // calculate strength including equipped gear here
-    }
 
     public override int GetArmor()
     {

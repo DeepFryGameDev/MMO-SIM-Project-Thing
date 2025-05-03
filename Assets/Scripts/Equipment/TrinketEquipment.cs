@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TrinketEquipment : HeroEquipment
+public class TrinketEquipment : HeroBaseEquipment
 {
     
 }

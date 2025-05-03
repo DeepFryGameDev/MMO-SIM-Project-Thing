@@ -21,8 +21,8 @@ MonoBehaviour:
   goldValue: 0
   armorClass: 3
   equipSlot: 1
-  baseArmorValue: 0
-  baseMagicResistValue: 0
+  baseArmorValue: 9
+  baseMagicResistValue: 4
   strengthBonus: 0
   enduranceBonus: 0
   agilityBonus: 0

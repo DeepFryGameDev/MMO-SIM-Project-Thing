@@ -4,7 +4,7 @@ using UnityEngine;
 // Directions: This will not be called directly, but will be the base class for any equipment.
 // Other notes: 
 
-public class HeroEquipment : HeroItem
+public class HeroBaseEquipment : HeroItem
 {
     
 }
