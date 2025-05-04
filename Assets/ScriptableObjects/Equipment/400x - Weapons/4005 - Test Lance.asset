@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 507fe638b2ccd914dbe6e548c24ebea1, type: 3}
-  m_Name: 4001 - Test Sword
+  m_Name: 4005 - Test Lance
   m_EditorClassIdentifier: 
-  name: Test Sword
-  ID: 4001
-  icon: {fileID: 21300000, guid: d5b7efec89dd9cd47a517595f2cb7e17, type: 3}
-  description: The mighty test Excalibur!
+  name: Test Lance
+  ID: 4005
+  icon: {fileID: 21300000, guid: f4c1fbac1e453b14993c3e6396350efe, type: 3}
+  description: A lance shaped like a key for some reason.
   rarity: 1
-  weight: 5
-  goldValue: 50
+  weight: 7
+  goldValue: 60
   equipSlot: 0
-  weaponClass: 0
-  attackDamage: 5
-  attackSpeed: 1
+  weaponClass: 3
+  attackDamage: 0
+  attackSpeed: 0

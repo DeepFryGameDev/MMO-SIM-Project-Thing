@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HeroEquipment : MonoBehaviour
 {
+    // --- armor
     [SerializeField] ArmorEquipment equippedHead;
     public void SetEquippedHead(ArmorEquipment equipment) { equippedHead = equipment; }
     public ArmorEquipment GetEquippedHead() { return equippedHead; }
@@ -22,15 +23,35 @@ public class HeroEquipment : MonoBehaviour
     public void SetEquippedFeet(ArmorEquipment equipment) { equippedFeet = equipment; }
     public ArmorEquipment GetEquippedFeet() { return equippedFeet; }
 
-
+    // --- rings
     [SerializeField] RingEquipment equippedRing1;
-    [SerializeField] RingEquipment equippedRing2;
-    [SerializeField] RelicEquipment equippedRelic1;
-    [SerializeField] RelicEquipment equippedRelic2;
-    [SerializeField] TrinketEquipment equippedTrinket;
+    public void SetEquippedRing1(RingEquipment equippedRing) { this.equippedRing1 = equippedRing; }
+    public RingEquipment GetEquippedRing1() { return equippedRing1; }
 
+    [SerializeField] RingEquipment equippedRing2;
+    public void SetEquippedRing2(RingEquipment equippedRing) { this.equippedRing2 = equippedRing; }
+    public RingEquipment GetEquippedRing2() { return equippedRing2; }
+
+    // --- relics
+    [SerializeField] RelicEquipment equippedRelic1;
+    public void SetEquippedRelic1(RelicEquipment equippedRelic) { this.equippedRelic1 = equippedRelic; }
+    public RelicEquipment GetEquippedRelic1() { return equippedRelic1; }
+
+    [SerializeField] RelicEquipment equippedRelic2;
+    public void SetEquippedRelic2(RelicEquipment equippedRelic) { this.equippedRelic2 = equippedRelic; }
+    public RelicEquipment GetEquippedRelic2() { return equippedRelic2; }
+
+    // --- trinket
+    [SerializeField] TrinketEquipment equippedTrinket;
+    public void SetEquippedTrinket(TrinketEquipment equippedTrinket) { this.equippedTrinket = equippedTrinket; }
+    public TrinketEquipment GetEquippedTrinket() { return equippedTrinket; }
+
+    // --- weapons
     [SerializeField] WeaponEquipment equippedMainHand;
-    [SerializeField] ShieldEquipment equippedShield; // will need to be reworked to allow dual wielding.  But for right now, shield is ok.
+    public void SetEquippedMainHand(WeaponEquipment equipment) { equippedMainHand = equipment; }
+    public WeaponEquipment GetEquippedMainHand() { return equippedMainHand; }
+
+    [SerializeField] ShieldEquipment equippedShield; // will need to be reworked to allow for different types of equipment. Right now, doesn't do anything.
 
     HeroManager heroManager;
 
@@ -106,52 +127,55 @@ public class HeroEquipment : MonoBehaviour
         heroManager.Hero().SetFaith(tempFaith);
     }
 
-    public void UnequipArmorFromHero(EnumHandler.EquipmentArmorSlots armorSlot)
+    #region Armor
+
+    public void UnequipArmor(EnumHandler.EquipmentArmorSlots armorSlot)
     {
             switch (armorSlot)
             {
                 case EnumHandler.EquipmentArmorSlots.HEAD:
-                    if (heroManager.HeroEquipment().GetEquippedHead() != null)
+                    if (GetEquippedHead() != null)
                     {
-                        heroManager.HeroInventory().AddToInventory(heroManager.HeroEquipment().GetEquippedHead());
-                        DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedHead() + " from " + heroManager.Hero().GetName(), false, false);
+                        heroManager.HeroInventory().AddToInventory(GetEquippedHead());
+                        DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedHead().name + " from " + heroManager.Hero().GetName(), false, false);
                         SetEquippedHead(null);                        
                     }
                     break;
             case EnumHandler.EquipmentArmorSlots.CHEST:
-                if (heroManager.HeroEquipment().GetEquippedChest() != null)
+                if (GetEquippedChest() != null)
                 {
-                    heroManager.HeroInventory().AddToInventory(heroManager.HeroEquipment().GetEquippedChest());
-                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedChest() + " from " + heroManager.Hero().GetName(), false, false);
+                    heroManager.HeroInventory().AddToInventory(GetEquippedChest());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedChest().name + " from " + heroManager.Hero().GetName(), false, false);
                     SetEquippedChest(null);
                 }
                 break;
             case EnumHandler.EquipmentArmorSlots.HANDS:
-                if (heroManager.HeroEquipment().GetEquippedHands() != null)
+                if (GetEquippedHands() != null)
                 {
-                    heroManager.HeroInventory().AddToInventory(heroManager.HeroEquipment().GetEquippedHands());
-                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedHands() + " from " + heroManager.Hero().GetName(), false, false);
+                    heroManager.HeroInventory().AddToInventory(GetEquippedHands());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedHands().name + " from " + heroManager.Hero().GetName(), false, false);
                     SetEquippedHands(null);
                 }
                 break;
             case EnumHandler.EquipmentArmorSlots.LEGS:
-                if (heroManager.HeroEquipment().GetEquippedLegs() != null)
+                if (GetEquippedLegs() != null)
                 {
-                    heroManager.HeroInventory().AddToInventory(heroManager.HeroEquipment().GetEquippedLegs());
-                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedLegs() + " from " + heroManager.Hero().GetName(), false, false);
+                    heroManager.HeroInventory().AddToInventory(GetEquippedLegs());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedLegs().name + " from " + heroManager.Hero().GetName(), false, false);
                     SetEquippedLegs(null);
                 }
                 break;
             case EnumHandler.EquipmentArmorSlots.FEET:
-                if (heroManager.HeroEquipment().GetEquippedFeet() != null)
+                if (GetEquippedFeet() != null)
                 {
-                    heroManager.HeroInventory().AddToInventory(heroManager.HeroEquipment().GetEquippedFeet());
-                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedFeet() + " from " + heroManager.Hero().GetName(), false, false);
+                    heroManager.HeroInventory().AddToInventory(GetEquippedFeet());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedFeet().name + " from " + heroManager.Hero().GetName(), false, false);
                     SetEquippedFeet(null);
                 }
                 break;
         }
-        return;
+
+        UpdateStats();
     }
 
     public void EquipArmor(ArmorEquipment armorToEquip)
@@ -177,4 +201,156 @@ public class HeroEquipment : MonoBehaviour
 
         UpdateStats();
     }
+
+    #endregion
+
+    #region Rings
+
+    public void UnequipRing(int slot)
+    {
+        switch (slot)
+        {
+            case 1:
+                if (GetEquippedRing1() != null)
+                {
+                    heroManager.HeroInventory().AddToInventory(GetEquippedRing1());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedRing1().name + " from " + heroManager.Hero().GetName(), false, false);
+                    SetEquippedRing1(null);
+                }
+                break;
+            case 2:
+                if (GetEquippedRing2() != null)
+                {
+                    heroManager.HeroInventory().AddToInventory(GetEquippedRing2());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedRing2().name + " from " + heroManager.Hero().GetName(), false, false);
+                    SetEquippedRing2(null);
+                }                
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    public void EquipRing(RingEquipment ringToEquip, int slot)
+    {
+        switch (slot)
+        {
+            case 1:
+                SetEquippedRing1(ringToEquip);
+                break;
+            case 2:
+                SetEquippedRing2(ringToEquip);
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    #endregion
+
+    #region Relics
+
+    public void UnequipRelic(int slot)
+    {
+        switch (slot)
+        {
+            case 1:
+                if (GetEquippedRelic1() != null)
+                {
+                    heroManager.HeroInventory().AddToInventory(GetEquippedRelic1());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedRelic1().name + " from " + heroManager.Hero().GetName(), false, false);
+                    SetEquippedRelic1(null);
+                }
+                break;
+            case 2:
+                if (GetEquippedRelic2() != null)
+                {
+                    heroManager.HeroInventory().AddToInventory(GetEquippedRelic2());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedRelic2().name + " from " + heroManager.Hero().GetName(), false, false);
+                    SetEquippedRelic2(null);
+                }
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    public void EquipRelic(RelicEquipment relicToEquip, int slot)
+    {
+        switch (slot)
+        {
+            case 1:
+                SetEquippedRelic1(relicToEquip);
+                break;
+            case 2:
+                SetEquippedRelic2(relicToEquip);
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    #endregion
+
+    #region Trinkets
+
+    public void UnequipTrinket()
+    {
+        if (GetEquippedTrinket() != null)
+        {
+            heroManager.HeroInventory().AddToInventory(GetEquippedTrinket());
+            DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedTrinket().name + " from " + heroManager.Hero().GetName(), false, false);
+            SetEquippedTrinket(null);
+        }
+
+        UpdateStats();
+    }
+
+    public void EquipTrinket(TrinketEquipment trinketToEquip)
+    {
+        SetEquippedTrinket(trinketToEquip);
+
+        UpdateStats();
+    }
+
+    #endregion
+
+    #region Weapons
+
+    public void UnequipWeapon(EnumHandler.EquipmentHandSlots handSlot)
+    {
+        switch (handSlot)
+        {
+            case EnumHandler.EquipmentHandSlots.MAINHAND:
+                if (GetEquippedMainHand() != null)
+                {
+                    heroManager.HeroInventory().AddToInventory(GetEquippedMainHand());
+                    DebugManager.i.InventoryDebugOut("HeroEquipment", "Unequipping " + GetEquippedMainHand().name + " from " + heroManager.Hero().GetName(), false, false);
+                    SetEquippedMainHand(null);
+                }
+                break;
+            case EnumHandler.EquipmentHandSlots.OFFHAND:
+
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    public void EquipWeapon(WeaponEquipment weaponToEquip)
+    {
+        switch (weaponToEquip.equipSlot)
+        {
+            case EnumHandler.EquipmentHandSlots.MAINHAND:
+                SetEquippedMainHand(weaponToEquip);
+                break;
+            case EnumHandler.EquipmentHandSlots.OFFHAND:
+                // Will be updated to allow for different types of equipment here
+                break;
+        }
+
+        UpdateStats();
+    }
+
+    #endregion
 }

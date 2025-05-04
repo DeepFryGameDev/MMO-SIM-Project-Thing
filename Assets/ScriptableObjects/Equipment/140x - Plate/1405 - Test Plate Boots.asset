@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Plate Boots
   ID: 1405
   icon: {fileID: 21300000, guid: 7dd78d3ffb2f9c64691d7da674e86ac3, type: 3}
-  description: Found from Debug Land!
+  description: A pair of plate greaves found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

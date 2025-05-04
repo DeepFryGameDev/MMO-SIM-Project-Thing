@@ -78,19 +78,24 @@ public class TrainingEquipmentMenu : MonoBehaviour
 
         for (int i = 0; i < heroManager.HeroInventory().GetInventory().Count; i++)
         {
-            GameObject newListButton = Instantiate(PrefabManager.i.TrainingEquipmentListButton, listButtonGroup.transform);
-            TrainingEquipmentListButtonHandler telbh = newListButton.GetComponent<TrainingEquipmentListButtonHandler>();
-
-            telbh.SetTrainingEquipmentMenu(this);
-            telbh.SetHeroManager(heroManager);
-
             TrainingEquipment itemAsTrainingEquip = heroManager.HeroInventory().GetInventory()[i] as TrainingEquipment;
 
-            telbh.SetTrainingEquipment(itemAsTrainingEquip);
+            if (itemAsTrainingEquip != null)
+            {
+                GameObject newListButton = Instantiate(PrefabManager.i.TrainingEquipmentListButton, listButtonGroup.transform);
+                TrainingEquipmentListButtonHandler telbh = newListButton.GetComponent<TrainingEquipmentListButtonHandler>();
 
-            // set icon, etc. tooltip will be needed eventually
-            telbh.SetIcon(itemAsTrainingEquip.icon);
-            telbh.SetLevelText(itemAsTrainingEquip.trainingLevel);
+                telbh.SetTrainingEquipmentMenu(this);
+                telbh.SetHeroManager(heroManager);
+
+
+
+                telbh.SetTrainingEquipment(itemAsTrainingEquip);
+
+                // set icon, etc. tooltip will be needed eventually
+                telbh.SetIcon(itemAsTrainingEquip.icon);
+                telbh.SetLevelText(itemAsTrainingEquip.trainingLevel);
+            }
         }
     }
 

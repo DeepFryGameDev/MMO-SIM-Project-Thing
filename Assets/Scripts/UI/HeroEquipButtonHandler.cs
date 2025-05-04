@@ -32,6 +32,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         heroEquipMenuHandler.SetEquipmentClickedInMenu(assignedEquipment);
 
         List<ArmorEquipment> armorEquipmentInInventory;
+        List<WeaponEquipment> weaponEquipmentInInventory;
+        List<RingEquipment> ringEquipmentInInventory;
+        List<RelicEquipment> relicEquipmentInInventory;
+        List<TrinketEquipment> trinketEquipmentInInventory;
 
         /* 0 - helm
          * 1 - chest
@@ -83,11 +87,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             case 1: // chest
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the chest equip slot");
 
-                // get all chests in inventory that both match the hero's wearable armor class, and helmet slot
+                // get all chests in inventory that both match the hero's wearable armor class, and chest slot
                 armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.CHEST);
                 if (armorEquipmentInInventory.Count > 0)
                 {
-                    // Display a blank icon to allow player to unequip helmet
+                    // Display a blank icon to allow player to unequip chest
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
@@ -104,7 +108,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                     }
                     else
                     {
-                        // Display a blank icon to allow player to unequip helmet
+                        // Display a blank icon to allow player to unequip chest
                         InstantiateUnequipIcon();
 
                         // Display the EquipScroll list
@@ -115,11 +119,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             case 2: // hands
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the hands equip slot");
 
-                // get all hands in inventory that both match the hero's wearable armor class, and helmet slot
+                // get all hands in inventory that both match the hero's wearable armor class, and hands slot
                 armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.HANDS);
                 if (armorEquipmentInInventory.Count > 0)
                 {
-                    // Display a blank icon to allow player to unequip helmet
+                    // Display a blank icon to allow player to unequip hands
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
@@ -136,7 +140,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                     }
                     else
                     {
-                        // Display a blank icon to allow player to unequip helmet
+                        // Display a blank icon to allow player to unequip hands
                         InstantiateUnequipIcon();
 
                         // Display the EquipScroll list
@@ -147,11 +151,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             case 3: // pants
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the legs equip slot");
 
-                // get all legs in inventory that both match the hero's wearable armor class, and helmet slot
+                // get all legs in inventory that both match the hero's wearable armor class, and legs slot
                 armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.LEGS);
                 if (armorEquipmentInInventory.Count > 0)
                 {
-                    // Display a blank icon to allow player to unequip helmet
+                    // Display a blank icon to allow player to unequip legs
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
@@ -168,7 +172,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                     }
                     else
                     {
-                        // Display a blank icon to allow player to unequip helmet
+                        // Display a blank icon to allow player to unequip legs
                         InstantiateUnequipIcon();
 
                         // Display the EquipScroll list
@@ -179,11 +183,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             case 4: // feet
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the feet equip slot");
 
-                // get all feet in inventory that both match the hero's wearable armor class, and helmet slot
+                // get all feet in inventory that both match the hero's wearable armor class, and feet slot
                 armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.FEET);
                 if (armorEquipmentInInventory.Count > 0)
                 {
-                    // Display a blank icon to allow player to unequip helmet
+                    // Display a blank icon to allow player to unequip feet
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
@@ -200,7 +204,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                     }
                     else
                     {
-                        // Display a blank icon to allow player to unequip helmet
+                        // Display a blank icon to allow player to unequip feet
                         InstantiateUnequipIcon();
 
                         // Display the EquipScroll list
@@ -210,24 +214,197 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                 break;
             case 5: // ring 1
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the ring 1 equip slot");
+                // get all rings in inventory
+                ringEquipmentInInventory = RingEquipmentInInventory();
+                if (ringEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip ring
+                    InstantiateUnequipIcon();
+
+                    // Display equippable rings
+                    InstantiateEquippableRings(ringEquipmentInInventory, 1);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedRing1() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable rings in inventory and not wearing any rings", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip ring
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 6: // ring 2
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the ring 2 equip slot");
-                break;
+                // get all rings in inventory
+                ringEquipmentInInventory = RingEquipmentInInventory();
+                if (ringEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip ring
+                    InstantiateUnequipIcon();
+
+                    // Display equippable rings
+                    InstantiateEquippableRings(ringEquipmentInInventory, 2);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedRing2() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable rings in inventory and not wearing any rings", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip ring
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
+                    break;
             case 7: // relic 1
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the relic 1 equip slot");
+
+                // get all relics in inventory
+                relicEquipmentInInventory = RelicEquipmentInInventory();
+                if (relicEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip relic
+                    InstantiateUnequipIcon();
+
+                    // Display equippable relics
+                    InstantiateEquippableRelics(relicEquipmentInInventory, 1);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedRelic1() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable relics in inventory and not wearing any relics", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip relic
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 8: // relic 2
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the relic 2 equip slot");
+
+                // get all relics in inventory
+                relicEquipmentInInventory = RelicEquipmentInInventory();
+                if (relicEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip relic
+                    InstantiateUnequipIcon();
+
+                    // Display equippable relics
+                    InstantiateEquippableRelics(relicEquipmentInInventory, 2);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedRelic2() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable relics in inventory and not wearing any relics", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip relic
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 9: // trinket
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the trinket equip slot");
+
+                // get all relics in inventory
+                trinketEquipmentInInventory = TrinketEquipmentInInventory();
+                if (trinketEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip relic
+                    InstantiateUnequipIcon();
+
+                    // Display equippable trinkets
+                    InstantiateEquippableTrinkets(trinketEquipmentInInventory);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedTrinket() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable trinket in inventory and not wearing any trinkets", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip relic
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
+
                 break;
             case 10: // mainhand
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the main hand equip slot");
+
+                // get all equipment in inventory that both match the hero's equippable weapons and main hand slot
+                weaponEquipmentInInventory = WeaponEquipmentInInventoryBySlot(EnumHandler.EquipmentHandSlots.MAINHAND);
+                if (weaponEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip weapon
+                    InstantiateUnequipIcon();
+
+                    // Display equippable weapons
+                    InstantiateEquippableWeapons(weaponEquipmentInInventory);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedMainHand() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable MainHand in inventory and not wearing any MainHand", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip weapon
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 11: // offhand
-                DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the off hand equip slot");
+                DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the off hand equip slot - NOT YET IMPLEMENTED.", true, false);
                 break;
         }
     }
@@ -236,14 +413,86 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     {
         foreach (ArmorEquipment armor in wearableEquipmentList)
         {
-            DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + armor.name + " / " + armor.ID.ToString());
+            // DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + armor.name + " / " + armor.ID.ToString());
             // instantiate EquipToHeroButton to transform "EquipScroll/Viewport/LayoutGroup"
             GameObject newEquipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
 
             // Set the EquipToHeroButtonHandler details about the item 
             EquipToHeroButtonHandler handler = newEquipButton.GetComponent<EquipToHeroButtonHandler>();
 
-            handler.SetEquipment(armor);
+            handler.SetAssignedEquipment(armor);
+            handler.SetIcon();
+            handler.SetHeroManager(heroManager);
+        }
+    }
+
+    void InstantiateEquippableWeapons(List<WeaponEquipment> wearableEquipmentList)
+    {
+        foreach (WeaponEquipment weapon in wearableEquipmentList)
+        {
+            // DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + weapon.name + " / " + weapon.ID.ToString());
+            // instantiate EquipToHeroButton to transform "EquipScroll/Viewport/LayoutGroup"
+            GameObject newEquipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
+
+            // Set the EquipToHeroButtonHandler details about the item 
+            EquipToHeroButtonHandler handler = newEquipButton.GetComponent<EquipToHeroButtonHandler>();
+
+            handler.SetAssignedEquipment(weapon);
+            handler.SetIcon();
+            handler.SetHeroManager(heroManager);
+        }
+    }
+
+    void InstantiateEquippableRings(List<RingEquipment> wearableEquipmentList, int buttonSlotClicked)
+    {
+        foreach (RingEquipment ring in wearableEquipmentList)
+        {
+            // DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + ring.name + " / " + ring.ID.ToString());
+            // instantiate EquipToHeroButton to transform "EquipScroll/Viewport/LayoutGroup"
+            GameObject newEquipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
+
+            // Set the EquipToHeroButtonHandler details about the item 
+            EquipToHeroButtonHandler handler = newEquipButton.GetComponent<EquipToHeroButtonHandler>();
+
+            handler.SetAssignedEquipment(ring);
+            handler.SetIcon();
+            handler.SetHeroManager(heroManager);
+
+            handler.SetRingSlotClicked(buttonSlotClicked);
+        }
+    }
+
+    void InstantiateEquippableRelics(List<RelicEquipment> wearableEquipmentList, int buttonSlotClicked)
+    {
+        foreach (RelicEquipment relic in wearableEquipmentList)
+        {
+            // DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + ring.name + " / " + ring.ID.ToString());
+            // instantiate EquipToHeroButton to transform "EquipScroll/Viewport/LayoutGroup"
+            GameObject newEquipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
+
+            // Set the EquipToHeroButtonHandler details about the item 
+            EquipToHeroButtonHandler handler = newEquipButton.GetComponent<EquipToHeroButtonHandler>();
+
+            handler.SetAssignedEquipment(relic);
+            handler.SetIcon();
+            handler.SetHeroManager(heroManager);
+
+            handler.SetRelicSlotClicked(buttonSlotClicked);
+        }
+    }
+
+    void InstantiateEquippableTrinkets(List<TrinketEquipment> wearableEquipmentList)
+    {
+        foreach (TrinketEquipment trinket in wearableEquipmentList)
+        {
+            // DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "List out equipment button for " + ring.name + " / " + ring.ID.ToString());
+            // instantiate EquipToHeroButton to transform "EquipScroll/Viewport/LayoutGroup"
+            GameObject newEquipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
+
+            // Set the EquipToHeroButtonHandler details about the item 
+            EquipToHeroButtonHandler handler = newEquipButton.GetComponent<EquipToHeroButtonHandler>();
+
+            handler.SetAssignedEquipment(trinket);
             handler.SetIcon();
             handler.SetHeroManager(heroManager);
         }
@@ -270,7 +519,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             if (item is ArmorEquipment)
             {
                 ArmorEquipment armorItem = item as ArmorEquipment;
-                if (armorItem.equipSlot == armorSlot && CanWearArmorClass(heroManager.HeroClass().GetArmorClass(), armorItem.armorClass))
+                if (armorItem.equipSlot == armorSlot && ClassManager.i.CanWearArmorClass(heroManager.HeroClass().GetCurrentClass(), armorItem.armorClass))
                 {
                     listToDisplay.Add(armorItem);
                 }
@@ -280,31 +529,79 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
-    /// <summary>
-    /// Checks if the given hero's class armor class is able to equip the armor being checked.  Plate wearers can equip everything, cloth can only equip cloth, and in between.
-    /// </summary>
-    /// <param name="herosArmorClass">Hero's armor class to compare with</param>
-    /// <param name="itemsArmorClass">Armor Class of the item to be checked</param>
-    /// <returns></returns>
-    bool CanWearArmorClass(EnumHandler.ArmorClasses herosArmorClass, EnumHandler.ArmorClasses itemsArmorClass)
+    List<WeaponEquipment> WeaponEquipmentInInventoryBySlot(EnumHandler.EquipmentHandSlots handSlot)
     {
-        switch (herosArmorClass)
+        List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
+
+        List<WeaponEquipment> listToDisplay = new List<WeaponEquipment>();
+
+        foreach (HeroItem item in inventory)
         {
-            case EnumHandler.ArmorClasses.CLOTH:
-                if (itemsArmorClass == EnumHandler.ArmorClasses.PLATE || itemsArmorClass == EnumHandler.ArmorClasses.MAIL || itemsArmorClass == EnumHandler.ArmorClasses.LEATHER) { return false; }
-                return true;
-            case EnumHandler.ArmorClasses.LEATHER:
-                if (itemsArmorClass == EnumHandler.ArmorClasses.PLATE || itemsArmorClass == EnumHandler.ArmorClasses.MAIL) { return false; }
-                return true;
-            case EnumHandler.ArmorClasses.MAIL:
-                if (itemsArmorClass == EnumHandler.ArmorClasses.PLATE) { return false; }
-                return true;
-            case EnumHandler.ArmorClasses.PLATE:
-                return true;
-            default:
-                DebugManager.i.ClassDebugOut("ClassManager", "CanWearArmorClass - heroArmorClass not found.  Defaulting to false.", true, false);
-                return false;
+            if (item is WeaponEquipment)
+            {
+                WeaponEquipment weaponItem = item as WeaponEquipment;
+                if (weaponItem.equipSlot == handSlot && ClassManager.i.CanEquipWeaponClass(heroManager.HeroClass().GetCurrentClass(), weaponItem.weaponClass))
+                {
+                    listToDisplay.Add(weaponItem);
+                }
+            }
         }
+
+        return listToDisplay;
+    }
+
+    List <RingEquipment> RingEquipmentInInventory()
+    {
+        List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
+
+        List<RingEquipment> listToDisplay = new List<RingEquipment>();
+
+        foreach (HeroItem item in inventory)
+        {
+            if (item is RingEquipment)
+            {
+                RingEquipment ringItem = item as RingEquipment;
+                listToDisplay.Add(ringItem);
+            }
+        }
+
+        return listToDisplay;
+    }
+
+    List<RelicEquipment> RelicEquipmentInInventory()
+    {
+        List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
+
+        List<RelicEquipment> listToDisplay = new List<RelicEquipment>();
+
+        foreach (HeroItem item in inventory)
+        {
+            if (item is RelicEquipment)
+            {
+                RelicEquipment relicItem = item as RelicEquipment;
+                listToDisplay.Add(relicItem);
+            }
+        }
+
+        return listToDisplay;
+    }
+
+    List<TrinketEquipment> TrinketEquipmentInInventory()
+    {
+        List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
+
+        List<TrinketEquipment> listToDisplay = new List<TrinketEquipment>();
+
+        foreach (HeroItem item in inventory)
+        {
+            if (item is TrinketEquipment)
+            {
+                TrinketEquipment trinketItem = item as TrinketEquipment;
+                listToDisplay.Add(trinketItem);
+            }
+        }
+
+        return listToDisplay;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -315,6 +612,42 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             if (equipAsArmor != null)
             {
                 heroEquipMenuHandler.ShowArmorEquipmentDetails(equipAsArmor);
+                return;
+            }
+
+            WeaponEquipment equipAsWeapon = assignedEquipment as WeaponEquipment;
+            if (equipAsWeapon != null)
+            {
+                heroEquipMenuHandler.ShowWeaponEquipmentDetails(equipAsWeapon);
+                return;
+            }
+
+            RingEquipment equipAsRing = assignedEquipment as RingEquipment;
+            if (equipAsRing != null)
+            {
+                heroEquipMenuHandler.ShowRingEquipmentDetails(equipAsRing);
+                return;
+            }
+
+            RelicEquipment equipAsRelic = assignedEquipment as RelicEquipment;
+            if (equipAsRelic != null)
+            {
+                heroEquipMenuHandler.ShowRelicEquipmentDetails(equipAsRelic);
+                return;
+            }
+
+            TrinketEquipment equipAsTrinket = assignedEquipment as TrinketEquipment;
+            if (equipAsTrinket != null)
+            {
+                heroEquipMenuHandler.ShowTrinketEquipmentDetails(equipAsTrinket);
+                return;
+            }
+
+            ShieldEquipment equipAsShield = assignedEquipment as ShieldEquipment;
+            if (equipAsShield != null)
+            {
+                heroEquipMenuHandler.ShowShieldEquipmentDetails(equipAsShield);
+                return;
             }
         }
     }

@@ -39,8 +39,14 @@ public class HeroInventoryUIHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI handEquipAttackDamageText;
     [SerializeField] TextMeshProUGUI handEquipAttackSpeedText;
 
-    [Header("---Jewlery Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI jewelryEquipSlotText;    
+    [Header("---Ring Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI ringEquipSlotText;
+
+    [Header("---Relic Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI relicEquipSlotText;
+
+    [Header("---Trinket Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI trinketEquipSlotText;
 
     [Header("---Training Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI trainingEquipLevelText;

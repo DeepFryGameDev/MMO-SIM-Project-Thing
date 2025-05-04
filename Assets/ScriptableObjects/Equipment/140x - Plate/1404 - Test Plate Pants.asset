@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Plate Pants
   ID: 1404
   icon: {fileID: 21300000, guid: fdbe199193616764293ea8915c0be5b1, type: 3}
-  description: Found from Debug Land!
+  description: A plate cuiss found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

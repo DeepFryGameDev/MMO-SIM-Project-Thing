@@ -10,25 +10,62 @@ public class ClassManager : MonoBehaviour
         i = this;
     }
 
-    public EnumHandler.ArmorClasses GetArmorClassByHeroClass(EnumHandler.HeroClasses heroClass)
+    /// <summary>
+    /// Checks if the given hero's class is able to equip the armor being checked.
+    /// </summary>
+    /// <param name="classDetails">Hero's class to compare with</param>
+    /// <param name="itemsArmorClass">Armor Class of the item to be checked</param>
+    /// <returns></returns>
+    public bool CanWearArmorClass(HeroClassDetails classDetails, EnumHandler.ArmorClasses itemsArmorClass)
     {
-        switch (heroClass)
+        switch (itemsArmorClass)
         {
-            case EnumHandler.HeroClasses.RECRUIT:
-                return EnumHandler.ArmorClasses.LEATHER;
-            case EnumHandler.HeroClasses.FIGHTER:
-                return EnumHandler.ArmorClasses.MAIL;
-            case EnumHandler.HeroClasses.ARCHER:
-                return EnumHandler.ArmorClasses.LEATHER;
-            case EnumHandler.HeroClasses.MAGE:
-                return EnumHandler.ArmorClasses.CLOTH;
-            case EnumHandler.HeroClasses.CLERIC:
-                return EnumHandler.ArmorClasses.MAIL;
-            case EnumHandler.HeroClasses.KNIGHT:
-                return EnumHandler.ArmorClasses.PLATE;
+            case EnumHandler.ArmorClasses.CLOTH:
+                if (classDetails.clothEquippable) { return true; }
+                return false;
+            case EnumHandler.ArmorClasses.LEATHER:
+                if (classDetails.leatherEquippable) { return true; }
+                return false;
+            case EnumHandler.ArmorClasses.MAIL:
+                if (classDetails.mailEquippable) { return true; }
+                return false;
+            case EnumHandler.ArmorClasses.PLATE:
+                if (classDetails.plateEquippable) { return true; }
+                return false;
             default:
-                DebugManager.i.ClassDebugOut("ClassManager", "Hero class not found in GetArmorClassByHeroClass().  Likely a new class was added and needs to be added here. Returning cloth by default", true, false);
-                return EnumHandler.ArmorClasses.CLOTH;
+                DebugManager.i.ClassDebugOut("ClassManager", "CanWearArmorClass - item's armor class not found.  Defaulting to false.", false, true);
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the given hero's class is able to equip the weapon being checked.
+    /// </summary>
+    /// <param name="classDetails">Hero's class to compare with</param>
+    /// <param name="itemsWeaponClass">Armor Class of the item to be checked</param>
+    /// <returns></returns>
+    public bool CanEquipWeaponClass(HeroClassDetails classDetails, EnumHandler.WeaponClasses itemsWeaponClass)
+    {
+        switch (itemsWeaponClass)
+        {
+            case EnumHandler.WeaponClasses.SWORD:
+                if (classDetails.swordEquippable) { return true; }
+                return false;
+            case EnumHandler.WeaponClasses.BOW:
+                if (classDetails.bowEquippable) { return true; }
+                    return false;
+            case EnumHandler.WeaponClasses.MACE:
+                if (classDetails.maceEquippable) { return true; }
+                return false;
+            case EnumHandler.WeaponClasses.STAFF:
+                if (classDetails.staffEquippable) { return true; }
+                return false;
+            case EnumHandler.WeaponClasses.LANCE:
+                if (classDetails.lanceEquippable) { return true; }
+                return false;
+            default:
+                DebugManager.i.ClassDebugOut("ClassManager", "CanEquipWeaponClass - item's weapon class not found.  Defaulting to false.", false, true);
+                return false;
         }
     }
 }

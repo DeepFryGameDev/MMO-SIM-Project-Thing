@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Mail Chest
   ID: 1302
   icon: {fileID: 21300000, guid: 6dc349f9b95b42e4ca8ea0ddc212c7f6, type: 3}
-  description: Found from Debug Land!
+  description: Chainmail Hauberk found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

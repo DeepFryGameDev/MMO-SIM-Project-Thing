@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Mail Helm
   ID: 1301
   icon: {fileID: 21300000, guid: 7e3215c6f27e29b4781da88efbbcd9fa, type: 3}
-  description: Found from Debug Land!
+  description: Ringmail helmet found in Debug Land.
   rarity: 1
   weight: 1
   goldValue: 15

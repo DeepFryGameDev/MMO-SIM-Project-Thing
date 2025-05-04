@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Mail Boots
   ID: 1305
   icon: {fileID: 21300000, guid: 3f17b39ad7b334b449e7bb6f2151da90, type: 3}
-  description: Found from Debug Land!
+  description: Ringmail boots found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

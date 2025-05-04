@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Leather Chest
   ID: 1202
   icon: {fileID: 21300000, guid: 892b99601d43f844b9db045259194445, type: 3}
-  description: Found from Debug Land!
+  description: A rawhide chestpiece found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

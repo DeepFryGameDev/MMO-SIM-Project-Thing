@@ -9,7 +9,7 @@ public class HeroItem : BaseItem
     [Header("---Base Hero Item Values---")]
     public EnumHandler.InventoryRarities rarity;
 
-    public int weight;
+    public float weight;
 
     public int goldValue;
 

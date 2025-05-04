@@ -28,6 +28,45 @@ public class HeroEquipMenuHandler : MonoBehaviour
     [SerializeField] CanvasGroup armorDetailsCanvasGroup;
     // ------------
 
+    // Weapon
+    [SerializeField] TextMeshProUGUI weaponClassText;
+    [SerializeField] TextMeshProUGUI weaponSlotText;
+
+    [SerializeField] TextMeshProUGUI attackDamageText;
+    [SerializeField] TextMeshProUGUI attackSpeedText;
+
+    [SerializeField] CanvasGroup handDetailsCanvasGroup;
+    // ------------
+
+    // Shields
+    [SerializeField] TextMeshProUGUI shieldSlotText;
+    [SerializeField] TextMeshProUGUI shieldClassText;
+    [SerializeField] TextMeshProUGUI shieldDamageBlockedText;
+    [SerializeField] TextMeshProUGUI shieldArmorText;
+    [SerializeField] TextMeshProUGUI shieldMagicResistText;
+
+    [SerializeField] CanvasGroup shieldDetailsCanvasGroup;
+    // ------------
+
+    // Rings
+    [SerializeField] TextMeshProUGUI ringSlotText;
+
+    [SerializeField] CanvasGroup ringDetailsCanvasGroup;
+
+    // ------------
+
+    // Relics
+    [SerializeField] TextMeshProUGUI relicSlotText;
+
+    [SerializeField] CanvasGroup relicDetailsCanvasGroup;
+    // ------------
+
+    // Trinkets
+    [SerializeField] TextMeshProUGUI trinketSlotText;
+
+    [SerializeField] CanvasGroup trinketDetailsCanvasGroup;
+    // ------------
+
     [SerializeField] HeroEquipButtonHandler headEquipButton;
     [SerializeField] HeroEquipButtonHandler chestEquipButton;
     [SerializeField] HeroEquipButtonHandler handsEquipButton;
@@ -81,6 +120,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
     public void GenerateEquippedEquipmentButtons(HeroManager heroManager)
     {
         #region Armor
+
         // gather anything equipped to the hero and set buttons for them in the menu
         if (heroManager.HeroEquipment().GetEquippedHead() != null)
         {
@@ -135,6 +175,89 @@ public class HeroEquipMenuHandler : MonoBehaviour
             feetEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultFeetIcon;
             feetEquipButton.SetAssignedEquipment(null);
         }
+
+        #endregion
+
+        #region Rings
+
+        if (heroManager.HeroEquipment().GetEquippedRing1() != null)
+        {
+            ring1EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedRing1().icon;
+            ring1EquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedRing1());
+        }
+        else
+        {
+            ring1EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRingIcon;
+            ring1EquipButton.SetAssignedEquipment(null);
+        }
+
+        if (heroManager.HeroEquipment().GetEquippedRing2() != null)
+        {
+            ring2EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedRing2().icon;
+            ring2EquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedRing2());
+        }
+        else
+        {
+            ring2EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRingIcon;
+            ring2EquipButton.SetAssignedEquipment(null);
+        }
+
+        #endregion
+
+        #region Relics
+
+        if (heroManager.HeroEquipment().GetEquippedRelic1() != null)
+        {
+            relic1EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedRelic1().icon;
+            relic1EquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedRelic1());
+        }
+        else
+        {
+            relic1EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRelicIcon;
+            relic1EquipButton.SetAssignedEquipment(null);
+        }
+
+        if (heroManager.HeroEquipment().GetEquippedRelic2() != null)
+        {
+            relic2EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedRelic2().icon;
+            relic2EquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedRelic2());
+        }
+        else
+        {
+            relic2EquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRelicIcon;
+            relic2EquipButton.SetAssignedEquipment(null);
+        }
+
+        #endregion
+
+        #region Trinket
+
+        if (heroManager.HeroEquipment().GetEquippedTrinket() != null)
+        {
+            trinketEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedTrinket().icon;
+            trinketEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedTrinket());
+        }
+        else
+        {
+            trinketEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRelicIcon;
+            trinketEquipButton.SetAssignedEquipment(null);
+        }
+
+        #endregion
+
+        #region Weapons
+
+        if (heroManager.HeroEquipment().GetEquippedMainHand() != null)
+        {
+            mainHandEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedMainHand().icon;
+            mainHandEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedMainHand());
+        }
+        else
+        {
+            mainHandEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultMainHandIcon;
+            mainHandEquipButton.SetAssignedEquipment(null);
+        }
+
         #endregion
     }
 
@@ -147,6 +270,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
         goldValueText.SetText(equipment.goldValue.ToString());
         weightValueText.SetText(equipment.weight.ToString());
     }
+
+    //-----------------------------------
+    #region EquipDetails
+
+    #region Armor
 
     public void ShowArmorEquipmentDetails(ArmorEquipment armorEquip)
     {
@@ -256,6 +384,85 @@ public class HeroEquipMenuHandler : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Hands
+
+    public void ShowWeaponEquipmentDetails(WeaponEquipment weaponEquip)
+    {
+        handDetailsCanvasGroup.alpha = 1;
+
+        showBasicEquipDetails(weaponEquip);
+
+        weaponSlotText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.equipSlot.ToString()));
+        weaponClassText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.weaponClass.ToString()));
+
+        attackDamageText.SetText(weaponEquip.attackDamage.ToString());
+        attackSpeedText.SetText(weaponEquip.attackSpeed.ToString());
+    }
+
+    #endregion
+
+    #region Shields
+
+    public void ShowShieldEquipmentDetails(ShieldEquipment shieldEquip)
+    {
+        shieldDetailsCanvasGroup.alpha = 1;
+
+        showBasicEquipDetails(shieldEquip);
+
+        shieldSlotText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.equipSlot.ToString()));
+        shieldClassText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.shieldClass.ToString()));
+
+        shieldDamageBlockedText.SetText(shieldEquip.damageBlocked.ToString());
+        shieldArmorText.SetText(shieldEquip.baseArmorValue.ToString());
+        shieldMagicResistText.SetText(shieldEquip.baseMagicResistValue.ToString());
+    }
+
+    #endregion
+
+    #region Rings
+
+    public void ShowRingEquipmentDetails(RingEquipment ringEquip)
+    {
+        ringDetailsCanvasGroup.alpha = 1;
+
+        showBasicEquipDetails(ringEquip);
+
+        ringSlotText.SetText("Ring");
+    }
+
+    #endregion
+
+    #region Relics
+
+    public void ShowRelicEquipmentDetails(RelicEquipment relicEquip)
+    {
+        relicDetailsCanvasGroup.alpha = 1;
+
+        showBasicEquipDetails(relicEquip);
+
+        relicSlotText.SetText("Relic");
+    }
+
+    #endregion
+
+    #region Trinkets
+
+    public void ShowTrinketEquipmentDetails(TrinketEquipment trinketEquip)
+    {
+        trinketDetailsCanvasGroup.alpha = 1;
+
+        showBasicEquipDetails(trinketEquip);
+
+        trinketSlotText.SetText("Trinket");
+    }
+
+    #endregion
+
+    #endregion
+    //-----------------------------------
+
     public void ToggleEquipScroll(bool toggle)
     {
         if (toggle) // equip scroll should be showing
@@ -280,8 +487,6 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     public void ClearEquipmentDetails()
     {
-        armorDetailsCanvasGroup.alpha = 0;
-
         nameText.SetText(string.Empty);
         debugIDText.SetText(string.Empty);
 
@@ -290,14 +495,68 @@ public class HeroEquipMenuHandler : MonoBehaviour
         weightValueText.SetText(string.Empty);
 
         // armor
-        armorClassText.SetText(string.Empty);
-        armorSlotText.SetText(string.Empty);
-        armorBaseArmorText.SetText(string.Empty);
-        armorBaseMagicResistText.SetText(string.Empty);
+        if (armorDetailsCanvasGroup.alpha != 0)
+        {
+            armorDetailsCanvasGroup.alpha = 0;
+            
+            armorClassText.SetText(string.Empty);
+            armorSlotText.SetText(string.Empty);
+            armorBaseArmorText.SetText(string.Empty);
+            armorBaseMagicResistText.SetText(string.Empty);
 
-        armorStatBonus0Text.SetText(string.Empty);
-        armorStatBonus1Text.SetText(string.Empty);
-        armorStatBonus2Text.SetText(string.Empty);
+            armorStatBonus0Text.SetText(string.Empty);
+            armorStatBonus1Text.SetText(string.Empty);
+            armorStatBonus2Text.SetText(string.Empty);
+        }
+
+        // weapons
+        if (handDetailsCanvasGroup.alpha != 0)
+        {
+            handDetailsCanvasGroup.alpha = 0;
+            
+            weaponSlotText.SetText(string.Empty);
+            weaponClassText.SetText(string.Empty);
+
+            attackDamageText.SetText(string.Empty);
+            attackSpeedText.SetText(string.Empty);
+        }
+        
+        // shield
+        if (shieldDetailsCanvasGroup.alpha != 0)
+        {
+            shieldDetailsCanvasGroup.alpha = 0;
+
+            shieldSlotText.SetText(string.Empty);
+            shieldClassText.SetText(string.Empty);
+
+            shieldDamageBlockedText.SetText(string.Empty);
+            shieldArmorText.SetText(string.Empty);
+            shieldMagicResistText.SetText(string.Empty);
+        }
+
+        // Ring
+        if (ringDetailsCanvasGroup.alpha != 0)
+        {
+            ringDetailsCanvasGroup.alpha = 0;
+
+            ringSlotText.SetText(string.Empty);
+        }
+
+        // Relic
+        if (relicDetailsCanvasGroup.alpha != 0)
+        {
+            relicDetailsCanvasGroup.alpha = 0;
+
+            relicSlotText.SetText(string.Empty);
+        }
+
+        // Trinket
+        if (trinketDetailsCanvasGroup.alpha != 0)
+        {
+            trinketDetailsCanvasGroup.alpha = 0;
+
+            trinketSlotText.SetText(string.Empty);
+        }
     }
 
     public void ClearInventoryList()

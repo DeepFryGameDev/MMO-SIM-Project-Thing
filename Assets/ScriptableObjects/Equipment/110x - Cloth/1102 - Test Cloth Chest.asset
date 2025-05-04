@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Cloth Chest
   ID: 1102
   icon: {fileID: 21300000, guid: 58974a351aa2c95469936a9ddc268b67, type: 3}
-  description: Found from Debug Land!
+  description: A robe found in Debug Land.
   rarity: 1
   weight: 3
   goldValue: 15

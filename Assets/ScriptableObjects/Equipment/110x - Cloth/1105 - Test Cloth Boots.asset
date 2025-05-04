@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Cloth Boots
   ID: 1105
   icon: {fileID: 21300000, guid: 92c202ecb91164941bec9989d9ebeabf, type: 3}
-  description: Found from Debug Land!
+  description: Cloth shoes found in Debug Land.
   rarity: 1
   weight: 1
   goldValue: 5

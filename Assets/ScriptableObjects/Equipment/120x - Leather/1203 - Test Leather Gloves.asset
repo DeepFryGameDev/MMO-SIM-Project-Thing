@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Leather Gloves
   ID: 1203
   icon: {fileID: 21300000, guid: ec6ba6d035cc9de4da658ca2fc824804, type: 3}
-  description: Found from Debug Land!
+  description: Studded leather gloves found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Test Leather Boots
   ID: 1205
   icon: {fileID: 21300000, guid: 7dd78d3ffb2f9c64691d7da674e86ac3, type: 3}
-  description: Found from Debug Land!
+  description: Leather boots found in Debug Land.
   rarity: 1
   weight: 0
   goldValue: 0

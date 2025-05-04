@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adae593b8cfaaf840ae9a97f64a59f35, type: 3}
-  m_Name: Test Ring
+  m_Script: {fileID: 11500000, guid: 4d0f0512d49a5384bb9416e1413d54a4, type: 3}
+  m_Name: 7002 - Test Relic 2
   m_EditorClassIdentifier: 
-  name: Test Ring
-  ID: 6001
-  icon: {fileID: 21300000, guid: 3a955cfc8aa60d54ab67f3eff105168f, type: 3}
-  description: 
-  rarity: 1
+  name: Test Relic 2
+  ID: 7002
+  icon: {fileID: 21300000, guid: f95f9e35ce93327489cfd7a880b04f1e, type: 3}
+  description: Some kind of golden sapphire necklace?
+  rarity: 4
   weight: 0
   goldValue: 0

@@ -21,6 +21,8 @@ public class HeroCommandProcessing : MonoBehaviour
 
     [SerializeField] HeroEquipMenuHandler heroEquipMenuHandler;
 
+    [SerializeField] StatusMenuHandler statusMenuHandler;
+
     void Awake()
     {
         Setup();
@@ -129,12 +131,18 @@ public class HeroCommandProcessing : MonoBehaviour
         // set any already equipped items to the EquipButtonsPanel
         heroEquipMenuHandler.GenerateEquippedEquipmentButtons(heroManager);
 
+        statusMenuHandler.SetStatusValues(heroManager);
+        statusMenuHandler.ToggleMenu(true);
+
         // display HeroEquipCanvas
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.EQUIP);
     }
 
     public void CloseEquipMenu()
     {
+        statusMenuHandler.ClearValues();
+        statusMenuHandler.ToggleMenu(false);
+
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 }

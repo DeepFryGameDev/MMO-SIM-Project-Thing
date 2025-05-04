@@ -2,12 +2,7 @@ using UnityEngine;
 
 public class HeroClass : MonoBehaviour
 {
-    [SerializeField] EnumHandler.HeroClasses currentClass;
-    public EnumHandler.HeroClasses GetCurrentClass() { return currentClass; }
-    public void SetCurrentClass(EnumHandler.HeroClasses heroClass) { this.currentClass = heroClass; }
+    [SerializeField] HeroClassDetails currentClass;
 
-    public EnumHandler.ArmorClasses GetArmorClass()
-    {
-        return ClassManager.i.GetArmorClassByHeroClass(currentClass);
-    }
+    public HeroClassDetails GetCurrentClass() { return currentClass; }
 }
