@@ -26,7 +26,7 @@ MonoBehaviour:
   strengthBonus: 2
   enduranceBonus: 1
   agilityBonus: 0
-  dexterityBonus: 0
+  dexterityBonus: 1
   intelligenceBonus: 0
   faithBonus: 0
   stat1Variance: 1

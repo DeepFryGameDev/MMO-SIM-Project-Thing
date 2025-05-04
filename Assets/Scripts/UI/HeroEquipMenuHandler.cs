@@ -18,11 +18,15 @@ public class HeroEquipMenuHandler : MonoBehaviour
     // Armor
     [SerializeField] TextMeshProUGUI armorClassText;
     [SerializeField] TextMeshProUGUI armorSlotText;
-
     [SerializeField] TextMeshProUGUI armorBaseArmorText;
     [SerializeField] TextMeshProUGUI armorBaseMagicResistText;
 
+    [SerializeField] TextMeshProUGUI armorStatBonus0Text;
+    [SerializeField] TextMeshProUGUI armorStatBonus1Text;
+    [SerializeField] TextMeshProUGUI armorStatBonus2Text;
+
     [SerializeField] CanvasGroup armorDetailsCanvasGroup;
+    // ------------
 
     [SerializeField] HeroEquipButtonHandler headEquipButton;
     [SerializeField] HeroEquipButtonHandler chestEquipButton;
@@ -56,7 +60,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
         SetDefaultIcons();
     }
 
-    private void SetDefaultIcons()
+    void SetDefaultIcons()
     {
         defaultHeadIcon = headEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite;
         defaultChestIcon = chestEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite;
@@ -76,6 +80,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     public void GenerateEquippedEquipmentButtons(HeroManager heroManager)
     {
+        #region Armor
         // gather anything equipped to the hero and set buttons for them in the menu
         if (heroManager.HeroEquipment().GetEquippedHead() != null)
         {
@@ -87,37 +92,50 @@ public class HeroEquipMenuHandler : MonoBehaviour
             headEquipButton.SetAssignedEquipment(null);
         }
 
-        // Add for the rest of the slots
-
-    }
-
-    public void ClearInventoryList()
-    {
-        foreach (Transform transform in equipInventoryTransform)
+        if (heroManager.HeroEquipment().GetEquippedChest() != null)
         {
-            Destroy(transform.gameObject);
+            chestEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedChest().icon;
+            chestEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedChest());
         }
-    }
-
-    public void ToggleEquipScroll(bool toggle)
-    {
-        if (toggle) // equip scroll should be showing
+        else
         {
-            equipScrollAnim.SetBool("toggleOn", true);
-
-            // enable raycasting on equipScrollCanvasGroup
-            equipScrollCanvasGroup.interactable = true;
-            equipScrollCanvasGroup.blocksRaycasts = true;
-
-
-        } else // hide equip scroll
-        {
-            equipScrollAnim.SetBool("toggleOn", false);
-
-            // disable raycasting on equipScrollCanvasGroup
-            equipScrollCanvasGroup.interactable = false;
-            equipScrollCanvasGroup.blocksRaycasts = false;
+            chestEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultChestIcon;
+            chestEquipButton.SetAssignedEquipment(null);
         }
+
+        if (heroManager.HeroEquipment().GetEquippedHands() != null)
+        {
+            handsEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedHands().icon;
+            handsEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedHands());
+        }
+        else
+        {
+            handsEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultHandsIcon;
+            handsEquipButton.SetAssignedEquipment(null);
+        }
+
+        if (heroManager.HeroEquipment().GetEquippedLegs() != null)
+        {
+            legsEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedLegs().icon;
+            legsEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedLegs());
+        }
+        else
+        {
+            legsEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultLegsIcon;
+            legsEquipButton.SetAssignedEquipment(null);
+        }
+
+        if (heroManager.HeroEquipment().GetEquippedFeet() != null)
+        {
+            feetEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = heroManager.HeroEquipment().GetEquippedFeet().icon;
+            feetEquipButton.SetAssignedEquipment(heroManager.HeroEquipment().GetEquippedFeet());
+        }
+        else
+        {
+            feetEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultFeetIcon;
+            feetEquipButton.SetAssignedEquipment(null);
+        }
+        #endregion
     }
 
     void showBasicEquipDetails(HeroBaseEquipment equipment)
@@ -141,11 +159,128 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
         armorBaseArmorText.SetText(armorEquip.baseArmorValue.ToString());
         armorBaseMagicResistText.SetText(armorEquip.baseMagicResistValue.ToString());
+
+        SetArmorBonusTexts(armorEquip);
+    }
+
+    void SetArmorBonusTexts(ArmorEquipment armorEquip)
+    {
+        int index = 0;
+
+        if (armorEquip.strengthBonus > 0)
+        {
+            armorStatBonus0Text.SetText("STR: " + armorEquip.strengthBonus.ToString());
+            index++;
+        }
+
+        if (armorEquip.enduranceBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("END: " + armorEquip.enduranceBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("END: " + armorEquip.enduranceBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.agilityBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.dexterityBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.intelligenceBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.faithBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+    }
+
+    public void ToggleEquipScroll(bool toggle)
+    {
+        if (toggle) // equip scroll should be showing
+        {
+            equipScrollAnim.SetBool("toggleOn", true);
+
+            // enable raycasting on equipScrollCanvasGroup
+            equipScrollCanvasGroup.interactable = true;
+            equipScrollCanvasGroup.blocksRaycasts = true;
+
+
+        }
+        else // hide equip scroll
+        {
+            equipScrollAnim.SetBool("toggleOn", false);
+
+            // disable raycasting on equipScrollCanvasGroup
+            equipScrollCanvasGroup.interactable = false;
+            equipScrollCanvasGroup.blocksRaycasts = false;
+        }
     }
 
     public void ClearEquipmentDetails()
     {
-        armorDetailsCanvasGroup.alpha =  0;
+        armorDetailsCanvasGroup.alpha = 0;
 
         nameText.SetText(string.Empty);
         debugIDText.SetText(string.Empty);
@@ -159,5 +294,17 @@ public class HeroEquipMenuHandler : MonoBehaviour
         armorSlotText.SetText(string.Empty);
         armorBaseArmorText.SetText(string.Empty);
         armorBaseMagicResistText.SetText(string.Empty);
+
+        armorStatBonus0Text.SetText(string.Empty);
+        armorStatBonus1Text.SetText(string.Empty);
+        armorStatBonus2Text.SetText(string.Empty);
+    }
+
+    public void ClearInventoryList()
+    {
+        foreach (Transform transform in equipInventoryTransform)
+        {
+            Destroy(transform.gameObject);
+        }
     }
 }

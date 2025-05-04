@@ -31,6 +31,8 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         heroManager = HomeZoneManager.i.GetHeroManager();
         heroEquipMenuHandler.SetEquipmentClickedInMenu(assignedEquipment);
 
+        List<ArmorEquipment> armorEquipmentInInventory;
+
         /* 0 - helm
          * 1 - chest
          * 2 - hands
@@ -51,14 +53,14 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the helm equip slot");
 
                 // get all helmets in inventory that both match the hero's wearable armor class, and helmet slot
-                List<ArmorEquipment> wearableHelmsInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.HEAD);
-                if (wearableHelmsInInventory.Count > 0)
+                armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.HEAD);
+                if (armorEquipmentInInventory.Count > 0)
                 {
                     // Display a blank icon to allow player to unequip helmet
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
-                    InstantiateEquippableArmor(wearableHelmsInInventory);
+                    InstantiateEquippableArmor(armorEquipmentInInventory);
 
                     // Display the EquipScroll list
                     heroEquipMenuHandler.ToggleEquipScroll(true);
@@ -82,14 +84,14 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the chest equip slot");
 
                 // get all chests in inventory that both match the hero's wearable armor class, and helmet slot
-                List<ArmorEquipment> wearableChestsInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.CHEST);
-                if (wearableChestsInInventory.Count > 0)
+                armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.CHEST);
+                if (armorEquipmentInInventory.Count > 0)
                 {
                     // Display a blank icon to allow player to unequip helmet
                     InstantiateUnequipIcon();
 
                     // Display equippable armor
-                    InstantiateEquippableArmor(wearableChestsInInventory);
+                    InstantiateEquippableArmor(armorEquipmentInInventory);
 
                     // Display the EquipScroll list
                     heroEquipMenuHandler.ToggleEquipScroll(true);
@@ -112,12 +114,99 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                 break;
             case 2: // hands
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the hands equip slot");
+
+                // get all hands in inventory that both match the hero's wearable armor class, and helmet slot
+                armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.HANDS);
+                if (armorEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip helmet
+                    InstantiateUnequipIcon();
+
+                    // Display equippable armor
+                    InstantiateEquippableArmor(armorEquipmentInInventory);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedHands() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable hands in inventory and not wearing any hands", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip helmet
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 3: // pants
-                DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the pants equip slot");
+                DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the legs equip slot");
+
+                // get all legs in inventory that both match the hero's wearable armor class, and helmet slot
+                armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.LEGS);
+                if (armorEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip helmet
+                    InstantiateUnequipIcon();
+
+                    // Display equippable armor
+                    InstantiateEquippableArmor(armorEquipmentInInventory);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedLegs() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable legs in inventory and not wearing any legs", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip helmet
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 4: // feet
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the feet equip slot");
+
+                // get all feet in inventory that both match the hero's wearable armor class, and helmet slot
+                armorEquipmentInInventory = ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots.FEET);
+                if (armorEquipmentInInventory.Count > 0)
+                {
+                    // Display a blank icon to allow player to unequip helmet
+                    InstantiateUnequipIcon();
+
+                    // Display equippable armor
+                    InstantiateEquippableArmor(armorEquipmentInInventory);
+
+                    // Display the EquipScroll list
+                    heroEquipMenuHandler.ToggleEquipScroll(true);
+                }
+                else
+                {
+                    if (heroManager.HeroEquipment().GetEquippedFeet() == null)
+                    {
+                        DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable feet in inventory and not wearing any feet", true, false);
+                    }
+                    else
+                    {
+                        // Display a blank icon to allow player to unequip helmet
+                        InstantiateUnequipIcon();
+
+                        // Display the EquipScroll list
+                        heroEquipMenuHandler.ToggleEquipScroll(true);
+                    }
+                }
                 break;
             case 5: // ring 1
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the ring 1 equip slot");
@@ -220,11 +309,18 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // show armor details
+        if (assignedEquipment != null)
+        {
+            ArmorEquipment equipAsArmor = assignedEquipment as ArmorEquipment;
+            if (equipAsArmor != null)
+            {
+                heroEquipMenuHandler.ShowArmorEquipmentDetails(equipAsArmor);
+            }
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // hide armor details
+        heroEquipMenuHandler.ClearEquipmentDetails();
     }
 }

@@ -16,17 +16,17 @@ MonoBehaviour:
   ID: 1304
   icon: {fileID: 21300000, guid: d696ed5d6384cf34db2145a69a390364, type: 3}
   description: Found from Debug Land!
-  rarity: 4
+  rarity: 1
   weight: 0
   goldValue: 0
   armorClass: 2
   equipSlot: 3
   baseArmorValue: 0
   baseMagicResistValue: 0
-  strengthBonus: 0
-  enduranceBonus: 0
+  strengthBonus: 1
+  enduranceBonus: 1
   agilityBonus: 0
-  dexterityBonus: 0
+  dexterityBonus: 3
   intelligenceBonus: 0
   faithBonus: 0
   stat1Variance: 1

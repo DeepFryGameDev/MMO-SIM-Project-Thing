@@ -23,12 +23,12 @@ MonoBehaviour:
   equipSlot: 0
   baseArmorValue: 6
   baseMagicResistValue: 4
-  strengthBonus: 0
+  strengthBonus: 1
   enduranceBonus: 0
-  agilityBonus: 0
-  dexterityBonus: 0
-  intelligenceBonus: 1
-  faithBonus: 1
+  agilityBonus: 1
+  dexterityBonus: 2
+  intelligenceBonus: 0
+  faithBonus: 0
   stat1Variance: 1
   stat2Variance: 0
   stat3Variance: 0
