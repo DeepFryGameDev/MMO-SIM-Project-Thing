@@ -13,6 +13,5 @@ public class ShieldEquipment : HandEquipment
     private void Awake()
     {
         equipSlot = EnumHandler.EquipmentHandSlots.OFFHAND;
-        rarity = EnumHandler.InventoryRarities.COMMON;
     }
 }

@@ -9,9 +9,4 @@ public class ConsumableItem : HeroItem
 {
     [Header("---Consumable Item Values---")]
     public ConsumableEffect effect;
-
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
 }

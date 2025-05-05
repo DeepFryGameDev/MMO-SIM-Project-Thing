@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 2301
   icon: {fileID: 21300000, guid: d3df462e347b3bc4c800cd441bb35461, type: 3}
   description: 
-  rarity: 1
+  rarity: 3
   weight: 0
   goldValue: 0
   trainingName: Agility Cube Training

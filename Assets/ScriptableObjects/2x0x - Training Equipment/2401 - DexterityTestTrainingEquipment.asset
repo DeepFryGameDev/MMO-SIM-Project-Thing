@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 2401
   icon: {fileID: 21300000, guid: 88d908b8e5439c34dab2c819651be819, type: 3}
   description: 
-  rarity: 1
+  rarity: 3
   weight: 0
   goldValue: 0
   trainingName: Dexterity Sphere Training

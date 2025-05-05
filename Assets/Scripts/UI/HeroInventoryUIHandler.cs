@@ -10,57 +10,77 @@ using UnityEngine.UI;
 
 public class HeroInventoryUIHandler : MonoBehaviour
 {
-    // make serialized fields for all item objects in inventory canvas and fill them in
     [Header("---Hero Stuff---")]
-    [SerializeField] TextMeshProUGUI weightText;
+    [SerializeField] TextMeshProUGUI heroWeightText;
 
-    [Header("---Item Stuff---")]
-    [SerializeField] TextMeshProUGUI itemNameText;
-    [SerializeField] TextMeshProUGUI itemDescriptionText;
-    [SerializeField] TextMeshProUGUI itemGoldValueText;
-    [SerializeField] TextMeshProUGUI itemWeightValueText;    
+    [Header("---Base Item Stuff---")]
+    [SerializeField] TextMeshProUGUI nameText;
 
-    [Header("---Armor Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI armorEquipSlotText;
-    [SerializeField] TextMeshProUGUI armorEquipClassText;
-    [SerializeField] TextMeshProUGUI armorBaseArmorText;
-    [SerializeField] TextMeshProUGUI armorBaseMagicResistText;
-
-    [Header("---Shield Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI shieldSlotText;
-    [SerializeField] TextMeshProUGUI shieldTypeText;
-    [SerializeField] TextMeshProUGUI shieldDamageBlockedText;
-    [SerializeField] TextMeshProUGUI shieldBaseArmorText;
-    [SerializeField] TextMeshProUGUI shieldBaseMagicResistText;
-
-    [Header("---Hand Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI handEquipSlotText;
-    [SerializeField] TextMeshProUGUI handEquipTypeText;
-    [SerializeField] TextMeshProUGUI handEquipAttackDamageText;
-    [SerializeField] TextMeshProUGUI handEquipAttackSpeedText;
-
-    [Header("---Ring Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI ringEquipSlotText;
-
-    [Header("---Relic Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI relicEquipSlotText;
-
-    [Header("---Trinket Equipment Stuff---")]
-    [SerializeField] TextMeshProUGUI trinketEquipSlotText;
+    [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] TextMeshProUGUI goldValueText;
+    [SerializeField] TextMeshProUGUI weightValueText;
 
     [Header("---Training Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI trainingEquipLevelText;
     [SerializeField] TextMeshProUGUI trainingEquipTypeText;
 
+    [Header("---Armor Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI armorClassText;
+    [SerializeField] TextMeshProUGUI armorSlotText;
+    [SerializeField] TextMeshProUGUI armorBaseArmorText;
+    [SerializeField] TextMeshProUGUI armorBaseMagicResistText;
+
+    [SerializeField] TextMeshProUGUI armorStatBonus0Text;
+    [SerializeField] TextMeshProUGUI armorStatBonus1Text;
+    [SerializeField] TextMeshProUGUI armorStatBonus2Text;
+
+    [SerializeField] CanvasGroup armorDetailsCanvasGroup;
+    // ------------
+
+    [Header("---Weapon Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI weaponClassText;
+    [SerializeField] TextMeshProUGUI weaponSlotText;
+
+    [SerializeField] TextMeshProUGUI attackDamageText;
+    [SerializeField] TextMeshProUGUI attackSpeedText;
+
+    [SerializeField] CanvasGroup handDetailsCanvasGroup;
+    // ------------
+
+    [Header("---Shield Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI shieldSlotText;
+    [SerializeField] TextMeshProUGUI shieldClassText;
+    [SerializeField] TextMeshProUGUI shieldDamageBlockedText;
+    [SerializeField] TextMeshProUGUI shieldArmorText;
+    [SerializeField] TextMeshProUGUI shieldMagicResistText;
+
+    [SerializeField] CanvasGroup shieldDetailsCanvasGroup;
+    // ------------
+
+    [Header("---Ring Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI ringSlotText;
+
+    [SerializeField] CanvasGroup ringDetailsCanvasGroup;
+
+    // ------------
+
+    [Header("---Relic Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI relicSlotText;
+
+    [SerializeField] CanvasGroup relicDetailsCanvasGroup;
+    // ------------
+
+    [Header("---Trinket Equipment Stuff---")]
+    [SerializeField] TextMeshProUGUI trinketSlotText;
+
+    [SerializeField] CanvasGroup trinketDetailsCanvasGroup;
+    // ------------
+
     [Header("---Other Stuff---")]
-    // serialize the layout group transform for instantiating buttons
     [SerializeField] TextMeshProUGUI debugIDText;
 
     [SerializeField] Transform layoutGroupTransform;
     [SerializeField] CanvasGroup trainingEquipDetailsCanvasGroup;
-    [SerializeField] CanvasGroup equipmentHandDetailsCanvasGroup;
-    [SerializeField] CanvasGroup equipmentArmorDetailsCanvasGroup;
-    [SerializeField] CanvasGroup shieldDetailsCanvasGroup;
 
     // ---------
 
@@ -74,7 +94,7 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     public void SetHeroDetailsPanel(HeroManager heroManager)
     {
-        weightText.text = "999/999"; // will set later
+        heroWeightText.text = "999/999"; // will set later
     }
 
     public void GenerateInventory(HeroManager heroManager)
@@ -110,87 +130,314 @@ public class HeroInventoryUIHandler : MonoBehaviour
         }
     }
 
-    public void DrawBaseItemUI(HeroItem item)
+    #region Base Item Details
+    public void DrawBaseItemDetails(HeroItem item)
     {
-        itemNameText.color = GetRarityColor(item);
-        itemNameText.SetText(item.name);
+        nameText.SetText(item.name);
+        nameText.color = UISettings.GetRarityColor(item);
 
         debugIDText.SetText("[" + item.ID.ToString() + "]");
 
-        itemDescriptionText.SetText(item.description);
+        descriptionText.SetText(item.description);
 
-        itemGoldValueText.SetText(item.goldValue.ToString());
+        goldValueText.SetText(item.goldValue.ToString());
 
     }
 
-    Color GetRarityColor(HeroItem item)
-    {
-        switch (item.rarity)
-        {
-            case EnumHandler.InventoryRarities.JUNK:
-                return UISettings.junkItemColor;
-            case EnumHandler.InventoryRarities.COMMON:
-                return UISettings.commonItemColor;
-            case EnumHandler.InventoryRarities.UNCOMMON:
-                return UISettings.uncommonItemColor;
-            case EnumHandler.InventoryRarities.RARE:
-                return UISettings.rareItemColor;
-            case EnumHandler.InventoryRarities.EPIC:
-                return UISettings.epicItemColor;
-            case EnumHandler.InventoryRarities.LEGENDARY:
-                return UISettings.legendaryItemColor;
-            default:
-                return new Color(0, 0, 0, 0);
-        }
-    }
+    #endregion
+
+    #region Training Equipment
 
     public void DrawTrainingEquipUI(TrainingEquipment trainingEquipment)
     {
-        trainingEquipLevelText.SetText("Training Level: " + trainingEquipment.trainingLevel.ToString());
-        trainingEquipTypeText.SetText(UITasks.CapitalizeFirstLetter(trainingEquipment.trainingType.ToString()));
+        DrawBaseItemDetails(trainingEquipment);
 
         trainingEquipDetailsCanvasGroup.alpha = 1;
+
+        trainingEquipLevelText.SetText("Training Level: " + trainingEquipment.trainingLevel.ToString());
+        trainingEquipTypeText.SetText(UITasks.CapitalizeFirstLetter(trainingEquipment.trainingType.ToString()));        
     }
 
-    public void DrawEquipmentWeaponUI(WeaponEquipment weaponEquipment)
+    #endregion
+
+    //-----------------------------------
+    #region EquipDetails
+
+    #region Armor
+
+    public void DrawArmorEquipmentDetails(ArmorEquipment armorEquip)
     {
-        handEquipSlotText.SetText(UITasks.CapitalizeFirstLetter(weaponEquipment.equipSlot.ToString()));
-        handEquipTypeText.SetText(UITasks.CapitalizeFirstLetter(weaponEquipment.weaponClass.ToString()));
+        armorDetailsCanvasGroup.alpha = 1;
 
-        handEquipAttackDamageText.SetText(weaponEquipment.attackDamage.ToString());
-        handEquipAttackSpeedText.SetText(weaponEquipment.attackSpeed.ToString());
+        DrawBaseItemDetails(armorEquip);
 
-        equipmentHandDetailsCanvasGroup.alpha = 1;
+        armorClassText.SetText(UITasks.CapitalizeFirstLetter(armorEquip.armorClass.ToString()));
+        armorSlotText.SetText(UITasks.CapitalizeFirstLetter(armorEquip.equipSlot.ToString()));
+
+        armorBaseArmorText.SetText(armorEquip.baseArmorValue.ToString());
+        armorBaseMagicResistText.SetText(armorEquip.baseMagicResistValue.ToString());
+
+        SetArmorBonusTexts(armorEquip);
     }
 
-    public void DrawEquipmentShieldUI(ShieldEquipment shieldEquipment)
+    void SetArmorBonusTexts(ArmorEquipment armorEquip)
     {
-        shieldSlotText.SetText(UITasks.CapitalizeFirstLetter(shieldEquipment.equipSlot.ToString()));
-        shieldTypeText.SetText(UITasks.CapitalizeFirstLetter(shieldEquipment.shieldClass.ToString()));
+        int index = 0;
 
-        shieldBaseArmorText.SetText(shieldEquipment.baseArmorValue.ToString());
-        shieldBaseMagicResistText.SetText(shieldEquipment.baseMagicResistValue.ToString());
+        if (armorEquip.strengthBonus > 0)
+        {
+            armorStatBonus0Text.SetText("STR: " + armorEquip.strengthBonus.ToString());
+            index++;
+        }
 
-        shieldDamageBlockedText.SetText(shieldEquipment.damageBlocked.ToString());
+        if (armorEquip.enduranceBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("END: " + armorEquip.enduranceBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("END: " + armorEquip.enduranceBonus.ToString());
+                    break;
+            }
+            index++;
+        }
 
+        if (armorEquip.agilityBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("AGI: " + armorEquip.agilityBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.dexterityBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("DEX: " + armorEquip.dexterityBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.intelligenceBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("INT: " + armorEquip.intelligenceBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+
+        if (armorEquip.faithBonus > 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    armorStatBonus0Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+                case 1:
+                    armorStatBonus1Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+                case 2:
+                    armorStatBonus2Text.SetText("FTH: " + armorEquip.faithBonus.ToString());
+                    break;
+            }
+            index++;
+        }
+    }
+
+    #endregion
+
+    #region Hands
+
+    public void DrawWeaponEquipmentDetails(WeaponEquipment weaponEquip)
+    {
+        handDetailsCanvasGroup.alpha = 1;
+
+        DrawBaseItemDetails(weaponEquip);
+
+        weaponSlotText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.equipSlot.ToString()));
+        weaponClassText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.weaponClass.ToString()));
+
+        attackDamageText.SetText(weaponEquip.attackDamage.ToString());
+        attackSpeedText.SetText(weaponEquip.attackSpeed.ToString());
+    }
+
+    #endregion
+
+    #region Shields
+
+    public void DrawShieldEquipmentDetails(ShieldEquipment shieldEquip)
+    {
         shieldDetailsCanvasGroup.alpha = 1;
+
+        DrawBaseItemDetails(shieldEquip);
+
+        shieldSlotText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.equipSlot.ToString()));
+        shieldClassText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.shieldClass.ToString()));
+
+        shieldDamageBlockedText.SetText(shieldEquip.damageBlocked.ToString());
+        shieldArmorText.SetText(shieldEquip.baseArmorValue.ToString());
+        shieldMagicResistText.SetText(shieldEquip.baseMagicResistValue.ToString());
     }
 
-    public void DrawEquipmentArmorUI(ArmorEquipment armorEquipment)
+    #endregion
+
+    #region Rings
+
+    public void DrawRingEquipmentDetails(RingEquipment ringEquip)
     {
-        armorEquipSlotText.SetText(UITasks.CapitalizeFirstLetter(armorEquipment.equipSlot.ToString()));
-        armorEquipClassText.SetText(UITasks.CapitalizeFirstLetter(armorEquipment.armorClass.ToString()));
+        ringDetailsCanvasGroup.alpha = 1;
 
-        armorBaseArmorText.SetText(armorEquipment.baseArmorValue.ToString());
-        armorBaseMagicResistText.SetText(armorEquipment.baseMagicResistValue.ToString());
+        DrawBaseItemDetails(ringEquip);
 
-        equipmentArmorDetailsCanvasGroup.alpha = 1;
+        ringSlotText.SetText("Ring");
     }
 
-    public void DrawEquipmentJewelryUI(HeroBaseEquipment heroEquipment)
+    #endregion
+
+    #region Relics
+
+    public void DrawRelicEquipmentDetails(RelicEquipment relicEquip)
     {
-        
+        relicDetailsCanvasGroup.alpha = 1;
+
+        DrawBaseItemDetails(relicEquip);
+
+        relicSlotText.SetText("Relic");
     }
+
+    #endregion
+
+    #region Trinkets
+
+    public void DrawTrinketEquipmentDetails(TrinketEquipment trinketEquip)
+    {
+        trinketDetailsCanvasGroup.alpha = 1;
+
+        DrawBaseItemDetails(trinketEquip);
+
+        trinketSlotText.SetText("Trinket");
+    }
+
+    #endregion
+
+    #endregion
+    //-----------------------------------
+
+    #region Cleanup
+
+    void ClearItemDetails()
+    {
+        nameText.SetText(string.Empty);
+        debugIDText.SetText(string.Empty);
+
+        descriptionText.SetText(string.Empty);
+        goldValueText.SetText(string.Empty);
+        weightValueText.SetText(string.Empty);
+    }
+
+    void ClearTrainingEquipmentDetails()
+    {
+        trainingEquipLevelText.SetText(string.Empty);
+        trainingEquipTypeText.SetText(string.Empty);
+    }
+
+    void ClearEquipmentDetails()
+    {
+        // armor
+        if (armorDetailsCanvasGroup.alpha != 0)
+        {
+            armorDetailsCanvasGroup.alpha = 0;
+
+            armorClassText.SetText(string.Empty);
+            armorSlotText.SetText(string.Empty);
+            armorBaseArmorText.SetText(string.Empty);
+            armorBaseMagicResistText.SetText(string.Empty);
+
+            armorStatBonus0Text.SetText(string.Empty);
+            armorStatBonus1Text.SetText(string.Empty);
+            armorStatBonus2Text.SetText(string.Empty);
+        }
+
+        // weapons
+        if (handDetailsCanvasGroup.alpha != 0)
+        {
+            handDetailsCanvasGroup.alpha = 0;
+
+            weaponSlotText.SetText(string.Empty);
+            weaponClassText.SetText(string.Empty);
+
+            attackDamageText.SetText(string.Empty);
+            attackSpeedText.SetText(string.Empty);
+        }
+
+        // shield
+        if (shieldDetailsCanvasGroup.alpha != 0)
+        {
+            shieldDetailsCanvasGroup.alpha = 0;
+
+            shieldSlotText.SetText(string.Empty);
+            shieldClassText.SetText(string.Empty);
+
+            shieldDamageBlockedText.SetText(string.Empty);
+            shieldArmorText.SetText(string.Empty);
+            shieldMagicResistText.SetText(string.Empty);
+        }
+
+        // Ring
+        if (ringDetailsCanvasGroup.alpha != 0)
+        {
+            ringDetailsCanvasGroup.alpha = 0;
+
+            ringSlotText.SetText(string.Empty);
+        }
+
+        // Relic
+        if (relicDetailsCanvasGroup.alpha != 0)
+        {
+            relicDetailsCanvasGroup.alpha = 0;
+
+            relicSlotText.SetText(string.Empty);
+        }
+
+        // Trinket
+        if (trinketDetailsCanvasGroup.alpha != 0)
+        {
+            trinketDetailsCanvasGroup.alpha = 0;
+
+            trinketSlotText.SetText(string.Empty);
+        }
+    }
+
+    #endregion
 
     int GetCountInInventory(BaseItem item, HeroManager heroManager)
     {
@@ -209,36 +456,11 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     public void ResetUI()
     {
-        weightText.SetText(string.Empty);
+        ClearItemDetails();
 
-        itemNameText.SetText(string.Empty);
-        itemDescriptionText.SetText(string.Empty);
-        itemGoldValueText.SetText(string.Empty);
-        itemWeightValueText.SetText(string.Empty);
-        debugIDText.SetText(string.Empty);
+        ClearTrainingEquipmentDetails();
 
-        trainingEquipDetailsCanvasGroup.alpha = 0;
-        trainingEquipLevelText.SetText(string.Empty);
-        trainingEquipTypeText.SetText(string.Empty);
-
-        equipmentHandDetailsCanvasGroup.alpha = 0;
-        handEquipAttackDamageText.SetText(string.Empty);
-        handEquipAttackSpeedText.SetText(string.Empty);
-        handEquipSlotText.SetText(string.Empty);
-        handEquipTypeText.SetText(string.Empty);
-
-        equipmentArmorDetailsCanvasGroup.alpha = 0;
-        armorBaseArmorText.SetText(string.Empty);
-        armorBaseMagicResistText.SetText(string.Empty);
-        armorEquipClassText.SetText(string.Empty);
-        armorEquipSlotText.SetText(string.Empty);
-
-        shieldDetailsCanvasGroup.alpha = 0;
-        shieldTypeText.SetText(string.Empty);
-        shieldSlotText.SetText(string.Empty);
-        shieldBaseArmorText.SetText(string.Empty);
-        shieldBaseMagicResistText.SetText(string.Empty);
-        shieldDamageBlockedText.SetText(string.Empty);
+        ClearEquipmentDetails();
     }
 
     public void ClearUI()

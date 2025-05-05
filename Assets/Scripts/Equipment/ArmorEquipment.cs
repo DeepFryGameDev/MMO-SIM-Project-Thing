@@ -26,9 +26,4 @@ public class ArmorEquipment : HeroBaseEquipment
     public float stat1Variance = 1;
     public int stat2Variance = 0;
     public int stat3Variance = 0;
-
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
 }

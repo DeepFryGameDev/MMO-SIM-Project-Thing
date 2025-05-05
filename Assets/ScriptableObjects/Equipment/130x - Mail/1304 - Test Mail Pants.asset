@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 1304
   icon: {fileID: 21300000, guid: d696ed5d6384cf34db2145a69a390364, type: 3}
   description: Chainmail leggings found in Debug Land.
-  rarity: 1
+  rarity: 4
   weight: 0
   goldValue: 0
   armorClass: 2

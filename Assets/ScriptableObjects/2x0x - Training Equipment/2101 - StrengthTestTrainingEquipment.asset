@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 2101
   icon: {fileID: 21300000, guid: 908e49032aa4fdd42b7d5514774aedd9, type: 3}
   description: 
-  rarity: 1
+  rarity: 2
   weight: 0
   goldValue: 0
   trainingName: Strength Cube Training

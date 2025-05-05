@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 1303
   icon: {fileID: 21300000, guid: 1df1f287a2d52cc43b61ecd608646292, type: 3}
   description: Scalemail gloves found in Debug Land.
-  rarity: 1
+  rarity: 3
   weight: 0
   goldValue: 0
   armorClass: 2

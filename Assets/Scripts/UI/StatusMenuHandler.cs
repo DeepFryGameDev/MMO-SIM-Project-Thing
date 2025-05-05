@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,8 @@ public class StatusMenuHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI faithValue;
 
     Animator anim;
+    [SerializeField] Animator skillsAndEffectsPanelAnim;
+    [SerializeField] CanvasGroup closeButtonCanvasGroup;
 
     private void Awake()
     {
@@ -73,6 +76,27 @@ public class StatusMenuHandler : MonoBehaviour
 
     public void ToggleMenu(bool toggle)
     {
-        anim.SetBool("toggleOn", toggle);
+        anim.SetBool("toggleOn", toggle);        
+    }
+
+    public void ToggleSkillStatusMenu(bool toggle)
+    {
+        skillsAndEffectsPanelAnim.SetBool("toggleOn", toggle);
+
+        if (toggle) closeButtonCanvasGroup.alpha = 1;
+        else closeButtonCanvasGroup.alpha = 0;
+
+        closeButtonCanvasGroup.interactable = toggle;
+        closeButtonCanvasGroup.blocksRaycasts = toggle;
+    }
+
+    public void OpenStatusMenu()
+    {
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.STATUS);
+    }
+
+    public void CloseStatusMenu()
+    {
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 }

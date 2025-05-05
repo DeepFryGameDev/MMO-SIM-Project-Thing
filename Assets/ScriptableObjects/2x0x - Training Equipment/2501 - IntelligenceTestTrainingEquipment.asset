@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 2501
   icon: {fileID: 21300000, guid: 63117409f58d7364e99cb695a6de782d, type: 3}
   description: 
-  rarity: 1
+  rarity: 4
   weight: 0
   goldValue: 0
   trainingName: Intelligence Cube Training

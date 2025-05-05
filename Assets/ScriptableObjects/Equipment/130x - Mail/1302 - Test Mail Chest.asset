@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 1302
   icon: {fileID: 21300000, guid: 6dc349f9b95b42e4ca8ea0ddc212c7f6, type: 3}
   description: Chainmail Hauberk found in Debug Land.
-  rarity: 1
+  rarity: 2
   weight: 0
   goldValue: 0
   armorClass: 2

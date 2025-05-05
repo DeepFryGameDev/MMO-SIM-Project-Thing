@@ -13,9 +13,4 @@ public class WeaponEquipment : HandEquipment
     public int attackDamage;
 
     public float attackSpeed;
-
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
 }

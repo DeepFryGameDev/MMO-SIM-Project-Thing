@@ -7,8 +7,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Equipment/New Relic")]
 public class RelicEquipment : HeroBaseEquipment
 {
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
+
 }

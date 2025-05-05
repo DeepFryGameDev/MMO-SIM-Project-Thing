@@ -5,17 +5,14 @@ using UnityEngine.UI;
 
 public class HeroEquipMenuHandler : MonoBehaviour
 {    
-    CanvasGroup equipScrollCanvasGroup;
-    Animator equipScrollAnim;
-
+    [Header("---Base Item Stuff---")]
     [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI debugIDText;
 
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] TextMeshProUGUI goldValueText;
     [SerializeField] TextMeshProUGUI weightValueText;
 
-    // Armor
+    [Header("---Armor Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI armorClassText;
     [SerializeField] TextMeshProUGUI armorSlotText;
     [SerializeField] TextMeshProUGUI armorBaseArmorText;
@@ -28,7 +25,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
     [SerializeField] CanvasGroup armorDetailsCanvasGroup;
     // ------------
 
-    // Weapon
+    [Header("---Weapon Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI weaponClassText;
     [SerializeField] TextMeshProUGUI weaponSlotText;
 
@@ -38,7 +35,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
     [SerializeField] CanvasGroup handDetailsCanvasGroup;
     // ------------
 
-    // Shields
+    [Header("---Shield Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI shieldSlotText;
     [SerializeField] TextMeshProUGUI shieldClassText;
     [SerializeField] TextMeshProUGUI shieldDamageBlockedText;
@@ -48,25 +45,26 @@ public class HeroEquipMenuHandler : MonoBehaviour
     [SerializeField] CanvasGroup shieldDetailsCanvasGroup;
     // ------------
 
-    // Rings
+    [Header("---Ring Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI ringSlotText;
 
     [SerializeField] CanvasGroup ringDetailsCanvasGroup;
 
     // ------------
 
-    // Relics
+    [Header("---Relic Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI relicSlotText;
 
     [SerializeField] CanvasGroup relicDetailsCanvasGroup;
     // ------------
 
-    // Trinkets
+    [Header("---Trinket Equipment Stuff---")]
     [SerializeField] TextMeshProUGUI trinketSlotText;
 
     [SerializeField] CanvasGroup trinketDetailsCanvasGroup;
     // ------------
 
+    [Header("---Equip Buttons---")]
     [SerializeField] HeroEquipButtonHandler headEquipButton;
     [SerializeField] HeroEquipButtonHandler chestEquipButton;
     [SerializeField] HeroEquipButtonHandler handsEquipButton;
@@ -80,9 +78,15 @@ public class HeroEquipMenuHandler : MonoBehaviour
     [SerializeField] HeroEquipButtonHandler mainHandEquipButton;
     [SerializeField] HeroEquipButtonHandler offHandEquipButton;
 
+    [Header("---Other Stuff---")]
+    [SerializeField] TextMeshProUGUI debugIDText;
+    [SerializeField] Transform equipInventoryTransform;
+
     Sprite defaultHeadIcon, defaultChestIcon, defaultHandsIcon, defaultLegsIcon, defaultFeetIcon, defaultRingIcon, defaultRelicIcon, defaultTrinketIcon, defaultMainHandIcon, defaultOffHandIcon;
 
-    [SerializeField] Transform equipInventoryTransform;
+    CanvasGroup equipScrollCanvasGroup;
+    Animator equipScrollAnim;
+
     public Transform GetEquipInventoryTransform() { return equipInventoryTransform; }
 
     HeroBaseEquipment equipmentClickedInMenu;
@@ -239,7 +243,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
         }
         else
         {
-            trinketEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultRelicIcon;
+            trinketEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite = defaultTrinketIcon;
             trinketEquipButton.SetAssignedEquipment(null);
         }
 
@@ -261,9 +265,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
         #endregion
     }
 
-    void showBasicEquipDetails(HeroBaseEquipment equipment)
+    void DrawBasicEquipDetails(HeroBaseEquipment equipment)
     {
         nameText.SetText(equipment.name);
+        nameText.color = UISettings.GetRarityColor(equipment);
+
         debugIDText.SetText("[" + equipment.ID.ToString() + "]");
 
         descriptionText.SetText(equipment.description);
@@ -276,11 +282,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Armor
 
-    public void ShowArmorEquipmentDetails(ArmorEquipment armorEquip)
+    public void DrawArmorEquipmentDetails(ArmorEquipment armorEquip)
     {
         armorDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(armorEquip);
+        DrawBasicEquipDetails(armorEquip);
 
         armorClassText.SetText(UITasks.CapitalizeFirstLetter(armorEquip.armorClass.ToString()));
         armorSlotText.SetText(UITasks.CapitalizeFirstLetter(armorEquip.equipSlot.ToString()));
@@ -388,11 +394,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Hands
 
-    public void ShowWeaponEquipmentDetails(WeaponEquipment weaponEquip)
+    public void DrawWeaponEquipmentDetails(WeaponEquipment weaponEquip)
     {
         handDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(weaponEquip);
+        DrawBasicEquipDetails(weaponEquip);
 
         weaponSlotText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.equipSlot.ToString()));
         weaponClassText.SetText(UITasks.CapitalizeFirstLetter(weaponEquip.weaponClass.ToString()));
@@ -405,11 +411,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Shields
 
-    public void ShowShieldEquipmentDetails(ShieldEquipment shieldEquip)
+    public void DrawShieldEquipmentDetails(ShieldEquipment shieldEquip)
     {
         shieldDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(shieldEquip);
+        DrawBasicEquipDetails(shieldEquip);
 
         shieldSlotText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.equipSlot.ToString()));
         shieldClassText.SetText(UITasks.CapitalizeFirstLetter(shieldEquip.shieldClass.ToString()));
@@ -423,11 +429,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Rings
 
-    public void ShowRingEquipmentDetails(RingEquipment ringEquip)
+    public void DrawRingEquipmentDetails(RingEquipment ringEquip)
     {
         ringDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(ringEquip);
+        DrawBasicEquipDetails(ringEquip);
 
         ringSlotText.SetText("Ring");
     }
@@ -436,11 +442,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Relics
 
-    public void ShowRelicEquipmentDetails(RelicEquipment relicEquip)
+    public void DrawRelicEquipmentDetails(RelicEquipment relicEquip)
     {
         relicDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(relicEquip);
+        DrawBasicEquipDetails(relicEquip);
 
         relicSlotText.SetText("Relic");
     }
@@ -449,11 +455,11 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Trinkets
 
-    public void ShowTrinketEquipmentDetails(TrinketEquipment trinketEquip)
+    public void DrawTrinketEquipmentDetails(TrinketEquipment trinketEquip)
     {
         trinketDetailsCanvasGroup.alpha = 1;
 
-        showBasicEquipDetails(trinketEquip);
+        DrawBasicEquipDetails(trinketEquip);
 
         trinketSlotText.SetText("Trinket");
     }
@@ -483,6 +489,19 @@ public class HeroEquipMenuHandler : MonoBehaviour
             equipScrollCanvasGroup.interactable = false;
             equipScrollCanvasGroup.blocksRaycasts = false;
         }
+    }
+
+    public void CloseEquipScroll()
+    {
+        ToggleEquipScroll(false);
+        ClearInventoryList();
+    }
+
+    public void CloseEquipMenu()
+    {
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+
+        CloseEquipScroll();
     }
 
     public void ClearEquipmentDetails()

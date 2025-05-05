@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 1204
   icon: {fileID: 21300000, guid: e5deefbb291916c469e56c12a21708f4, type: 3}
   description: Cured animal hide breeches found in Debug Land.
-  rarity: 1
+  rarity: 3
   weight: 0
   goldValue: 0
   armorClass: 1

@@ -611,42 +611,42 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
             ArmorEquipment equipAsArmor = assignedEquipment as ArmorEquipment;
             if (equipAsArmor != null)
             {
-                heroEquipMenuHandler.ShowArmorEquipmentDetails(equipAsArmor);
+                heroEquipMenuHandler.DrawArmorEquipmentDetails(equipAsArmor);
                 return;
             }
 
             WeaponEquipment equipAsWeapon = assignedEquipment as WeaponEquipment;
             if (equipAsWeapon != null)
             {
-                heroEquipMenuHandler.ShowWeaponEquipmentDetails(equipAsWeapon);
+                heroEquipMenuHandler.DrawWeaponEquipmentDetails(equipAsWeapon);
                 return;
             }
 
             RingEquipment equipAsRing = assignedEquipment as RingEquipment;
             if (equipAsRing != null)
             {
-                heroEquipMenuHandler.ShowRingEquipmentDetails(equipAsRing);
+                heroEquipMenuHandler.DrawRingEquipmentDetails(equipAsRing);
                 return;
             }
 
             RelicEquipment equipAsRelic = assignedEquipment as RelicEquipment;
             if (equipAsRelic != null)
             {
-                heroEquipMenuHandler.ShowRelicEquipmentDetails(equipAsRelic);
+                heroEquipMenuHandler.DrawRelicEquipmentDetails(equipAsRelic);
                 return;
             }
 
             TrinketEquipment equipAsTrinket = assignedEquipment as TrinketEquipment;
             if (equipAsTrinket != null)
             {
-                heroEquipMenuHandler.ShowTrinketEquipmentDetails(equipAsTrinket);
+                heroEquipMenuHandler.DrawTrinketEquipmentDetails(equipAsTrinket);
                 return;
             }
 
             ShieldEquipment equipAsShield = assignedEquipment as ShieldEquipment;
             if (equipAsShield != null)
             {
-                heroEquipMenuHandler.ShowShieldEquipmentDetails(equipAsShield);
+                heroEquipMenuHandler.DrawShieldEquipmentDetails(equipAsShield);
                 return;
             }
         }

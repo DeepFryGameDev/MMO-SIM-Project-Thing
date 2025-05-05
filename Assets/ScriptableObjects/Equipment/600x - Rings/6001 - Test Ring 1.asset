@@ -16,6 +16,6 @@ MonoBehaviour:
   ID: 6001
   icon: {fileID: 21300000, guid: 3a955cfc8aa60d54ab67f3eff105168f, type: 3}
   description: It's a shiny ring!
-  rarity: 2
+  rarity: 3
   weight: 0
   goldValue: 0

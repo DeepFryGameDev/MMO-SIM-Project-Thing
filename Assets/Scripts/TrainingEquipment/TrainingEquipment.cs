@@ -20,11 +20,6 @@ public class TrainingEquipment : HeroItem
     [Tooltip("The GameObject that should be instantiated into the world when this is equipped by a hero.")]
     public GameObject worldPrefab;
 
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
-
     /* can delete later if no issues come up
     public TrainingScheduleEvent ScheduleEvent()
     {

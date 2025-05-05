@@ -16,6 +16,6 @@ MonoBehaviour:
   ID: 7001
   icon: {fileID: 21300000, guid: 06f4b86ed839eab4ebb95f12fb5545c4, type: 3}
   description: It's a stone amulet type thing?
-  rarity: 3
+  rarity: 2
   weight: 0
   goldValue: 0

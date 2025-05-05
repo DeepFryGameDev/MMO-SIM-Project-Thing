@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 4003
   icon: {fileID: 21300000, guid: 657041369dc3b654bbe17d40fa045c25, type: 3}
   description: It's really a staff but it looks like a book.
-  rarity: 1
+  rarity: 3
   weight: 3
   goldValue: 30
   equipSlot: 0

@@ -31,6 +31,8 @@ public class PrefabManager : MonoBehaviour
 
     public GameObject EquipToHeroButton;
 
+    public GameObject ContextMenuItemHeroGiveToHeroButton;
+
     private void Awake()
     {
         Singleton();

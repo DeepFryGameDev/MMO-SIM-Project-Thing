@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 2601
   icon: {fileID: 21300000, guid: 8dffe4ee7e0354a4881c489d598f8985, type: 3}
   description: 
-  rarity: 1
+  rarity: 4
   weight: 0
   goldValue: 0
   trainingName: Faith Sphere Training

@@ -44,6 +44,11 @@ public class MenuProcessingHandler : MonoBehaviour
 
     [SerializeField] CanvasGroup scheduleCanvasGroup;
     public CanvasGroup GetScheduleCanvasGroup() { return scheduleCanvasGroup; }
+
+    [SerializeField] StatusMenuHandler statusMenuHandler;
+
+    [SerializeField] CanvasGroup statusMenuCanvasGroup;
+
     //----
 
     ThirdPersonCam cam; // Used to disable camera rotating when the player's movement is disabled
@@ -84,16 +89,32 @@ public class MenuProcessingHandler : MonoBehaviour
                 {
                     ToggleMenu(heroCommandCanvasGroup, true);
                     tempCanvasGroup = heroCommandCanvasGroup;
-                } else
+                }
+                else if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.STATUS)
+                {
+                    statusMenuHandler.ToggleSkillStatusMenu(false);
+                    TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
+                }
+                else if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.EQUIP)
+                {
+                    TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
+                    statusMenuHandler.ToggleMenu(false);
+                }
+                else
                 {
                     TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
                 }
                     break;
+            case EnumHandler.HeroCommandMenuStates.STATUS:
+                TransitionToMenu(statusMenuCanvasGroup, true);
+                statusMenuHandler.ToggleSkillStatusMenu(true);
+                break;
             case EnumHandler.HeroCommandMenuStates.INVENTORY: // Display inventory menu for hero
                 TransitionToMenu(heroInventoryCanvasGroup, true);
                 break;
             case EnumHandler.HeroCommandMenuStates.EQUIP:
                 TransitionToMenu(heroEquipCanvasGroup, true);
+                statusMenuHandler.ToggleMenu(true);
                 break;
             case EnumHandler.HeroCommandMenuStates.TRAININGEQUIP: // Display training equipment menu
                 TransitionToMenu(trainingEquipmentMenuCanvasGroup, true);

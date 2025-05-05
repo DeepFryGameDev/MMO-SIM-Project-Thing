@@ -146,6 +146,7 @@ public static class EnumHandler
     {
         IDLE,
         ROOT,
+        STATUS,
         INVENTORY,
         EQUIP,
         TRAININGEQUIP,

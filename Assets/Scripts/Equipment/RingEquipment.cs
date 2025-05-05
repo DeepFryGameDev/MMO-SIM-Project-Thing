@@ -7,8 +7,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Equipment/New Ring")]
 public class RingEquipment : HeroBaseEquipment
 {
-    private void Awake()
-    {
-        rarity = EnumHandler.InventoryRarities.COMMON;
-    }
+
 }

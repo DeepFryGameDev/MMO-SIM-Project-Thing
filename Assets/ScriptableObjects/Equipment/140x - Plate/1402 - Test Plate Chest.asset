@@ -16,7 +16,7 @@ MonoBehaviour:
   ID: 1402
   icon: {fileID: 21300000, guid: 0c832e0cf79d3664aa3d724839bed46f, type: 3}
   description: A dragonbone made chest armor found in Debug Land.
-  rarity: 1
+  rarity: 2
   weight: 0
   goldValue: 0
   armorClass: 3
