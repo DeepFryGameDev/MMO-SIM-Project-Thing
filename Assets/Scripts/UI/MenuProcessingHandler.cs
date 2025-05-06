@@ -1,4 +1,3 @@
-using System.Globalization;
 using UnityEngine;
 
 // Purpose: Facilitates control of which menu is available to the user at a given time
@@ -226,7 +225,7 @@ public class MenuProcessingHandler : MonoBehaviour
     // All button onClicks should be listed here
 
     /// <summary>
-    /// Called when the user clicks the Schedule button in the hero command menu, opens the Schedule menu
+    /// Called when the user clicks the Schedule button in the hero command menu, opens the Schedule menu.  Should eventually be moved to it's own UI handler for schedule.
     /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/ScheduleButton
     /// </summary>
     public void ScheduleMenuOnClick()
@@ -242,7 +241,7 @@ public class MenuProcessingHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when the user clicks in the Back button in the schedule menu.  Just goes back to the root menu.
+    /// Called when the user clicks in the Back button in the schedule menu.  Just goes back to the root menu.  Should eventually be moved to it's own UI handler for schedule.
     /// Assigned to: [UI]/ScheduleCanvas/ScheduleHolder/BackButton
     /// </summary>
     public void ScheduleMenuBackOnClick()

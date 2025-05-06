@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     Image iconImage;

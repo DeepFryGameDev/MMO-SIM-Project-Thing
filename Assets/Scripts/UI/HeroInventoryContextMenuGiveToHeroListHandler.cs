@@ -1,5 +1,9 @@
 using UnityEngine;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 public class HeroInventoryContextMenuGiveToHeroListHandler : MonoBehaviour
 {
     [SerializeField] ContextMenuHandler contextMenuHandler;

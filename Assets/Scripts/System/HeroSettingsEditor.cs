@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngineInternal;
 
 // Purpose: Used to tweak various settings related to Hero scripts - linked to the HeroSettings static class so that other scripts can simply reference that.
 // Directions: Attach to the [Editor] object

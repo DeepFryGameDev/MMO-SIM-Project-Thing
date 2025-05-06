@@ -5,16 +5,17 @@
 public static class EnumHandler
 {
     /// <summary>
-    /// Used in many different functions for the hero's class
+    /// Used as the basis for upgrading hero classes
     /// </summary>
-    public enum HeroClasses
+    public enum BaseHeroClasses 
     {
-        RECRUIT,
-        FIGHTER,
         ARCHER,
-        MAGE,
         CLERIC,
-        KNIGHT
+        FIGHTER,
+        KNIGHT,
+        MAGE,
+        THIEF,
+        RECRUIT
     }
 
     /// <summary>
@@ -28,6 +29,9 @@ public static class EnumHandler
     }
 
     // --- EQUIPMENT ---
+    /// <summary>
+    /// The slots an equipment piece can be equipped to that is considered 'armor'
+    /// </summary>
     public enum EquipmentArmorSlots
     {
         HEAD,
@@ -37,12 +41,18 @@ public static class EnumHandler
         FEET
     }
 
+    /// <summary>
+    /// The slots an equipment piece can be equipped to that is considered 'Main Hand' or 'Off Hand'.  This is generally a weapon or shield.
+    /// </summary>
     public enum EquipmentHandSlots
     {
         MAINHAND,
         OFFHAND
     }
 
+    /// <summary>
+    /// Different levels of material of armor.  Plate is stronger, but weighs more and can only be used by tank classes.  Cloth is weaker and more geared to magic users.
+    /// </summary>
     public enum ArmorClasses
     {
         CLOTH,
@@ -51,6 +61,9 @@ public static class EnumHandler
         PLATE
     }
 
+    /// <summary>
+    /// Different types of weapons.  This will impact the type of damage being done when attacking enemies.
+    /// </summary>
     public enum WeaponClasses
     {
         SWORD,
@@ -60,6 +73,9 @@ public static class EnumHandler
         STAFF
     }
 
+    /// <summary>
+    /// Different types of shields.  I dunno what this is gonna impact yet.
+    /// </summary>
     public enum ShieldClasses
     {
         TARGE,

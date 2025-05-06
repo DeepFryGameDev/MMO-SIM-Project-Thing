@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4699559e2519bd49bf7ec94b420d8b7, type: 3}
+  m_Name: (Thief Fighter) Assassin
+  m_EditorClassIdentifier: 
+  name: Assassin
+  primaryClass: 5
+  subClass: 2
+  clothEquippable: 0
+  leatherEquippable: 0
+  mailEquippable: 0
+  plateEquippable: 0
+  swordEquippable: 0
+  bowEquippable: 0
+  maceEquippable: 0
+  staffEquippable: 0
+  lanceEquippable: 0
+  shieldEquippable: 0
+  requiredStrengthLevel: 0
+  requiredEnduranceLevel: 0
+  requiredAgilityLevel: 0
+  requiredDexterityLevel: 0
+  requiredIntelligenceLevel: 0
+  requiredFaithLevel: 0

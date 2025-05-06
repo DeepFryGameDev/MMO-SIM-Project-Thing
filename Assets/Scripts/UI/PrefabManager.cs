@@ -29,8 +29,10 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the prefab to display each item in the hero's inventory menu")]
     public GameObject HeroInventoryButton;
 
+    [Tooltip("Set this to the prefab to display each equipment item in the hero's equipment menu")]
     public GameObject EquipToHeroButton;
 
+    [Tooltip("Set this to the button to be used for the inventory context menu for 'Give To x Hero' button")]
     public GameObject ContextMenuItemHeroGiveToHeroButton;
 
     private void Awake()

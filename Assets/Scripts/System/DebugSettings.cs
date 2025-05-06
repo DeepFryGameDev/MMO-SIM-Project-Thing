@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Purpose: Used for QOL purposes to assist with debugging
-// Directions: 
+// Directions: Use with the DebugSettingsEditor attached to [Editor] to set the values
 // Other notes: 
 
 public class DebugSettings

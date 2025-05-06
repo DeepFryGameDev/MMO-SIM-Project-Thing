@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Purpose: Handles player inventory.  Not used yet.
+// Purpose: Handles functionality with manipulating the player's inventory.  Not yet being used.
 // Directions: Just attach to [System]
 // Other notes: 
 

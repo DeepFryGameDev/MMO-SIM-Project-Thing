@@ -1,5 +1,8 @@
-using System;
 using UnityEngine;
+
+// Purpose: Facilitates functionality for classes.  This is where the math is run for each stat and parameter to determine differences in how classes operate.
+// Directions: Attach to [System]
+// Other notes: 
 
 public class ClassManager : MonoBehaviour
 {

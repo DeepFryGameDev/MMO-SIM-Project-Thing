@@ -1,8 +1,12 @@
 using UnityEngine;
 
+// Purpose: Facilitates functionality with setting a piece of equipment as 'equipped' to a hero (and vice versa) and other equipment functionalities.  Here is also where each piece of 'equipped' equipment is tracked for each hero.
+// Directions: Attach to each hero object.
+// Other notes: 
+
 public class HeroEquipment : MonoBehaviour
 {
-    // --- armor
+    [Header("---Equipped Armor---")]
     [SerializeField] ArmorEquipment equippedHead;
     public void SetEquippedHead(ArmorEquipment equipment) { equippedHead = equipment; }
     public ArmorEquipment GetEquippedHead() { return equippedHead; }
@@ -23,7 +27,7 @@ public class HeroEquipment : MonoBehaviour
     public void SetEquippedFeet(ArmorEquipment equipment) { equippedFeet = equipment; }
     public ArmorEquipment GetEquippedFeet() { return equippedFeet; }
 
-    // --- rings
+    [Header("---Equipped Rings---")]
     [SerializeField] RingEquipment equippedRing1;
     public void SetEquippedRing1(RingEquipment equippedRing) { this.equippedRing1 = equippedRing; }
     public RingEquipment GetEquippedRing1() { return equippedRing1; }
@@ -32,7 +36,7 @@ public class HeroEquipment : MonoBehaviour
     public void SetEquippedRing2(RingEquipment equippedRing) { this.equippedRing2 = equippedRing; }
     public RingEquipment GetEquippedRing2() { return equippedRing2; }
 
-    // --- relics
+    [Header("---Equipped Relics---")]
     [SerializeField] RelicEquipment equippedRelic1;
     public void SetEquippedRelic1(RelicEquipment equippedRelic) { this.equippedRelic1 = equippedRelic; }
     public RelicEquipment GetEquippedRelic1() { return equippedRelic1; }
@@ -41,25 +45,29 @@ public class HeroEquipment : MonoBehaviour
     public void SetEquippedRelic2(RelicEquipment equippedRelic) { this.equippedRelic2 = equippedRelic; }
     public RelicEquipment GetEquippedRelic2() { return equippedRelic2; }
 
-    // --- trinket
+    [Header("---Equipped Trinket---")]
     [SerializeField] TrinketEquipment equippedTrinket;
     public void SetEquippedTrinket(TrinketEquipment equippedTrinket) { this.equippedTrinket = equippedTrinket; }
     public TrinketEquipment GetEquippedTrinket() { return equippedTrinket; }
 
-    // --- weapons
+    [Header("---Equipped Weapon/Offhand---")]
     [SerializeField] WeaponEquipment equippedMainHand;
     public void SetEquippedMainHand(WeaponEquipment equipment) { equippedMainHand = equipment; }
     public WeaponEquipment GetEquippedMainHand() { return equippedMainHand; }
 
     [SerializeField] ShieldEquipment equippedShield; // will need to be reworked to allow for different types of equipment. Right now, doesn't do anything.
 
-    HeroManager heroManager;
+    HeroManager heroManager; // The Hero Manager assigned to this hero
 
     void Awake()
     {
         heroManager = GetComponent<HeroManager>();
     }
 
+    /// <summary>
+    /// Sets the hero's current stats to their base stat value + any bonuses they receive from equipment and perks (not yet implemented).
+    /// This should be ran any time a piece of equipment is changed or perk is changed
+    /// </summary>
     void UpdateStats()
     {
         int tempStrength = heroManager.Hero().GetBaseStrength();
@@ -129,6 +137,10 @@ public class HeroEquipment : MonoBehaviour
 
     #region Armor
 
+    /// <summary>
+    /// Simply sets the given armor slot on the hero to null and adds the item that was equipped in that slot back to the player's inventory.
+    /// </summary>
+    /// <param name="armorSlot">The armor slot to be unequipped</param>
     public void UnequipArmor(EnumHandler.EquipmentArmorSlots armorSlot)
     {
             switch (armorSlot)
@@ -178,6 +190,10 @@ public class HeroEquipment : MonoBehaviour
         UpdateStats();
     }
 
+    /// <summary>
+    /// Sets the given armor item to the appropriate slot on the hero
+    /// </summary>
+    /// <param name="armorToEquip"></param>
     public void EquipArmor(ArmorEquipment armorToEquip)
     {
         switch (armorToEquip.equipSlot)

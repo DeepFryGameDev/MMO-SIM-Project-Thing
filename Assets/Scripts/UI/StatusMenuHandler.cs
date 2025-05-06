@@ -1,7 +1,10 @@
 using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
+
+// Purpose: 
+// Directions: 
+// Other notes: 
 
 public class StatusMenuHandler : MonoBehaviour
 {
@@ -43,7 +46,7 @@ public class StatusMenuHandler : MonoBehaviour
         mpBarFill.fillAmount = 0; // update
         mpBarText.SetText("0/0"); // update
 
-        classText.SetText(UITasks.CapitalizeFirstLetter(heroManager.HeroClass().GetCurrentClass().heroClass.ToString()));
+        classText.SetText(heroManager.HeroClass().GetCurrentClass().name);
 
         strengthValue.SetText(heroManager.Hero().GetStrength().ToString());
         enduranceValue.SetText(heroManager.Hero().GetEndurance().ToString());

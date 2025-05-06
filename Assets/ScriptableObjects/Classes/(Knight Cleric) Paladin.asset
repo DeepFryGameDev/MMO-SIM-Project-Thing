@@ -10,16 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4699559e2519bd49bf7ec94b420d8b7, type: 3}
-  m_Name: Fighter
+  m_Name: (Knight Cleric) Paladin
   m_EditorClassIdentifier: 
-  heroClass: 1
-  clothEquippable: 1
-  leatherEquippable: 1
-  mailEquippable: 1
+  name: Paladin
+  primaryClass: 3
+  subClass: 1
+  clothEquippable: 0
+  leatherEquippable: 0
+  mailEquippable: 0
   plateEquippable: 0
-  swordEquippable: 1
+  swordEquippable: 0
   bowEquippable: 0
   maceEquippable: 0
   staffEquippable: 0
   lanceEquippable: 0
-  shieldEquippable: 1
+  shieldEquippable: 0
+  requiredStrengthLevel: 0
+  requiredEnduranceLevel: 0
+  requiredAgilityLevel: 0
+  requiredDexterityLevel: 0
+  requiredIntelligenceLevel: 0
+  requiredFaithLevel: 0

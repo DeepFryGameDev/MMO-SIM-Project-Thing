@@ -1,7 +1,10 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+// Purpose: 
+// Directions: 
+// Other notes: 
 
 public class HeroEquipMenuHandler : MonoBehaviour
 {    

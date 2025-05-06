@@ -2,6 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 public class ContextMenuItemHeroGiveToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     TextMeshProUGUI nameText;

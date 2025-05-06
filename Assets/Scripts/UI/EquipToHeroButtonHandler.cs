@@ -1,7 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+// Purpose: 
+// Directions: 
+// Other notes: 
 
 public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 [CreateAssetMenu(menuName = "Equipment/New Shield")]
 public class ShieldEquipment : HandEquipment
 {

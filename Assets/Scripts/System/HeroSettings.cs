@@ -2,7 +2,6 @@
 // Directions: Ensure any time a var is added to the HeroSettingsEditor that it is also added here
 // Other notes: Definitions of these vars are located in the HeroSettingsEditor script in the Tooltips.
 
-
 public static class HeroSettings 
 {
     public static float walkSpeed;

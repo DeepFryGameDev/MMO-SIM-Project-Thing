@@ -70,6 +70,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// <summary>
     /// Function called when the hero command window should be closed.  Basically just doing the opposite as OpenHeroCommand() and in reverse order.
     /// Like OpenHeroCommand() this should contain any methods related to turning off the UI and allowing player movement again
+    /// Assigned to: 
     /// </summary>
     public void CloseHeroCommand()
     {
@@ -86,6 +87,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
     /// <summary>
     /// Used to open the Training Equipment menu for the player to equip to a hero
+    /// Assigned to: 
     /// </summary>
     public void OpenTrainingEquipmentMenu()
     {
@@ -97,6 +99,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
     /// <summary>
     /// Just goes back to the root Hero Command menu
+    /// Assigned to: 
     /// </summary>
     public void CloseTrainingEquipmentMenu()
     {
@@ -104,7 +107,8 @@ public class HeroCommandProcessing : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Displays the inventory menu
+    /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/InventoryButton.OnClick()
     /// </summary>
     public void OpenInventoryMenu()
     {
@@ -119,13 +123,18 @@ public class HeroCommandProcessing : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Closes the inventory menu
+    /// Assigned to: [UI]/HeroInventoryCanvas/HeroInventoryHolder/CloseButton.OnClick()
     /// </summary>
     public void CloseInventoryMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 
+    /// <summary>
+    /// Opens the equip menu
+    /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/EquipButton.OnClick()
+    /// </summary>
     public void OpenEquipMenu()
     {
         // set any already equipped items to the EquipButtonsPanel
@@ -136,13 +145,5 @@ public class HeroCommandProcessing : MonoBehaviour
 
         // display HeroEquipCanvas
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.EQUIP);
-    }
-
-    public void CloseEquipMenu()
-    {
-        statusMenuHandler.ClearValues();
-        statusMenuHandler.ToggleMenu(false);
-
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
     }
 }
