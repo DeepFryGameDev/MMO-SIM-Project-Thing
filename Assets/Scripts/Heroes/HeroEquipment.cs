@@ -191,9 +191,9 @@ public class HeroEquipment : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the given armor item to the appropriate slot on the hero
+    /// Sets the given armor item to the appropriate slot on the hero and removes it from the hero's inventory.
     /// </summary>
-    /// <param name="armorToEquip"></param>
+    /// <param name="armorToEquip">The armor that should be equipped</param>
     public void EquipArmor(ArmorEquipment armorToEquip)
     {
         switch (armorToEquip.equipSlot)
@@ -215,6 +215,8 @@ public class HeroEquipment : MonoBehaviour
                 break;
         }
 
+        heroManager.HeroInventory().RemoveFromInventory(armorToEquip);
+
         UpdateStats();
     }
 
@@ -222,6 +224,10 @@ public class HeroEquipment : MonoBehaviour
 
     #region Rings
 
+    /// <summary>
+    /// Sets the given ring slot to null on the hero and re-adds the item to the hero's inventory.
+    /// </summary>
+    /// <param name="slot">1 or 2, which slot should be unequipped?</param>
     public void UnequipRing(int slot)
     {
         switch (slot)
@@ -247,6 +253,11 @@ public class HeroEquipment : MonoBehaviour
         UpdateStats();
     }
 
+    /// <summary>
+    /// Sets the given ring item to the appropriate slot on the hero and removes it from the hero's inventory.
+    /// </summary>
+    /// <param name="ringToEquip">Ring that should be equipped to the hero</param>
+    /// <param name="slot">1 or 2, which slot should be equipped?</param>
     public void EquipRing(RingEquipment ringToEquip, int slot)
     {
         switch (slot)
@@ -259,6 +270,8 @@ public class HeroEquipment : MonoBehaviour
                 break;
         }
 
+        heroManager.HeroInventory().RemoveFromInventory(ringToEquip);
+
         UpdateStats();
     }
 
@@ -266,6 +279,10 @@ public class HeroEquipment : MonoBehaviour
 
     #region Relics
 
+    /// <summary>
+    /// Sets the given relic slot to null on the hero and re-adds the item to the hero's inventory.
+    /// </summary>
+    /// <param name="slot">1 or 2, which slot should be unequipped?</param>
     public void UnequipRelic(int slot)
     {
         switch (slot)
@@ -291,6 +308,11 @@ public class HeroEquipment : MonoBehaviour
         UpdateStats();
     }
 
+    /// <summary>
+    /// Sets the given relic item to the appropriate slot on the hero and removes it from the hero's inventory.
+    /// </summary>
+    /// <param name="relicToEquip">The relic that should be equipped</param>
+    /// <param name="slot">1 or 2, which slot should this be equipped to?</param>
     public void EquipRelic(RelicEquipment relicToEquip, int slot)
     {
         switch (slot)
@@ -303,6 +325,8 @@ public class HeroEquipment : MonoBehaviour
                 break;
         }
 
+        heroManager.HeroInventory().RemoveFromInventory(relicToEquip);
+
         UpdateStats();
     }
 
@@ -310,6 +334,9 @@ public class HeroEquipment : MonoBehaviour
 
     #region Trinkets
 
+    /// <summary>
+    /// Sets the given trinket slot to null on the hero and re-adds the item to the hero's inventory.
+    /// </summary>
     public void UnequipTrinket()
     {
         if (GetEquippedTrinket() != null)
@@ -322,9 +349,15 @@ public class HeroEquipment : MonoBehaviour
         UpdateStats();
     }
 
+    /// <summary>
+    /// Sets the given trinket item to the appropriate slot on the hero and removes it from the hero's inventory.
+    /// </summary>
+    /// <param name="trinketToEquip">Trinket to be equipped</param>
     public void EquipTrinket(TrinketEquipment trinketToEquip)
     {
         SetEquippedTrinket(trinketToEquip);
+
+        heroManager.HeroInventory().RemoveFromInventory(trinketToEquip);
 
         UpdateStats();
     }
@@ -333,6 +366,10 @@ public class HeroEquipment : MonoBehaviour
 
     #region Weapons
 
+    /// <summary>
+    /// Sets the given hand slot to null on the hero and re-adds the item to the hero's inventory.
+    /// </summary>
+    /// <param name="handSlot">Main hand or off hand?  Which slot should be unequipped?</param>
     public void UnequipWeapon(EnumHandler.EquipmentHandSlots handSlot)
     {
         switch (handSlot)
@@ -353,6 +390,10 @@ public class HeroEquipment : MonoBehaviour
         UpdateStats();
     }
 
+    /// <summary>
+    /// Sets the given weapon item to the appropriate slot on the hero and removes it from the hero's inventory.
+    /// </summary>
+    /// <param name="weaponToEquip">The weapon to be equipped</param>
     public void EquipWeapon(WeaponEquipment weaponToEquip)
     {
         switch (weaponToEquip.equipSlot)
@@ -364,6 +405,8 @@ public class HeroEquipment : MonoBehaviour
                 // Will be updated to allow for different types of equipment here
                 break;
         }
+
+        heroManager.HeroInventory().RemoveFromInventory(weaponToEquip);
 
         UpdateStats();
     }

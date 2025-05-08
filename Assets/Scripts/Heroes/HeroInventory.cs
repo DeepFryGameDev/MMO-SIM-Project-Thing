@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Purpose: Contains the functionality for heros to hold onto various items and equipment
-// Directions: Attach to each hero
+// Directions: Attach to each hero object
 // Other notes: 
 
 public class HeroInventory : MonoBehaviour
@@ -21,7 +21,7 @@ public class HeroInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Not in use yet.
+    /// Not in use yet.  Not sure if we'll need.
     /// </summary>
     /// <returns>Int with how many Training Equipment items the hero has in their inventory</returns>
     public int GetTrainingEquipmentCount()

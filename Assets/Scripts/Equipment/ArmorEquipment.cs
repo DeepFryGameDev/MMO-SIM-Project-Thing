@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used as the derived class for all armor - this is Helm, Chest, Hands (not to be confused with main/offhand), Legs, Feet.
+// Directions: Any armor specific details should go into here.
 // Other notes: 
 
 [CreateAssetMenu(menuName = "Equipment/New Armor")]

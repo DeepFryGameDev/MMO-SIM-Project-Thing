@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used as the derived class for all weapons.  
+// Directions: Any weapon related functionality or values should come from here.
 // Other notes: 
 
 [CreateAssetMenu(menuName = "Equipment/New Weapon")]

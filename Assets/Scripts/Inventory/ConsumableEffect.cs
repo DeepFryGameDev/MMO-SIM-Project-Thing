@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Purpose: 
+// Purpose: Should contain the effects of whatever the consumable will do.  Not entirely sure how I will use this yet but I think this will be a solid start.
 // Directions: 
 // Other notes: 
 

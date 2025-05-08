@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Purpose: 
+// Purpose: Used as the derived class for all consumable items (such as potions, food, etc).
 // Directions: 
 // Other notes: 
 

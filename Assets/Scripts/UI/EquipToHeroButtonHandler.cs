@@ -63,9 +63,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
             // then, set the equipment here to the hero's equipment in that slot.
             heroManager.HeroEquipment().EquipArmor(equipAsArmor);
 
-            // then, remove it from the hero's inventory.
-            heroManager.HeroInventory().RemoveFromInventory(equipAsArmor);
-
             return;
         }
 
@@ -78,9 +75,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
             // then, set the equipment here to the hero's equipment in that slot.
             heroManager.HeroEquipment().EquipWeapon(equipAsWeapon);
 
-            // then, remove it from the hero's inventory.
-            heroManager.HeroInventory().RemoveFromInventory(equipAsWeapon);
-
             return;
         }
 
@@ -92,9 +86,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
 
             // then, set the equipment here to the hero's equipment in that slot.
             heroManager.HeroEquipment().EquipRing(equipAsRing, ringSlotClicked);
-
-            // then, remove it from the hero's inventory.
-            heroManager.HeroInventory().RemoveFromInventory(equipAsRing);
 
             return;
         }
@@ -109,9 +100,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
             // then, set the equipment here to the hero's equipment in that slot.
             heroManager.HeroEquipment().EquipRelic(equipAsRelic, relicSlotClicked);
 
-            // then, remove it from the hero's inventory.
-            heroManager.HeroInventory().RemoveFromInventory(equipAsRelic);
-
             return;
         }
 
@@ -123,9 +111,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
 
             // then, set the equipment here to the hero's equipment in that slot.
             heroManager.HeroEquipment().EquipTrinket(equipAsTrinket);
-
-            // then, remove it from the hero's inventory.
-            heroManager.HeroInventory().RemoveFromInventory(equipAsTrinket);
         }
     }
 
