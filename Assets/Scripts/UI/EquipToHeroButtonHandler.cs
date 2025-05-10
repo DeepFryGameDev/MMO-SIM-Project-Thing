@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used to facilitate interaction between the user and the instantiated buttons that appear when clicking on an inventory button
+// Directions: Attach to the 'EquipToHeroButton' prefab in Prefabs/UI folder
 // Other notes: 
 
 public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -39,6 +39,9 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         statusMenuHandler = FindFirstObjectByType<StatusMenuHandler>();
     }
 
+    /// <summary>
+    /// Called when the user clicks the button attached to this object
+    /// </summary>
     public void OnClick()
     {
         SetEquipment();
@@ -46,12 +49,20 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         RefreshUI();
     }
 
+    /// <summary>
+    /// This is only called from OnClick.  
+    /// If this button is set as the 'unEquip' button, the behavior of this button should be to Unequip the current equipment.
+    /// Otherwise it should equip the assignedEquipment.
+    /// </summary>
     void SetEquipment()
     {
         if (isUnequip) RunUnequip();
         else RunEquip();
     }
 
+    /// <summary>
+    /// Equips the assignedEquipment to the appropriate equipment slot
+    /// </summary>
     void RunEquip()
     {
         ArmorEquipment equipAsArmor = assignedEquipment as ArmorEquipment;
@@ -114,6 +125,9 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         }
     }
 
+    /// <summary>
+    /// Unequips the currently equipped equipment in the appropriate slot
+    /// </summary>
     void RunUnequip()
     {
         DebugManager.i.UIDebugOut("EquipToHeroButtonHandler", "Unequip button was clicked.", false, false);
@@ -153,6 +167,9 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         }
     }
 
+    /// <summary>
+    /// Clears all the UI objects and sets them as appropriate again
+    /// </summary>
     void RefreshUI()
     {
         DebugManager.i.UIDebugOut("EquipToHeroButtonHandler", "Refreshing UI");
@@ -169,7 +186,9 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         statusMenuHandler.SetStatusValues(heroManager);
     }
 
-    // show equip details
+   /// <summary>
+   /// Shows the equipment's details when the user puts the mouse cursor over the object
+   /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (assignedEquipment != null)
@@ -218,7 +237,9 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         }       
     }
 
-    // hide equip details
+    /// <summary>
+    /// Hides the equipment's details when the user's mouse cursor exits the object's boundary
+    /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
         heroEquipMenuHandler.ClearEquipmentDetails();

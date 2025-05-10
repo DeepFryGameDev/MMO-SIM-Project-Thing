@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
-// Other notes: 
+// Purpose: Is primarily used to keep the menu on the screen but it doesn't really work.
+// Directions: Attach to "[UI]/HeroInventoryCanvas/InventoryContextMenu/GiveToHeroList" object
+// Other notes:
 
 public class HeroInventoryContextMenuGiveToHeroListHandler : MonoBehaviour
 {
@@ -17,6 +17,9 @@ public class HeroInventoryContextMenuGiveToHeroListHandler : MonoBehaviour
         }       
     }
 
+    /// <summary>
+    /// Is supposed to keep the object from appearing outside of the screen's bounds, but it doesn't work right now.
+    /// </summary>
     void KeepFullyOnScreen()
     {
         RectTransform canvas = transform.parent.GetComponent<RectTransform>();

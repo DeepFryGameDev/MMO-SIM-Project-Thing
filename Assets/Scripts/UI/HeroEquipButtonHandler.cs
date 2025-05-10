@@ -1,18 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used to allow the user to interact with the equipment slots in the UI
+// Directions: Attach to the objects under [UI]/HeroEquipCanvas/HeroEquipHolder/EquipButtonsPanel/(Left/Right/BottomLayoutPanel)
 // Other notes: 
 
 public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    Image iconImage;
-
-    Sprite defaultSprite;
-
     HeroManager heroManager;
 
     HeroEquipMenuHandler heroEquipMenuHandler;
@@ -23,13 +18,14 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
 
     private void Awake()
     {
-        iconImage = transform.Find("EquipSlotIcon").GetComponent<Image>();
-
-        defaultSprite = iconImage.sprite;
-
         heroEquipMenuHandler = FindFirstObjectByType<HeroEquipMenuHandler>();
     }
 
+    /// <summary>
+    /// Assigned to the OnClick function on the button that this object is attached to
+    /// When the user clicks the button this is assigned to, available equipment for the user to choose will be listed in the EquipScroll
+    /// </summary>
+    /// <param name="slotIndex">The index assigned in the inspector for the script to understand which button was clicked</param>
     public void OnClick(int slotIndex)
     {
         heroManager = HomeZoneManager.i.GetHeroManager();
@@ -413,6 +409,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Using the given list of ArmorEquipment, each object in the list is instantiated using the EquipToHeroButton prefab in PrefabManager
+    /// </summary>
+    /// <param name="wearableEquipmentList">The list of equipment to be instantiated</param>
     void InstantiateEquippableArmor(List<ArmorEquipment> wearableEquipmentList)
     {
         foreach (ArmorEquipment armor in wearableEquipmentList)
@@ -430,6 +430,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Using the given list of WeaponEquipment, each object in the list is instantiated using the EquipToHeroButton prefab in PrefabManager
+    /// </summary>
+    /// <param name="wearableEquipmentList">The list of equipment to be instantiated</param>
     void InstantiateEquippableWeapons(List<WeaponEquipment> wearableEquipmentList)
     {
         foreach (WeaponEquipment weapon in wearableEquipmentList)
@@ -447,6 +451,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Using the given list of RingEquipment, each object in the list is instantiated using the EquipToHeroButton prefab in PrefabManager
+    /// </summary>
+    /// <param name="wearableEquipmentList">The list of equipment to be instantiated</param>
+    /// <param name="buttonSlotClicked"></param>
     void InstantiateEquippableRings(List<RingEquipment> wearableEquipmentList, int buttonSlotClicked)
     {
         foreach (RingEquipment ring in wearableEquipmentList)
@@ -466,6 +475,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Using the given list of RelicEquipment, each object in the list is instantiated using the EquipToHeroButton prefab in PrefabManager
+    /// </summary>
+    /// <param name="wearableEquipmentList">The list of equipment to be instantiated</param>
+    /// <param name="buttonSlotClicked"></param>
     void InstantiateEquippableRelics(List<RelicEquipment> wearableEquipmentList, int buttonSlotClicked)
     {
         foreach (RelicEquipment relic in wearableEquipmentList)
@@ -485,6 +499,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Using the given list of TrinketEquipment, each object in the list is instantiated using the EquipToHeroButton prefab in PrefabManager
+    /// </summary>
+    /// <param name="wearableEquipmentList">The list of equipment to be instantiated</param>
     void InstantiateEquippableTrinkets(List<TrinketEquipment> wearableEquipmentList)
     {
         foreach (TrinketEquipment trinket in wearableEquipmentList)
@@ -502,16 +520,22 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Just instantiates an unequip icon (used at the beginning of every inventory list being instantiated)
+    /// </summary>
     void InstantiateUnequipIcon()
     {
         GameObject unequipButton = Instantiate(PrefabManager.i.EquipToHeroButton, heroEquipMenuHandler.GetEquipInventoryTransform());
         EquipToHeroButtonHandler unequipHandler = unequipButton.GetComponent<EquipToHeroButtonHandler>();
         unequipHandler.ToggleIsUnequip();
-        unequipHandler.SetHeroManager(heroManager);
-
-        
+        unequipHandler.SetHeroManager(heroManager);        
     }
 
+    /// <summary>
+    /// Returns all equipment in the heroManager's inventory that is of the same equipment slot as the given equipment
+    /// </summary>
+    /// <param name="armorSlot">The armor slot to get equipment for</param>
+    /// <returns>List of equipment that share the given armor slot</returns>
     List<ArmorEquipment> ArmorEquipmentInInventoryBySlot(EnumHandler.EquipmentArmorSlots armorSlot)
     {
         List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
@@ -533,6 +557,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
+    /// <summary>
+    /// Returns all equipment in the heroManager's inventory that is of the same equipment slot as the given equipment
+    /// </summary>
+    /// <param name="handSlot">The hand slot to get equipment for</param>
+    /// <returns>List of equipment that share the given hand slot</returns>
     List<WeaponEquipment> WeaponEquipmentInInventoryBySlot(EnumHandler.EquipmentHandSlots handSlot)
     {
         List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
@@ -554,7 +583,11 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
-    List <RingEquipment> RingEquipmentInInventory()
+    /// <summary>
+    /// Returns all Ring equipment in the heroManager's inventory
+    /// </summary>
+    /// <returns>List of ring equipment</returns>
+    List<RingEquipment> RingEquipmentInInventory()
     {
         List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
 
@@ -572,6 +605,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
+    /// <summary>
+    /// Returns all Relic equipment in the heroManager's inventory
+    /// </summary>
+    /// <returns>List of relic equipment</returns>
     List<RelicEquipment> RelicEquipmentInInventory()
     {
         List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
@@ -590,6 +627,10 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
+    /// <summary>
+    /// Returns all trinket equipment in the heroManager's inventory
+    /// </summary>
+    /// <returns>List of trinket equipment</returns>
     List<TrinketEquipment> TrinketEquipmentInInventory()
     {
         List<HeroItem> inventory = heroManager.HeroInventory().GetInventory();
@@ -608,6 +649,9 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         return listToDisplay;
     }
 
+    /// <summary>
+    /// Is called whenever the user puts the mouse cursor over the button object this script is attached to
+    /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (assignedEquipment != null)
@@ -656,6 +700,9 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
+    /// <summary>
+    /// Called whenever the user's mouse cursor exits the button object's bounds
+    /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
         heroEquipMenuHandler.ClearEquipmentDetails();

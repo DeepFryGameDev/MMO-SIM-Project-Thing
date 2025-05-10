@@ -91,7 +91,7 @@ public class MenuProcessingHandler : MonoBehaviour
                 }
                 else if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.STATUS)
                 {
-                    statusMenuHandler.ToggleSkillStatusMenu(false);
+                    statusMenuHandler.ToggleActiveEffectsStatusMenu(false);
                     TransitionToMenu(heroCommandCanvasGroup, tempCanvasGroup);
                 }
                 else if (tempHeroCommandMenuState == EnumHandler.HeroCommandMenuStates.EQUIP)
@@ -106,7 +106,7 @@ public class MenuProcessingHandler : MonoBehaviour
                     break;
             case EnumHandler.HeroCommandMenuStates.STATUS:
                 TransitionToMenu(statusMenuCanvasGroup, true);
-                statusMenuHandler.ToggleSkillStatusMenu(true);
+                statusMenuHandler.ToggleActiveEffectsStatusMenu(true);
                 break;
             case EnumHandler.HeroCommandMenuStates.INVENTORY: // Display inventory menu for hero
                 TransitionToMenu(heroInventoryCanvasGroup, true);

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Handles updating the UI with inventory details when the menu is opened and closed.
+// Directions: Attach to [UI]/HeroInventoryCanvas
 // Other notes: 
 
 public class HeroInventoryUIHandler : MonoBehaviour
@@ -86,15 +86,20 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
 
     /// <summary>
-    ///
+    /// Any hero specific details should go here.  For now it's just carry weight.
+    /// Used to set the total item weight for the player (combined items in inventory weight/maximum carry weight).
     /// </summary>
-    /// <param name="heroManager"></param>
+    /// <param name="heroManager">HeroManager of the hero to set details</param>
 
     public void SetHeroDetailsPanel(HeroManager heroManager)
     {
         heroWeightText.text = "999/999"; // will set later
     }
 
+    /// <summary>
+    /// Generates the inventory UI by looping through each of the items in the hero's inventory and instantiating a button for it.
+    /// </summary>
+    /// <param name="heroManager"></param>
     public void GenerateInventory(HeroManager heroManager)
     {
         foreach (HeroItem item in heroManager.HeroInventory().GetInventory())
@@ -111,10 +116,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
                 heroInventoryButtonHandler.SetItemIcon(item.icon);
 
                 // if count > 1
-                int itemCount = GetCountInInventory(item, heroManager);
+                int itemCount = heroManager.HeroInventory().GetInventory().Count;
                 if (itemCount > 1)
                 {
-                    heroInventoryButtonHandler.SetCountText(GetCountInInventory(item, heroManager).ToString());
+                    heroInventoryButtonHandler.SetCountText(itemCount.ToString());
                 }
                 else // if count == 1, hide the countText
                 {
@@ -129,6 +134,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
     }
 
     #region Base Item Details
+    /// <summary>
+    /// Sets the base item text objects in the UI with the given item's details
+    /// </summary>
+    /// <param name="item">Item to draw the UI for</param>
     public void DrawBaseItemDetails(HeroItem item)
     {
         nameText.SetText(item.name);
@@ -146,6 +155,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Training Equipment
 
+    /// <summary>
+    /// Sets the Training Equipment text objects in the UI with the given item's details
+    /// </summary>
+    /// <param name="trainingEquipment">Training Equipment to draw the UI for</param>
     public void DrawTrainingEquipUI(TrainingEquipment trainingEquipment)
     {
         DrawBaseItemDetails(trainingEquipment);
@@ -163,6 +176,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Armor
 
+    /// <summary>
+    /// Sets the Armor text objects in the UI with the given item's details
+    /// </summary>
+    /// <param name="armorEquip">Armor to draw the UI For</param>
     public void DrawArmorEquipmentDetails(ArmorEquipment armorEquip)
     {
         armorDetailsCanvasGroup.alpha = 1;
@@ -178,6 +195,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
         SetArmorBonusTexts(armorEquip);
     }
 
+    /// <summary>
+    /// Sets the armor bonus text vals with the given armor's details
+    /// </summary>
+    /// <param name="armorEquip">Armor to draw the UI for</param>
     void SetArmorBonusTexts(ArmorEquipment armorEquip)
     {
         int index = 0;
@@ -275,6 +296,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Hands
 
+    /// <summary>
+    /// Sets the weapon text vals with the given weapon's details
+    /// </summary>
+    /// <param name="weaponEquip">Weapon to draw the UI for</param>
     public void DrawWeaponEquipmentDetails(WeaponEquipment weaponEquip)
     {
         handDetailsCanvasGroup.alpha = 1;
@@ -292,6 +317,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Shields
 
+    /// <summary>
+    /// Sets the shield text vals with the given shield's details
+    /// </summary>
+    /// <param name="shieldEquip">Shield to draw the UI for</param>
     public void DrawShieldEquipmentDetails(ShieldEquipment shieldEquip)
     {
         shieldDetailsCanvasGroup.alpha = 1;
@@ -310,6 +339,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Rings
 
+    /// <summary>
+    /// Sets the ring text vals with the given ring's details
+    /// </summary>
+    /// <param name="ringEquip">Ring to draw the UI for</param>
     public void DrawRingEquipmentDetails(RingEquipment ringEquip)
     {
         ringDetailsCanvasGroup.alpha = 1;
@@ -323,6 +356,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Relics
 
+    /// <summary>
+    /// Sets the relic text vals with the given relic's details
+    /// </summary>
+    /// <param name="relicEquip">Relic to draw the UI for</param>
     public void DrawRelicEquipmentDetails(RelicEquipment relicEquip)
     {
         relicDetailsCanvasGroup.alpha = 1;
@@ -336,6 +373,10 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Trinkets
 
+    /// <summary>
+    /// Sets the trinket text vals with the given trinket's details
+    /// </summary>
+    /// <param name="trinketEquip">Trinket to draw the UI for</param>
     public void DrawTrinketEquipmentDetails(TrinketEquipment trinketEquip)
     {
         trinketDetailsCanvasGroup.alpha = 1;
@@ -352,6 +393,9 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #region Cleanup
 
+    /// <summary>
+    /// Sets all base item text vals to empty string
+    /// </summary>
     void ClearItemDetails()
     {
         nameText.SetText(string.Empty);
@@ -362,12 +406,18 @@ public class HeroInventoryUIHandler : MonoBehaviour
         weightValueText.SetText(string.Empty);
     }
 
+    /// <summary>
+    /// Sets all training equipment text vals to empty string
+    /// </summary>
     void ClearTrainingEquipmentDetails()
     {
         trainingEquipLevelText.SetText(string.Empty);
         trainingEquipTypeText.SetText(string.Empty);
     }
 
+    /// <summary>
+    /// Sets all equipment text vals to empty string
+    /// </summary>
     void ClearEquipmentDetails()
     {
         // armor
@@ -437,21 +487,9 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     #endregion
 
-    int GetCountInInventory(BaseItem item, HeroManager heroManager)
-    {
-        int count = 0;
-
-        foreach (BaseItem baseItem in heroManager.HeroInventory().GetInventory())
-        {
-            if (baseItem.ID == item.ID)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
+    /// <summary>
+    /// Clears all text vals in the UI
+    /// </summary>
     public void ResetUI()
     {
         ClearItemDetails();
@@ -461,6 +499,9 @@ public class HeroInventoryUIHandler : MonoBehaviour
         ClearEquipmentDetails();
     }
 
+    /// <summary>
+    /// Resets private vars and destroys all instanitated item objects in the inventory list
+    /// </summary>
     public void ClearUI()
     {
         itemsAccountedFor.Clear();

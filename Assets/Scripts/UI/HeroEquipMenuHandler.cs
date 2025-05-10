@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates the functionality of equipping armor and weapons to the hero from the menu
+// Directions: Attach to [UI]/HeroEquipCanvas/HeroEquipHolder
 // Other notes: 
 
 public class HeroEquipMenuHandler : MonoBehaviour
@@ -106,6 +106,9 @@ public class HeroEquipMenuHandler : MonoBehaviour
         SetDefaultIcons();
     }
 
+    /// <summary>
+    /// Sets the default icon vars based on what is already set in the inspector
+    /// </summary>
     void SetDefaultIcons()
     {
         defaultHeadIcon = headEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite;
@@ -124,6 +127,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
         defaultOffHandIcon = offHandEquipButton.transform.Find("EquipSlotIcon").GetComponent<Image>().sprite;
     }
 
+    /// <summary>
+    /// Sets the button vars and UI objects to the given hero manager's equipment
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the hero to have equipment drawn to the UI</param>
     public void GenerateEquippedEquipmentButtons(HeroManager heroManager)
     {
         #region Armor
@@ -268,6 +275,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
         #endregion
     }
 
+    /// <summary>
+    /// Draws the given equipment's basic item details to the UI
+    /// </summary>
+    /// <param name="equipment"></param>
     void DrawBasicEquipDetails(HeroBaseEquipment equipment)
     {
         nameText.SetText(equipment.name);
@@ -285,6 +296,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Armor
 
+    /// <summary>
+    /// Draws the given armor's armor specific details to the UI
+    /// </summary>
+    /// <param name="armorEquip">The armor to have the details drawn to the UI</param>
     public void DrawArmorEquipmentDetails(ArmorEquipment armorEquip)
     {
         armorDetailsCanvasGroup.alpha = 1;
@@ -300,6 +315,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
         SetArmorBonusTexts(armorEquip);
     }
 
+    /// <summary>
+    /// Draws the given armor's stat bonus texts to the UI.  These are unique to armor pieces.
+    /// </summary>
+    /// <param name="armorEquip">The armor to have the stat bonuses drawn to the UI</param>
     void SetArmorBonusTexts(ArmorEquipment armorEquip)
     {
         int index = 0;
@@ -397,6 +416,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Hands
 
+    /// <summary>
+    /// Draws the given weapon specific details to the UI
+    /// </summary>
+    /// <param name="weaponEquip">The weapon to have the details drawn to the UI</param>
     public void DrawWeaponEquipmentDetails(WeaponEquipment weaponEquip)
     {
         handDetailsCanvasGroup.alpha = 1;
@@ -414,6 +437,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Shields
 
+    /// <summary>
+    /// Draws the given shield specific details to the UI
+    /// </summary>
+    /// <param name="shieldEquip">The shield to have the details drawn to the UI</param>
     public void DrawShieldEquipmentDetails(ShieldEquipment shieldEquip)
     {
         shieldDetailsCanvasGroup.alpha = 1;
@@ -432,6 +459,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Rings
 
+    /// <summary>
+    /// Draws the given ring specific details to the UI
+    /// </summary>
+    /// <param name="ringEquip">The ring to have the details drawn to the UI</param>
     public void DrawRingEquipmentDetails(RingEquipment ringEquip)
     {
         ringDetailsCanvasGroup.alpha = 1;
@@ -445,6 +476,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Relics
 
+    /// <summary>
+    /// Draws the given relic specific details to the UI
+    /// </summary>
+    /// <param name="relicEquip">The relic to have the details drawn to the UI</param>
     public void DrawRelicEquipmentDetails(RelicEquipment relicEquip)
     {
         relicDetailsCanvasGroup.alpha = 1;
@@ -458,6 +493,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
 
     #region Trinkets
 
+    /// <summary>
+    /// Draws the given trinket specific details to the UI
+    /// </summary>
+    /// <param name="trinketEquip">The trinket to have the details drawn to the UI</param>
     public void DrawTrinketEquipmentDetails(TrinketEquipment trinketEquip)
     {
         trinketDetailsCanvasGroup.alpha = 1;
@@ -472,6 +511,10 @@ public class HeroEquipMenuHandler : MonoBehaviour
     #endregion
     //-----------------------------------
 
+    /// <summary>
+    /// Shows or hides the equipment scroll menu (shown when the user clicks on a slot and the list of available equipment should be displayed)
+    /// </summary>
+    /// <param name="toggle">True to display the scroll, false to hide it</param>
     public void ToggleEquipScroll(bool toggle)
     {
         if (toggle) // equip scroll should be showing
@@ -494,12 +537,19 @@ public class HeroEquipMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just clears the inventory list and hides the equipment scroll
+    /// </summary>
     public void CloseEquipScroll()
     {
         ToggleEquipScroll(false);
         ClearInventoryList();
     }
 
+    /// <summary>
+    /// Called when the user clicks the 'Close' button in the UI
+    /// Assigned to: [UI]/HeroEquipCanvas/HeroEquipHolder/EquipDetailsPanel/CloseButton.OnClick()
+    /// </summary>
     public void CloseEquipMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
@@ -507,6 +557,9 @@ public class HeroEquipMenuHandler : MonoBehaviour
         CloseEquipScroll();
     }
 
+    /// <summary>
+    /// Sets all the text objects on the UI to an empty string and hides their canvas groups
+    /// </summary>
     public void ClearEquipmentDetails()
     {
         nameText.SetText(string.Empty);
@@ -581,6 +634,9 @@ public class HeroEquipMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears out the inventory list by destroying the instantiated objects
+    /// </summary>
     public void ClearInventoryList()
     {
         foreach (Transform transform in equipInventoryTransform)

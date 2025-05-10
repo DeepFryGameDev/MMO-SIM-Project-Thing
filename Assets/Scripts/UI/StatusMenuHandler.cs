@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: Facilitates all status menu display functionality in the status menu UI
+// Directions: Attach to [UI]/HeroStatusCanvas/HeroStatusHolder
 // Other notes: 
 
 public class StatusMenuHandler : MonoBehaviour
@@ -27,7 +27,7 @@ public class StatusMenuHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI faithValue;
 
     Animator anim;
-    [SerializeField] Animator skillsAndEffectsPanelAnim;
+    [SerializeField] Animator activeEffectsPanelAnim;
     [SerializeField] CanvasGroup closeButtonCanvasGroup;
 
     private void Awake()
@@ -35,6 +35,10 @@ public class StatusMenuHandler : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    /// <summary>
+    /// Simply sets the text values in UI to the hero's parameters in the heroManager.
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the hero to set the status values.</param>
     public void SetStatusValues(HeroManager heroManager)
     {
         expBarFill.fillAmount = 0; // update
@@ -56,6 +60,9 @@ public class StatusMenuHandler : MonoBehaviour
         faithValue.SetText(heroManager.Hero().GetFaith().ToString());
     }
 
+    /// <summary>
+    /// Maybe not needed.  Just clears the text values in UI.
+    /// </summary>
     public void ClearValues()
     {
         expBarFill.fillAmount = 0; // update
@@ -77,14 +84,22 @@ public class StatusMenuHandler : MonoBehaviour
         faithValue.SetText(string.Empty);
     }
 
+    /// <summary>
+    /// Displays and hides the status menu
+    /// </summary>
+    /// <param name="toggle"></param>
     public void ToggleMenu(bool toggle)
     {
         anim.SetBool("toggleOn", toggle);        
     }
 
-    public void ToggleSkillStatusMenu(bool toggle)
+    /// <summary>
+    /// Displays and hides the extra window that pops out from the side
+    /// </summary>
+    /// <param name="toggle"></param>
+    public void ToggleActiveEffectsStatusMenu(bool toggle)
     {
-        skillsAndEffectsPanelAnim.SetBool("toggleOn", toggle);
+        activeEffectsPanelAnim.SetBool("toggleOn", toggle);
 
         if (toggle) closeButtonCanvasGroup.alpha = 1;
         else closeButtonCanvasGroup.alpha = 0;
@@ -93,11 +108,19 @@ public class StatusMenuHandler : MonoBehaviour
         closeButtonCanvasGroup.blocksRaycasts = toggle;
     }
 
+    /// <summary>
+    /// Called when the user clicks the Status button in the Hero Command menu
+    /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/StatusButton.OnClick()
+    /// </summary>
     public void OpenStatusMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.STATUS);
     }
 
+    /// <summary>
+    /// Called when the user clicks the 'Close' button in the Status menu
+    /// Assigned to: [UI]/HeroStatusCanvas/HeroStatusHolder/CloseButton.OnClick()
+    /// </summary>
     public void CloseStatusMenu()
     {
         MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);

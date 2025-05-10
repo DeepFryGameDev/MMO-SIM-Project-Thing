@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
-// Other notes: 
+// Purpose: Used to facilitate action with interacting with the context menu in the UI. (This is the menu that appears when right clicking on a UI object)
+// Directions: Attach to [UI]/HeroInventoryCanvas/InventoryContextMenu
+// Other notes: Should eventually house all the functionality for context menus?
 
 public class ContextMenuHandler : MonoBehaviour
 {
@@ -33,14 +33,17 @@ public class ContextMenuHandler : MonoBehaviour
         parentCanvas = transform.parent.GetComponent<Canvas>();
     }
 
-    private void Update()
+    void Update()
     {
         if (contextMenuOpen) CloseContextMenuOnCommand();
 
         if (contextMenuOpen) KeepFullyOnScreen();
     }
 
-    private void CloseContextMenuOnCommand()
+    /// <summary>
+    /// If the user clicks somewhere off of the context menu, it should be closed.  This function is ran in Update() to check every frame for the user clicking off the context menu.
+    /// </summary>
+    void CloseContextMenuOnCommand()
     {
         if (!blockClose && Input.GetMouseButtonDown(0))
         {
@@ -53,6 +56,10 @@ public class ContextMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens up the context menu in the UI using the given item as the item that was right clicked
+    /// </summary>
+    /// <param name="item">Item that the context menu should be opened for</param>
     public void OpenContextMenu(HeroItem item)
     {
         clickedItem = item;
@@ -68,6 +75,9 @@ public class ContextMenuHandler : MonoBehaviour
         contextMenuOpen = true;
     }
 
+    /// <summary>
+    /// Closes the context menu in the UI
+    /// </summary>
     public void CloseContextMenu()
     {
         canvasGroup.alpha = 0;
@@ -77,6 +87,9 @@ public class ContextMenuHandler : MonoBehaviour
         contextMenuOpen = false;
     }
 
+    /// <summary>
+    /// When the user clicks "GiveToHeroButton", this is called to generate the list of available heroes to give to
+    /// </summary>
     public void PrepGiveToHeroList()
     {
         foreach (HeroManager heroManager in NewGameSetup.i.GetActiveHeroes()) // This should only be used at home. this will need to be different for being out in the field.
@@ -99,6 +112,9 @@ public class ContextMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens the 'GiveToHeroList' in the UI for the user to interact with
+    /// </summary>
     public void OpenGiveToHeroList()
     {
         giveToHeroListTransform.GetComponent<CanvasGroup>().alpha = 1;
@@ -106,6 +122,9 @@ public class ContextMenuHandler : MonoBehaviour
         giveToHeroListTransform.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
+    /// <summary>
+    /// Closes the 'GiveToHeroList' in the UI
+    /// </summary>
     public void CloseGiveToHeroList()
     {
         ClearGiveToHeroList();
@@ -115,6 +134,9 @@ public class ContextMenuHandler : MonoBehaviour
         giveToHeroListTransform.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
+    /// <summary>
+    /// Destroys all objects instantiated in the giveToHeroList
+    /// </summary>
     void ClearGiveToHeroList()
     {
         foreach (Transform transform in giveToHeroListTransform)
@@ -123,6 +145,9 @@ public class ContextMenuHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Keeps the context menu available on the screen so that it is always fully viewable within the user's viewable bounds
+    /// </summary>
     void KeepFullyOnScreen()
     {
         RectTransform canvas = transform.parent.GetComponent<RectTransform>();
