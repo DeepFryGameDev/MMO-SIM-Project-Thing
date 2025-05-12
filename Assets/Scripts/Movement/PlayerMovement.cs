@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool movementSet; // Set to true when all movement variables have been set for a game startup
 
-    static PlayerMovement instance; // For singleton to ensure script persists across scenes
+    public static PlayerMovement i;
 
     // -- Disabled for now - jumping is not active
     //public float jumpForce;
@@ -64,17 +64,18 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        //Singleton();
+        Singleton();
+
         movementEnabled = true;
     }
 
     void Singleton()
     {
-        if (instance == null) //check if instance exists
+        if (i == null) //check if instance exists
         {
-            instance = this; //if not set the instance to this
+            i = this; //if not set the instance to this
         }
-        else if (instance != this) //if it exists but is not this instance
+        else if (i != this) //if it exists but is not this instance
         {
             Destroy(gameObject); //destroy it
         }
@@ -123,8 +124,10 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="toggle">True to enable movement, false to disable movement.</param>
     public void ToggleMovement (bool toggle)
     {
+        DebugManager.i.SystemDebugOut("PlayerMovement", "Movement toggled: " + toggle);
         movementEnabled = toggle;
 
+        if (rb == null) rb = GetComponent<Rigidbody>();
         rb.isKinematic = !toggle;
     }
 

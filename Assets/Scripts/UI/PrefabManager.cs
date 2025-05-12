@@ -34,22 +34,4 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the button to be used for the inventory context menu for 'Give To x Hero' button")]
     public GameObject ContextMenuItemHeroGiveToHeroButton;
-
-    private void Awake()
-    {
-        Singleton();
-    }
-
-    void Singleton()
-    {
-        if (i == null) //check if instance exists
-        {
-            i = this; //if not set the instance to this
-        }
-        else if (i != this) //if it exists but is not this instance
-        {
-            Destroy(gameObject); //destroy it
-        }
-        DontDestroyOnLoad(gameObject); //set this to be persistable across scenes
-    }
 }

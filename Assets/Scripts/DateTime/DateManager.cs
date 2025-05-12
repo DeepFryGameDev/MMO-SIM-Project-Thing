@@ -28,8 +28,6 @@ public class DateManager : MonoBehaviour
     TextMeshProUGUI weekText;
     TextMeshProUGUI monthText;
 
-    CanvasGroup fadeCanvasGroup;
-
     PlayerMovement playerMovement;
 
     ThirdPersonCam cam;
@@ -54,8 +52,6 @@ public class DateManager : MonoBehaviour
 
         weekText = GameObject.Find("DateCanvas/DatePanel/WeekText").GetComponent<TextMeshProUGUI>();
         monthText = GameObject.Find("DateCanvas/DatePanel/MonthText").GetComponent<TextMeshProUGUI>();
-
-        fadeCanvasGroup = GameObject.Find("FadeCanvas").GetComponent<CanvasGroup>();
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
@@ -133,7 +129,7 @@ public class DateManager : MonoBehaviour
         ToggleCursor(false);
 
         // darken screen
-        StartCoroutine(FadeToBlack(true));
+        StartCoroutine(UIManager.i.FadeToBlack(true));
 
         // disable player movement
         playerMovement.ToggleMovement(false);
@@ -240,7 +236,7 @@ public class DateManager : MonoBehaviour
         playerWhistle.ToggleCanWhistle(true);
 
         // brighten screen
-        StartCoroutine(FadeToBlack(false));
+        StartCoroutine(UIManager.i.FadeToBlack(false));
 
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
 
@@ -282,42 +278,6 @@ public class DateManager : MonoBehaviour
     {
         StopCoroutine(nextWeekToast);
         ToggleToast(false);
-    }
-
-    /// <summary>
-    /// Coroutine to process fade in/out. Used by adjusting the alpha of the fadeCanvasGroup.
-    /// </summary>
-    /// <param name="fadeIn"></param>
-    /// <returns>Waits for end of frame using DateSettings.fadeSettings as the timer</returns>
-    IEnumerator FadeToBlack(bool fadeIn)
-    {
-        float timer;
-
-        switch (fadeIn)
-        {
-            case true:
-                timer = 0; // Should go from 0 to 1
-
-                while (timer < DateSettings.fadeSeconds)
-                {
-                    timer += Time.deltaTime;
-                    fadeCanvasGroup.alpha = timer / DateSettings.fadeSeconds; // setting alpha from 0 to 1
-
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-            case false:
-                timer = DateSettings.fadeSeconds; // Should go from 1 to 0
-
-                while (timer > 0)
-                {
-                    timer -= Time.deltaTime;
-                    fadeCanvasGroup.alpha = timer / DateSettings.fadeSeconds; // setting alpha from 1 to 0
-
-                    yield return new WaitForEndOfFrame();
-                }
-                break;
-        }
     }
 
     /// <summary>

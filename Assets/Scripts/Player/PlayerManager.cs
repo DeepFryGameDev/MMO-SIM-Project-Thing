@@ -40,30 +40,27 @@ public class PlayerManager : MonoBehaviour
     BaseHero player; // Used to manipulate stamina and get global variable for player
     public BaseHero GetPlayer() { return player; }
 
-    PrefabManager prefabManager; // Used to manipulate stamina bar on UI
-
-    static PlayerManager instance; // For singleton to ensure script persists across scenes
+    PrefabManager prefabManager; // Used to manipulate stamina bar on UI    
 
     bool playerSet; // Set to true when the playerManager vars have all been set up for game startup
     public void SetPlayerSet(bool set) { this.playerSet = set; }
     public bool GetPlayerSet() { return playerSet; }
 
+    public static PlayerManager i;
+
     private void Awake()
     {
-        //Singleton();
+        Singleton();
     }
 
     void Singleton()
     {
-        if (instance == null) //check if instance exists
-        {
-            instance = this; //if not set the instance to this
-        }
-        else if (instance != this) //if it exists but is not this instance
-        {
-            Destroy(gameObject); //destroy it
-        }
-        DontDestroyOnLoad(gameObject); //set this to be persistable across scenes
+        if (i != null)
+            Destroy(gameObject);
+        else
+            i = this;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void SetVars(GameObject playerParent)

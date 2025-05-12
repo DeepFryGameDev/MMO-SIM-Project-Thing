@@ -179,4 +179,10 @@ public static class EnumHandler
         PARTY,
         ROOT
     }
+
+    public enum MenuMode
+    {
+        HOME,
+        FIELD
+    }
 }

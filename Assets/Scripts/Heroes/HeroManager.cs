@@ -95,6 +95,8 @@ public class HeroManager : MonoBehaviour
         collider = transform.GetComponent<Collider>();
 
         animHandler = transform.GetComponent<HeroAnimHandler>();
+
+        HeroSettings.SetHeroManager(Hero().GetID(), this);
     }
 
     void CheckForNulls()
@@ -159,5 +161,4 @@ public class HeroManager : MonoBehaviour
             DebugManager.i.SystemDebugOut("HeroManager", "animHandler null on HeroManager: " + gameObject.name, false, true);
         }
     }
-
 }

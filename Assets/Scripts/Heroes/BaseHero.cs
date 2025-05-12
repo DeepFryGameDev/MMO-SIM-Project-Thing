@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class BaseHero : BaseAttackableUnit
 {
+    [SerializeField] int ID;
+    public int GetID() { return ID; }
+
     // -- HP --
     int baseHP = 100; // Base health before modifying with Endurance
     float enduranceToHPMod = .375f; // Used to calculate maximum HP based on the player's Endurance

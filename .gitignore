@@ -31,6 +31,7 @@
 /Assets/UI Images/*
 /Assets/UI Prefabs/*
 /Assets/Scripts/Editor Management/*
+/Assets/_Terrain*
 
 /Packages/*
 /ProjectSettings/*

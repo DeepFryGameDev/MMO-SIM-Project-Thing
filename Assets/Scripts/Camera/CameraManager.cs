@@ -29,6 +29,21 @@ public class CameraManager : MonoBehaviour
     bool cameraSetupComplete; // Set to true when the camera variables have all been set up for game startup
     public void SetCameraSetupComplete(bool set) { cameraSetupComplete = set; }
 
+    private void Awake()
+    {
+        Singleton();
+    }
+
+    private void Singleton()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
+
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
         //SwitchCameraMode(currentMode);

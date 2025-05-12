@@ -24,4 +24,51 @@ public static class HeroSettings
 
     public static int maxEnergy;
     public static float lowEnergyThreshold;
+
+    public static HeroManager felricHeroManager;
+    public static HeroManager archieHeroManager;
+    public static HeroManager mayaHeroManager;
+    public static HeroManager claraHeroManager;
+    public static HeroManager nicholinHeroManager;
+
+    public static void SetHeroManager(int ID, HeroManager heroManager)
+    {
+        switch (ID)
+        {
+            case 0:
+                felricHeroManager = heroManager;
+                break;
+            case 1:
+                archieHeroManager = heroManager;
+                break;
+            case 2:
+                mayaHeroManager = heroManager;
+                break;
+            case 3:
+                claraHeroManager = heroManager;
+                break;
+            case 4:
+                nicholinHeroManager = heroManager;
+                break;
+        }
+    }
+
+    public static HeroManager GetHeroManager(int ID)
+    {
+        switch (ID)
+        {
+            case 0:
+                return felricHeroManager;
+            case 1:
+                return archieHeroManager;
+            case 2:
+                return mayaHeroManager;
+            case 3:
+                return claraHeroManager;
+            case 4:
+                return nicholinHeroManager;
+            default:
+                return null;
+        }
+    }
 }

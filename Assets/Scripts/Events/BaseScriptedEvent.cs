@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 public class BaseScriptedEvent : MonoBehaviour
 {
     //public string method; //name of the method to be run
-
-    public int currentSceneIndex; // Set when scene transitions to the newly loaded scene
 
     //GameMenu menu;
 
@@ -57,12 +55,24 @@ public class BaseScriptedEvent : MonoBehaviour
     /// Simply uses SceneManager to load the given sceneIndex in build settings
     /// </summary>
     /// <param name="sceneIndex"></param>
-    public void TransitionToScene(int sceneIndex)
+    public IEnumerator TransitionToScene(int sceneIndex, Vector3 spawnPosition)
     {
-        Debug.Log("Loading scene: " + sceneIndex + ".");
-        SceneManager.LoadScene(sceneIndex);
+        SpawnManager.i.sceneToUnload = sceneIndex;
 
-        currentSceneIndex = sceneIndex;
+        PlayerMovement.i.ToggleMovement(false);
+
+        yield return UIManager.i.FadeToBlack(true);
+
+        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition);
+
+        Debug.Log("Loading scene");
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        
+        while (!asyncLoad.isDone)
+        {
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     //void OpenSave
