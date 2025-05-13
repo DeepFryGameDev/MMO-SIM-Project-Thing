@@ -71,6 +71,9 @@ public class PartyMenuHandler : MonoBehaviour
         PartyManager.i.ClearActiveHeroes();
         PartyManager.i.ClearInactiveHeroes();
 
+        HeroSettings.ClearParty();
+        HeroSettings.ClearIdleHeroes();
+
         // clear follow anchors
         foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
         {
@@ -82,18 +85,26 @@ public class PartyMenuHandler : MonoBehaviour
         {
             // save to inactive
             PartyManager.i.AddToInactiveHeroes(heroManager);
+            HeroSettings.AddToIdleHeroes(heroManager);
         }
 
         foreach (HeroManager heroManager in PartyManager.i.GetTempActiveHeroes())
         {
             // save to active
             PartyManager.i.AddToActiveHeroes(heroManager);
+            HeroSettings.AddToParty(heroManager);
         }
 
         // Set follow anchors here
         for (int i = 0; i < PartyManager.i.GetActiveHeroes().Count; i++)
         {
             SetFollowAnchor(PartyManager.i.GetActiveHeroes()[i], i);
+        }
+
+        // And make sure they are all children of SpawnManager so they can leave the scene.
+        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        {
+            heroManager.transform.SetParent(SpawnManager.i.transform);
         }
     }
 

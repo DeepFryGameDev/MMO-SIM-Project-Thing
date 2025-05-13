@@ -22,13 +22,12 @@ public class SpawnManager : MonoBehaviour
 
     bool runningFade;
 
-    public int sceneToUnload;
+    public int sceneToUnload; // change to private later
 
     void Awake()
     {
         if (i == null || !i.gameSet)
         {
-            Debug.Log("Setting up spawn manager");
             Singleton();
 
             i.gameSet = true;                        
@@ -40,8 +39,6 @@ public class SpawnManager : MonoBehaviour
         {
             if (!i.runningFade)
             {
-                Debug.Log("Running this");
-
                 PostSceneTransition();
             }            
         }
@@ -61,20 +58,29 @@ public class SpawnManager : MonoBehaviour
     {
         MovePlayerToSpawnPosition();
 
+        MoveHeroesToPosition();
+
         StartCoroutine(FadeAndEnableMovement());
+    }
+
+    private void MoveHeroesToPosition()
+    {
+        foreach (HeroManager heroManager in HeroSettings.GetHeroesInParty())
+        {
+            //Debug.Log("Move " + heroManager.Hero().GetName() + " to " + heroManager.HeroParty().GetPartyAnchor().transform.position);
+            heroManager.HeroPathing().GetAgent().Warp(heroManager.HeroParty().GetPartyAnchor().transform.position);
+        }
     }
 
     IEnumerator FadeAndEnableMovement()
     {
         yield return new WaitForSeconds(1.5f); // need to figure out a way to wait until the scene is fully loaded before we can unload the next scene.  For now we will artifically wait 1.5 seconds.
 
-        Debug.Log("Starting coroutine");
         i.runningFade = true;        
 
         // Unload the last scene
         SceneManager.UnloadSceneAsync(sceneToUnload);
 
-        Debug.Log("Enabling movement");
         PlayerMovement.i.ToggleMovement(true);
 
         StartCoroutine(UIManager.i.FadeToBlack(false));        

@@ -8,6 +8,11 @@ public class PrefabManager : MonoBehaviour
 {
     public static PrefabManager i;
 
+    private void Awake()
+    {
+        i = this;
+    }
+
     [Tooltip("Set this to the prefab for TrainingResults to be shown when advancing weeks")]
     public GameObject TrainingResult;
     [Tooltip("Set this to the prefab for RestingResults to be shown when advancing weeks")]

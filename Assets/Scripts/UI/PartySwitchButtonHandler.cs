@@ -13,7 +13,7 @@ public class PartySwitchButtonHandler : MonoBehaviour
     public HeroManager GetHeroManager() { return heroManager; }
 
     void SetNameText() { transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = heroManager.Hero().GetName(); }
-    void SetClassText() { transform.Find("ClassText").GetComponent<TextMeshProUGUI>().text = UITasks.CapitalizeFirstLetter(heroManager.HeroClass().GetCurrentClass().ToString()); }
+    void SetClassText() { transform.Find("ClassText").GetComponent<TextMeshProUGUI>().text = UITasks.CapitalizeFirstLetter(heroManager.HeroClass().GetCurrentClass().name); }
     void SetFaceImage() { transform.Find("FacePanel").GetComponent<Image>().sprite = heroManager.GetFaceImage(); }
     void SetLevelText() { transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = "Lv. 1"; } // will obviously be updated when leveling up is functional.  For now, level 1 is fine.
 

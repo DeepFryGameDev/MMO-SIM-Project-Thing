@@ -2,6 +2,8 @@
 // Directions: Ensure any time a var is added to the HeroSettingsEditor that it is also added here
 // Other notes: Definitions of these vars are located in the HeroSettingsEditor script in the Tooltips.
 
+using System.Collections.Generic;
+
 public static class HeroSettings 
 {
     public static float walkSpeed;
@@ -25,50 +27,15 @@ public static class HeroSettings
     public static int maxEnergy;
     public static float lowEnergyThreshold;
 
-    public static HeroManager felricHeroManager;
-    public static HeroManager archieHeroManager;
-    public static HeroManager mayaHeroManager;
-    public static HeroManager claraHeroManager;
-    public static HeroManager nicholinHeroManager;
+    static List<HeroManager> heroesInParty = new List<HeroManager>();
+    public static List<HeroManager> GetHeroesInParty() { return heroesInParty; }
+    public static void AddToParty(HeroManager heroManager) { heroesInParty.Add(heroManager); }
+    public static void RemoveFromParty(HeroManager heroManager) { heroesInParty.Remove(heroManager); }
+    public static void ClearParty() { heroesInParty.Clear(); }
 
-    public static void SetHeroManager(int ID, HeroManager heroManager)
-    {
-        switch (ID)
-        {
-            case 0:
-                felricHeroManager = heroManager;
-                break;
-            case 1:
-                archieHeroManager = heroManager;
-                break;
-            case 2:
-                mayaHeroManager = heroManager;
-                break;
-            case 3:
-                claraHeroManager = heroManager;
-                break;
-            case 4:
-                nicholinHeroManager = heroManager;
-                break;
-        }
-    }
-
-    public static HeroManager GetHeroManager(int ID)
-    {
-        switch (ID)
-        {
-            case 0:
-                return felricHeroManager;
-            case 1:
-                return archieHeroManager;
-            case 2:
-                return mayaHeroManager;
-            case 3:
-                return claraHeroManager;
-            case 4:
-                return nicholinHeroManager;
-            default:
-                return null;
-        }
-    }
+    static List<HeroManager> idleHeroes = new List<HeroManager>();
+    public static List<HeroManager> GetIdleHeroes() { return idleHeroes; }
+    public static void AddToIdleHeroes(HeroManager heroManager) { idleHeroes.Add(heroManager); }
+    public static void RemoveFromIdleHeroes(HeroManager heroManager) { idleHeroes.Remove(heroManager); }
+    public static void ClearIdleHeroes() { idleHeroes.Clear(); }
 }

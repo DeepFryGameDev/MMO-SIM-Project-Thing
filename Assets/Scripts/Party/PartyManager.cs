@@ -42,7 +42,10 @@ public class PartyManager : MonoBehaviour
         i = this;
 
         partyMenuHandler = FindFirstObjectByType<PartyMenuHandler>();
+    }
 
+    void Start()
+    {
         SetDefaultLists();
     }
 
@@ -51,7 +54,7 @@ public class PartyManager : MonoBehaviour
     /// </summary>
     void SetDefaultLists()
     {
-        foreach (HeroManager heroManager in NewGameSetup.i.GetActiveHeroes())
+        foreach (HeroManager heroManager in HeroSettings.GetIdleHeroes())
         {
             inactiveHeroes.Add(heroManager); // set to home
         }

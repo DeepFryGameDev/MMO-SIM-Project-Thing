@@ -33,6 +33,16 @@ public class NewGameSetup : MonoBehaviour
     private void Awake()
     {
         i = this;
+
+        InitializeHeroes();
+    }
+
+    private void InitializeHeroes()
+    {
+        foreach (HeroManager heroManager in activeHeroes)
+        {
+            HeroSettings.AddToIdleHeroes(heroManager);
+        }
     }
 
     private void Start()

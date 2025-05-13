@@ -14,6 +14,6 @@ public class BaseInteractOnTouch : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name + " has entered the trigger");
+        //Debug.Log(other.gameObject.name + " has entered the trigger");
     }
 }

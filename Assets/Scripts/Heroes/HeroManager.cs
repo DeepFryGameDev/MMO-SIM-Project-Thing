@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -95,8 +97,6 @@ public class HeroManager : MonoBehaviour
         collider = transform.GetComponent<Collider>();
 
         animHandler = transform.GetComponent<HeroAnimHandler>();
-
-        HeroSettings.SetHeroManager(Hero().GetID(), this);
     }
 
     void CheckForNulls()

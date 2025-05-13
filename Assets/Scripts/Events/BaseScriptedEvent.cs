@@ -61,7 +61,7 @@ public class BaseScriptedEvent : MonoBehaviour
 
         PlayerMovement.i.ToggleMovement(false);
 
-        yield return UIManager.i.FadeToBlack(true);
+        yield return UIManager.i.FadeToBlack(true);        
 
         SpawnManager.i.SetPlayerSpawnPosition(spawnPosition);
 
