@@ -12,14 +12,25 @@ public class PartyFollow : MonoBehaviour
     LayerMask leavingBaseZoneLayer; // The layer mask for "LeavingBaseZone" / Set in Setup()
     LayerMask isFloorLayer; // The layer mask for "LeavingBaseZone" / Set in Setup()
 
+    [SerializeField] PartyAnchor anchorSlot0;
+    [SerializeField] PartyAnchor anchorSlot1;
+    [SerializeField] PartyAnchor anchorSlot2;
+    [SerializeField] PartyAnchor anchorSlot3;
+    [SerializeField] PartyAnchor anchorSlot4;
+
     EnumHandler.PartyFollowStates partyFollowState;
     public EnumHandler.PartyFollowStates GetPartyFollowState() { return partyFollowState; }
+    public void SetPartyFollowState(EnumHandler.PartyFollowStates followState) { partyFollowState = followState; }
 
     List<HeroManager> currentlyAnchoredHeroes = new List<HeroManager>();
+
+    public static PartyFollow i;
 
     private void Awake()
     {
         Setup();
+
+        i = this;
     }
 
     void Setup()
@@ -44,7 +55,15 @@ public class PartyFollow : MonoBehaviour
 
                 CheckForEnteringBaseZone();
                 break;
+            case EnumHandler.PartyFollowStates.FOLLOW:
+                FollowInField();
+                break;
         }       
+    }
+
+    void FollowInField()
+    {
+
     }
 
     /// <summary>
@@ -155,5 +174,46 @@ public class PartyFollow : MonoBehaviour
         }
 
         if (setNewAnchoredList) SetAnchoredHeroesList();
+    }
+
+    /// <summary>
+    /// Sets the transform of the given anchor to the given heroManager
+    /// </summary>
+    /// <param name="heroManager">The HeroManager of the hero to have the anchor set</param>
+    /// <param name="slot">The slot of the anchor in the UI to be set</param>
+    public void SetFollowAnchor(HeroManager heroManager, int slot)
+    {
+        switch (slot)
+        {
+            case 0:
+                Debug.Log(gameObject.name);
+                anchorSlot0 = transform.Find("Anchor[0]").GetComponent<PartyAnchor>();
+                heroManager.HeroParty().SetPartyAnchor(anchorSlot0);
+                Debug.Log(anchorSlot0.gameObject.name + anchorSlot0.transform.position);
+                Debug.Log(heroManager.gameObject.name);
+                anchorSlot0.SetHeroManager(heroManager);
+                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 0", false, false);
+                break;
+            case 1:
+                heroManager.HeroParty().SetPartyAnchor(anchorSlot1);
+                anchorSlot1.SetHeroManager(heroManager);
+                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 1", false, false);
+                break;
+            case 2:
+                heroManager.HeroParty().SetPartyAnchor(anchorSlot2);
+                anchorSlot2.SetHeroManager(heroManager);
+                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 2", false, false);
+                break;
+            case 3:
+                heroManager.HeroParty().SetPartyAnchor(anchorSlot3);
+                anchorSlot3.SetHeroManager(heroManager);
+                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 3", false, false);
+                break;
+            case 4:
+                heroManager.HeroParty().SetPartyAnchor(anchorSlot4);
+                anchorSlot4.SetHeroManager(heroManager);
+                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 4", false, false);
+                break;
+        }
     }
 }

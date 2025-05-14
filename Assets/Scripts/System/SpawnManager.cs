@@ -123,7 +123,28 @@ public class SpawnManager : MonoBehaviour
                     heroManager.HeroPathing().SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);*/
 
                     // Instantiate objects and set them under Heroes transform, then set them to partyfollow. maybe that will work idk.
+                    GameObject newHeroObj = Instantiate(HeroSettings.GetHeroObject(heroManager.Hero().GetID()), heroManager.HeroParty().GetPartyAnchor().transform.position, Quaternion.identity);
+                    newHeroObj.transform.SetParent(heroesTransform);
+
+                    // also save their new objects
+                    HeroSettings.SetHeroObject(heroManager.GetID(), newHeroObj);
                 }
+
+                HeroSettings.ClearParty();
+                foreach (Transform transform in heroesTransform)
+                {
+                    HeroSettings.AddToParty(transform.GetComponent<HeroManager>());
+                }
+
+                PartyFollow.i = FindFirstObjectByType<PartyFollow>();
+
+                for (int i=0; i < HeroSettings.GetHeroesInParty().Count; i++)
+                {
+                    PartyFollow.i.SetFollowAnchor(HeroSettings.GetHeroesInParty()[i], i);
+
+                    HeroSettings.GetHeroesInParty()[i].HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
+                }                
+
                 break;
             case EnumHandler.MenuMode.HOME:
                 Debug.Log("Moving heroes by home");

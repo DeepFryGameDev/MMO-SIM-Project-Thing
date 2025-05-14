@@ -60,18 +60,28 @@ public class HeroPathing : MonoBehaviour
     {
         heroManager = GetComponent<HeroManager>();
 
-        homeZoneCollider = heroManager.HomeZone().GetComponent<BoxCollider>();
-
-        agent = heroManager.NavMeshAgent();
+        agent = GetComponent<NavMeshAgent>();
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         agent.speed = HeroSettings.walkSpeed;
         moveSpeed = agent.speed; // just simply setting defaults to w/e the agent's speed is (which is coincidentally set from HeroSettings)
-
-        pathMode = EnumHandler.pathModes.RANDOM;
-
+        
         spawnPos = transform.position;
+
+        switch (SceneInfo.i.GetMenuMode())
+        {
+            case EnumHandler.MenuMode.HOME:
+                homeZoneCollider = heroManager.HomeZone().GetComponent<BoxCollider>();
+
+                SetPathMode(EnumHandler.pathModes.RANDOM);
+                break;
+
+            case EnumHandler.MenuMode.FIELD:
+                SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);
+
+                break;
+        }
     }
 
     void Update()
@@ -102,6 +112,16 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     void HandleMoveSpeed()
     {
+        switch (SceneInfo.i.GetMenuMode())
+        {
+            case EnumHandler.MenuMode.FIELD:
+                runMode = EnumHandler.pathRunMode.CANRUN;
+                break;
+            case EnumHandler.MenuMode.HOME:
+                
+                break;
+        }
+
         switch (runMode)
         {
             case EnumHandler.pathRunMode.WALK:
@@ -113,20 +133,22 @@ public class HeroPathing : MonoBehaviour
                 if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.walkToTargetDistance)
                 {
                     moveSpeed = HeroSettings.runSpeed;
-                } else
+                }
+                else
                 {
                     moveSpeed = HeroSettings.walkSpeed;
                 }
-                    break;
-            case EnumHandler.pathRunMode.CATCHUP:     
+                break;
+            case EnumHandler.pathRunMode.CATCHUP:
                 if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.runToCatchupDistance)  // if distance > catchup distance, catchup run speed
                 {
                     moveSpeed = HeroSettings.catchupSpeed;
-                } else if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.walkToTargetDistance) // else if distance > run distance, can just run now
+                }
+                else if (Mathf.Abs(Vector3.Distance(transform.position, agent.destination)) > HeroSettings.walkToTargetDistance) // else if distance > run distance, can just run now
                 {
                     runMode = EnumHandler.pathRunMode.CANRUN;
                 }
-                    break;
+                break;
         }
     }
 
@@ -361,6 +383,9 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     public void StopPathing()
     {
+        Debug.Log("Stopping");
+        if (agent == null) { Debug.Log("Null for some reason?? on " + gameObject.name); }
+
         agent.ResetPath();
         agent.isStopped = true;
 

@@ -9,6 +9,13 @@ using UnityEngine.SceneManagement;
 
 public class BaseScriptedEvent : MonoBehaviour
 {
+    PartyFollow partyFollow;
+
+    private void Awake()
+    {
+        partyFollow = FindFirstObjectByType<PartyFollow>();
+    }
+
     //public string method; //name of the method to be run
 
     //GameMenu menu;
@@ -66,6 +73,8 @@ public class BaseScriptedEvent : MonoBehaviour
             Debug.Log("Stop " + heroManager.Hero().GetName());
             heroManager.HeroPathing().StopPathing();
         }
+
+        partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW);
 
         yield return UIManager.i.FadeToBlack(true);        
 

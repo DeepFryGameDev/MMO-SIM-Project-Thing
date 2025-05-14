@@ -20,9 +20,6 @@ public class HeroManager : MonoBehaviour
     BaseHero hero;
     public BaseHero Hero() { return hero; }
 
-    NavMeshAgent navMeshAgent;
-    public NavMeshAgent NavMeshAgent() { return navMeshAgent; }
-
     HeroPathing heroPathing;
     public HeroPathing HeroPathing() { return heroPathing; }
 
@@ -81,7 +78,6 @@ public class HeroManager : MonoBehaviour
     {
         hero = transform.GetComponent<BaseHero>();
 
-        navMeshAgent = transform.GetComponent<NavMeshAgent>();
         heroPathing = transform.GetComponent<HeroPathing>();
         heroInteraction = transform.GetComponent<HeroInteraction>();
 
@@ -107,11 +103,6 @@ public class HeroManager : MonoBehaviour
         if (hero == null)
         {
             DebugManager.i.SystemDebugOut("HeroManager", "Hero null on HeroManager: " + gameObject.name, false, true);
-        }
-
-        if (navMeshAgent == null)
-        {
-            DebugManager.i.SystemDebugOut("HeroManager", "navMeshAgent null on HeroManager: " + gameObject.name, false, true);
         }
 
         if (heroPathing == null)

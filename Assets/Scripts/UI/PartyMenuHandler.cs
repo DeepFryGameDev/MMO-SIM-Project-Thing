@@ -10,12 +10,6 @@ public class PartyMenuHandler : MonoBehaviour
     [SerializeField] Transform homeHeroGroupTransform;
     [SerializeField] Transform partyHeroGroupTransform;
 
-    [SerializeField] PartyAnchor anchorSlot0;
-    [SerializeField] PartyAnchor anchorSlot1;
-    [SerializeField] PartyAnchor anchorSlot2;
-    [SerializeField] PartyAnchor anchorSlot3;
-    [SerializeField] PartyAnchor anchorSlot4;
-
     [SerializeField] PartyHUDHandler partyHUDHandler;
     [SerializeField] HeroZoneUIHandler heroZoneUIHandler;
 
@@ -98,7 +92,7 @@ public class PartyMenuHandler : MonoBehaviour
         // Set follow anchors here
         for (int i = 0; i < PartyManager.i.GetActiveHeroes().Count; i++)
         {
-            SetFollowAnchor(PartyManager.i.GetActiveHeroes()[i], i);
+            PartyFollow.i.SetFollowAnchor(PartyManager.i.GetActiveHeroes()[i], i);
         }
 
         // And make sure they are all children of SpawnManager so they can leave the scene.
@@ -106,43 +100,6 @@ public class PartyMenuHandler : MonoBehaviour
         //{
         //    heroManager.transform.SetParent(SpawnManager.i.transform);
         //}
-    }
-
-    /// <summary>
-    /// Sets the transform of the given anchor to the given heroManager
-    /// </summary>
-    /// <param name="heroManager">The HeroManager of the hero to have the anchor set</param>
-    /// <param name="slot">The slot of the anchor in the UI to be set</param>
-    void SetFollowAnchor(HeroManager heroManager, int slot)
-    {
-        switch (slot)
-        {
-            case 0:
-                heroManager.HeroParty().SetPartyAnchor(anchorSlot0);
-                anchorSlot0.SetHeroManager(heroManager);
-                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.Hero().GetName() + " to follow anchor slot 0", false, false);
-                break;
-            case 1:
-                heroManager.HeroParty().SetPartyAnchor(anchorSlot1);
-                anchorSlot1.SetHeroManager(heroManager);
-                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.Hero().GetName() + " to follow anchor slot 1", false, false);
-                break;
-            case 2:
-                heroManager.HeroParty().SetPartyAnchor(anchorSlot2);
-                anchorSlot2.SetHeroManager(heroManager);
-                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.Hero().GetName() + " to follow anchor slot 2", false, false);
-                break;
-            case 3:
-                heroManager.HeroParty().SetPartyAnchor(anchorSlot3);
-                anchorSlot3.SetHeroManager(heroManager);
-                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.Hero().GetName() + " to follow anchor slot 3", false, false);
-                break;
-            case 4:
-                heroManager.HeroParty().SetPartyAnchor(anchorSlot4);
-                anchorSlot4.SetHeroManager(heroManager);
-                DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.Hero().GetName() + " to follow anchor slot 4", false, false);
-                break;
-        }
     }
 
     /// <summary>
