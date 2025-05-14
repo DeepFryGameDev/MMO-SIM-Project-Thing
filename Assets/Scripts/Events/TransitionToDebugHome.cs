@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TransitionToDebugField : BaseInteractOnTouch
+public class TransitionToDebugHome : BaseInteractOnTouch
 {
     bool running;
 
@@ -13,13 +13,13 @@ public class TransitionToDebugField : BaseInteractOnTouch
                 running = true;
                 base.OnTriggerEnter(other);
 
-                MoveToDebugField();
+                MoveToDebugHome();
             }
-        }         
+        }               
     }
 
-    void MoveToDebugField()
+    void MoveToDebugHome()
     {
-        StartCoroutine(scriptedEvent.TransitionToScene(1, new Vector3(32, 99.61497f, 200)));
+        StartCoroutine(scriptedEvent.TransitionToScene(0, new Vector3(-67.37f, .187f, 22.74f)));
     }
 }

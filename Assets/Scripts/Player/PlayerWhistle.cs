@@ -49,7 +49,7 @@ public class PlayerWhistle : MonoBehaviour
             if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), transform.TransformDirection(Vector3.down), out hit, 1, layerMask))
             {
                 // set heroWhistled
-                heroManagerWhistled = hit.transform.gameObject.GetComponent<HeroHomeZone>().heroManager;
+                heroManagerWhistled = hit.transform.gameObject.GetComponent<HeroHomeZone>().GetHeroManager();
                 // Debug.Log("Hero manager: " + heroManagerWhistled.Hero().name);
 
                 GlobalSettings.SetUIState(GlobalSettings.UIStates.HEROCOMMAND);

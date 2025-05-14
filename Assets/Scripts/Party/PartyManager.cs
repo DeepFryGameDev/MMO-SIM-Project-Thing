@@ -42,6 +42,8 @@ public class PartyManager : MonoBehaviour
         i = this;
 
         partyMenuHandler = FindFirstObjectByType<PartyMenuHandler>();
+
+        SetDefaultLists();
     }
 
     void Start()
@@ -80,6 +82,7 @@ public class PartyManager : MonoBehaviour
 
         foreach (HeroManager heroManager in inactiveHeroes)
         {
+            //Debug.Log("Add " + heroManager.Hero().GetName() + ", ID: " + heroManager.GetID() + " to  inactiveHeroes");
             tempInactiveHeroes.Add(heroManager);
         }
     }

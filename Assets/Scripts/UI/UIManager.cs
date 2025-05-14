@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] EnumHandler.MenuMode menuMode;
-
     public static UIManager i;
 
     [SerializeField] CanvasGroup fadeCanvasGroup;

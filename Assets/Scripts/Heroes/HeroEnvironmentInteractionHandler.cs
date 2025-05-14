@@ -80,7 +80,7 @@ public class HeroEnvironmentInteractionHandler : MonoBehaviour
     {
         if (active)
         {
-            heroManager = hit.collider.gameObject.GetComponent<HeroHomeZone>().heroManager;
+            heroManager = hit.collider.gameObject.GetComponent<HeroHomeZone>().GetHeroManager();
             if (heroManager != null)
             {
                 SetHeroVals(heroManager);

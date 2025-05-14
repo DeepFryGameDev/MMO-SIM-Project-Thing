@@ -9,6 +9,9 @@ using UnityEngine.AI;
 
 public class HeroManager : MonoBehaviour
 {
+    [SerializeField] int ID;
+    public int GetID() { return ID; }
+
     [SerializeField] Sprite faceImage;
     public Sprite GetFaceImage() { return faceImage; }
     
@@ -74,7 +77,7 @@ public class HeroManager : MonoBehaviour
         startingPosition = transform.position;
     }
 
-    void Setup() 
+    public void Setup() 
     {
         hero = transform.GetComponent<BaseHero>();
 

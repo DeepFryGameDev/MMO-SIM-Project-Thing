@@ -61,6 +61,12 @@ public class BaseScriptedEvent : MonoBehaviour
 
         PlayerMovement.i.ToggleMovement(false);
 
+        foreach (HeroManager heroManager in HeroSettings.GetHeroesInParty())
+        {
+            Debug.Log("Stop " + heroManager.Hero().GetName());
+            heroManager.HeroPathing().StopPathing();
+        }
+
         yield return UIManager.i.FadeToBlack(true);        
 
         SpawnManager.i.SetPlayerSpawnPosition(spawnPosition);

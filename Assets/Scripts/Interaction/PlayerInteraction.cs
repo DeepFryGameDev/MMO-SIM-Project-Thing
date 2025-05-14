@@ -15,6 +15,12 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        if (ih == null)
+        {
+            Debug.Log("Setting new IH");
+            ih = FindFirstObjectByType<InteractionHandler>();
+        }
+
         CheckForAvailableInteraction();
     }
 
@@ -25,11 +31,6 @@ public class PlayerInteraction : MonoBehaviour
     /// </summary>
     void CheckForAvailableInteraction()
     {
-        if (ih == null)
-        {
-            ih = FindFirstObjectByType<InteractionHandler>();
-        }
-
         RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, ih.GetInteractDistance(), layerMask) && !ignoreRay)

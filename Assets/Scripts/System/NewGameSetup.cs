@@ -27,22 +27,12 @@ public class NewGameSetup : MonoBehaviour
 
     public GameObject newPlayerObject;
 
-    [SerializeField] List<HeroManager> activeHeroes = new List<HeroManager>();
-    public List<HeroManager> GetActiveHeroes() { return activeHeroes; }
+    [SerializeField] List<GameObject> activeHeroObjects = new List<GameObject>();
+    public List<GameObject> GetActiveHeroObjects() { return activeHeroObjects; }
 
     private void Awake()
     {
         i = this;
-
-        InitializeHeroes();
-    }
-
-    private void InitializeHeroes()
-    {
-        foreach (HeroManager heroManager in activeHeroes)
-        {
-            HeroSettings.AddToIdleHeroes(heroManager);
-        }
     }
 
     private void Start()

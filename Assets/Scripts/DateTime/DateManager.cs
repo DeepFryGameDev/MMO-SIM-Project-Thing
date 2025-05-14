@@ -57,8 +57,7 @@ public class DateManager : MonoBehaviour
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
 
-        heroManagers = NewGameSetup.i.GetActiveHeroes();
-
+        
         // Setting some base vals
         currentYear = DateSettings.startingYear;
 
@@ -68,6 +67,8 @@ public class DateManager : MonoBehaviour
     void Start()
     {
         InitializeDates();
+
+        heroManagers = PartyManager.i.GetInactiveHeroes();
 
         nextWeekToast = ShowNewWeekToast();
         StartCoroutine(nextWeekToast);
@@ -237,6 +238,12 @@ public class DateManager : MonoBehaviour
 
         // brighten screen
         StartCoroutine(UIManager.i.FadeToBlack(false));
+
+        // Save heroes
+        foreach (HeroManager heroManager in heroManagers)
+        {
+            HeroSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
+        }        
 
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
 

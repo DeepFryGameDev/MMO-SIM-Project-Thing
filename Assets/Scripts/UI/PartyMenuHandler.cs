@@ -102,10 +102,10 @@ public class PartyMenuHandler : MonoBehaviour
         }
 
         // And make sure they are all children of SpawnManager so they can leave the scene.
-        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
-        {
-            heroManager.transform.SetParent(SpawnManager.i.transform);
-        }
+        //foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        //{
+        //    heroManager.transform.SetParent(SpawnManager.i.transform);
+        //}
     }
 
     /// <summary>

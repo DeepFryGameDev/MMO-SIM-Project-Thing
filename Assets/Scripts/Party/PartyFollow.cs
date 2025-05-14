@@ -139,7 +139,7 @@ public class PartyFollow : MonoBehaviour
     {
         bool setNewAnchoredList = false;
 
-        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        foreach (HeroManager heroManager in HeroSettings.GetHeroesInParty())
         {
             if (!currentlyAnchoredHeroes.Contains(heroManager))
             {

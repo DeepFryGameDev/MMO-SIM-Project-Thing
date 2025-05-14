@@ -6,31 +6,15 @@ using UnityEngine;
 
 public class HeroHomeZone : MonoBehaviour 
 {
-    public HeroManager heroManager; // Used to set the home zone in HeroManager to this.  The HomeZone inside heroManager isn't being used right now, but this will allow access.
+    HeroManager heroManager; // Used to set the home zone in HeroManager to this.  The HomeZone inside heroManager isn't being used right now, but this will allow access.
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
+    public HeroManager GetHeroManager() { return heroManager; }
 
     Transform prefabZones; // Used to instantiate the prefabs from training equipment
 
-    private void Awake()
+    private void Start()
     {
-        heroManager.SetHomeZone(this);
-
         prefabZones = transform.parent.Find("[TrainingEquipmentPrefabZones]").transform;
-    }
-
-    void Start()
-    {
-        LogErrors();
-    }
-
-    /// <summary>
-    /// Just making sure the heroManager is set
-    /// </summary>
-    void LogErrors()
-    {
-        if (heroManager == null)
-        {
-            Debug.LogWarning("heroManager null on HeroHomeZone!");
-        }
     }
 
     /// <summary>

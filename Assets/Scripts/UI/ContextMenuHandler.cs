@@ -92,7 +92,7 @@ public class ContextMenuHandler : MonoBehaviour
     /// </summary>
     public void PrepGiveToHeroList()
     {
-        foreach (HeroManager heroManager in NewGameSetup.i.GetActiveHeroes()) // This should only be used at home. this will need to be different for being out in the field.
+        foreach (HeroManager heroManager in PartyManager.i.GetInactiveHeroes()) // This should only be used at home. this will need to be different for being out in the field.
         {
             // make sure the heroManager you're checking isn't the one you're giving from (you dont want to show the current hero from heroManager instantiated)
             if (heroManager != HomeZoneManager.i.GetHeroManager())
