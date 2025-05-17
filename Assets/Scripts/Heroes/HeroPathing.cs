@@ -48,7 +48,7 @@ public class HeroPathing : MonoBehaviour
     
     HeroManager heroManager; // Used to gather the other needed scripts attached to the hero
 
-    void Start()
+    void Awake()
     {
         Setup();
     }
@@ -60,6 +60,8 @@ public class HeroPathing : MonoBehaviour
     {        
         heroManager = GetComponent<HeroManager>();
 
+        Debug.Log("Setting agent");
+
         agent = GetComponent<NavMeshAgent>();
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -68,8 +70,6 @@ public class HeroPathing : MonoBehaviour
         moveSpeed = agent.speed; // just simply setting defaults to w/e the agent's speed is (which is coincidentally set from HeroSettings)
         
         spawnPos = transform.position;
-
-        SetCollider();
 
         SetPathMode(EnumHandler.pathModes.RANDOM);
     }
@@ -115,6 +115,8 @@ public class HeroPathing : MonoBehaviour
 
     public void ToggleNavMeshAgent(bool toggle)
     {
+        //Debug.Log("Toggling NavMeshAgent: " + toggle);
+        if (agent == null) { agent = GetComponent<NavMeshAgent>(); }
         agent.enabled = toggle;
     }
 

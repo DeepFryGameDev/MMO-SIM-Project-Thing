@@ -93,7 +93,9 @@ public class SpawnManager : MonoBehaviour
             HeroHomeZone homeZone = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
             //Debug.Log("Home zone for " + newHeroObject.GetComponent<HeroManager>().Hero().GetName() + ": " + homeZone.transform.position);
             homeZone.SetHeroManager(newHeroObject.GetComponent<HeroManager>());
-            newHeroObject.GetComponent<HeroManager>().SetHomeZone(homeZone);            
+            newHeroObject.GetComponent<HeroManager>().SetHomeZone(homeZone);
+
+            newHeroObject.GetComponent<HeroPathing>().SetCollider();
 
             heroObject.GetComponent<HeroPathing>().ToggleNavMeshAgent(false);                             
 
@@ -157,6 +159,21 @@ public class SpawnManager : MonoBehaviour
         {
             GameSettings.AddToParty(heroManager);
         }
+    }
+
+    BaseHomeZone GetHomeZone(int ID)
+    {
+        foreach (GameObject homeZoneObject in GameObject.FindGameObjectsWithTag("HomeZone"))
+        {
+            BaseHomeZone homeZone = homeZoneObject.GetComponent<BaseHomeZone>();
+            if (homeZone.GetHeroID() == ID)
+            {
+                //Debug.Log("Returning homezone " + homeZone.gameObject.name);
+                return homeZone;
+            }
+        }
+
+        return null;
     }
 
     void Singleton()
@@ -256,20 +273,6 @@ public class SpawnManager : MonoBehaviour
                 partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOWINBASE);
                 break;
         }        
-    }
-
-    BaseHomeZone GetHomeZone(int ID)
-    {
-        foreach (GameObject homeZoneObject in GameObject.FindGameObjectsWithTag("HomeZone"))
-        {
-            BaseHomeZone homeZone = homeZoneObject.GetComponent<BaseHomeZone>();
-            if (homeZone.GetHeroID() == ID)
-            {
-                return homeZone;
-            }
-        }
-
-        return null;
     }
 
     IEnumerator FadeAndEnableMovement()
