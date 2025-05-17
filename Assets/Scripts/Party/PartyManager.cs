@@ -46,18 +46,14 @@ public class PartyManager : MonoBehaviour
         SetDefaultLists();
     }
 
-    void Start()
-    {
-        SetDefaultLists();
-    }
-
     /// <summary>
     /// Sets the active heroes based on the NewGameSetup Active Heroes
     /// </summary>
     void SetDefaultLists()
     {
-        foreach (HeroManager heroManager in HeroSettings.GetIdleHeroes())
+        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
         {
+            Debug.Log("Idle hero: " + heroManager.Hero().GetName());
             inactiveHeroes.Add(heroManager); // set to home
         }
 

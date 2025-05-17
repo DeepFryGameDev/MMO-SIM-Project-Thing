@@ -65,8 +65,8 @@ public class PartyMenuHandler : MonoBehaviour
         PartyManager.i.ClearActiveHeroes();
         PartyManager.i.ClearInactiveHeroes();
 
-        HeroSettings.ClearParty();
-        HeroSettings.ClearIdleHeroes();
+        GameSettings.ClearParty();
+        GameSettings.ClearIdleHeroes();
 
         // clear follow anchors
         foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
@@ -78,15 +78,16 @@ public class PartyMenuHandler : MonoBehaviour
         foreach (HeroManager heroManager in PartyManager.i.GetTempInactiveHeroes())
         {
             // save to inactive
+            Debug.Log("Saving to inactive: " + heroManager.Hero().name);
             PartyManager.i.AddToInactiveHeroes(heroManager);
-            HeroSettings.AddToIdleHeroes(heroManager);
+            GameSettings.AddToIdleHeroes(heroManager);
         }
 
         foreach (HeroManager heroManager in PartyManager.i.GetTempActiveHeroes())
         {
             // save to active
             PartyManager.i.AddToActiveHeroes(heroManager);
-            HeroSettings.AddToParty(heroManager);
+            GameSettings.AddToParty(heroManager);
         }
 
         // Set follow anchors here

@@ -383,9 +383,6 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     public void StopPathing()
     {
-        Debug.Log("Stopping");
-        if (agent == null) { Debug.Log("Null for some reason?? on " + gameObject.name); }
-
         agent.ResetPath();
         agent.isStopped = true;
 

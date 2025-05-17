@@ -64,17 +64,24 @@ public class BaseScriptedEvent : MonoBehaviour
     /// <param name="sceneIndex"></param>
     public IEnumerator TransitionToScene(int sceneIndex, Vector3 spawnPosition)
     {
-        SpawnManager.i.sceneToUnload = sceneIndex;
+        GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Should be unloading " + SceneManager.GetActiveScene().buildIndex);
 
         PlayerMovement.i.ToggleMovement(false);
 
-        foreach (HeroManager heroManager in HeroSettings.GetHeroesInParty())
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             Debug.Log("Stop " + heroManager.Hero().GetName());
             heroManager.HeroPathing().StopPathing();
         }
 
-        partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW);
+        partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW); // <--- find a way to move this later
+
+        // save all current Gero Managers in their current state
+        foreach (Transform obj in GameObject.Find(UIManager.i.GetHeroesTransformName()).transform)
+        {
+            //GameSettings.SetHeroObject(obj.GetComponent<HeroManager>().GetID(), obj.gameObject);
+        }
 
         yield return UIManager.i.FadeToBlack(true);        
 

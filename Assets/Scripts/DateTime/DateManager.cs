@@ -239,10 +239,10 @@ public class DateManager : MonoBehaviour
         // brighten screen
         StartCoroutine(UIManager.i.FadeToBlack(false));
 
-        // Save heroes
+        // Save heroes (update idle heroes in GameSettings)
         foreach (HeroManager heroManager in heroManagers)
         {
-            HeroSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
+            //GameSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
         }        
 
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);

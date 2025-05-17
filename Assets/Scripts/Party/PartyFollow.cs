@@ -158,7 +158,7 @@ public class PartyFollow : MonoBehaviour
     {
         bool setNewAnchoredList = false;
 
-        foreach (HeroManager heroManager in HeroSettings.GetHeroesInParty())
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             if (!currentlyAnchoredHeroes.Contains(heroManager))
             {
@@ -189,8 +189,6 @@ public class PartyFollow : MonoBehaviour
                 Debug.Log(gameObject.name);
                 anchorSlot0 = transform.Find("Anchor[0]").GetComponent<PartyAnchor>();
                 heroManager.HeroParty().SetPartyAnchor(anchorSlot0);
-                Debug.Log(anchorSlot0.gameObject.name + anchorSlot0.transform.position);
-                Debug.Log(heroManager.gameObject.name);
                 anchorSlot0.SetHeroManager(heroManager);
                 DebugManager.i.PartyDebugOut("PartyMenuHandler", "Set " + heroManager.gameObject.name + " to follow anchor slot 0", false, false);
                 break;

@@ -10,6 +10,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] CanvasGroup fadeCanvasGroup;
 
+    string heroesTransformName = "[Heroes]";
+    public string GetHeroesTransformName() { return heroesTransformName; }
+
     void Awake()
     {
         Singleton();
