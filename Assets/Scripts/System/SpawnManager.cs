@@ -25,6 +25,8 @@ public class SpawnManager : MonoBehaviour
 
     bool transitioning;
 
+    PartyFollow partyFollow;
+
     void Awake()
     {
         if (i == null || !i.gameSet)
@@ -56,6 +58,8 @@ public class SpawnManager : MonoBehaviour
                 PostSceneTransition();
             }            
         }
+
+        partyFollow = FindFirstObjectByType<PartyFollow>();
     }
 
     private void Start()
@@ -90,51 +94,57 @@ public class SpawnManager : MonoBehaviour
 
             newHeroObject.transform.position = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).GetSpawnPosition();
 
-            GameSettings.SetHeroObject(heroObject.GetComponent<HeroManager>().GetID(), heroObject);
+            ActiveHeroesSystem.i.SetHeroObject(heroObject.GetComponent<HeroManager>().GetID(), heroObject);
+            ActiveHeroesSystem.i.SetHeroManager(heroObject.GetComponent<HeroManager>());
         }
     }
 
     void HeroHomeSetup()
     {
-        Debug.Log("Setting up idle heroes");
-
         List<HeroManager> tempHeroManagers = new List<HeroManager>();
 
         // idle heroes
         foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
         {
-            Debug.Log("Instantiate " + heroManager.Hero().GetName());
+            //Debug.Log("Setting up Idle Hero: " + heroManager.Hero().GetName());
+                        
+            HeroHomeZone homeZone = GetHomeZone(heroManager.GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
+            homeZone.SetHeroManager(heroManager);
 
-            GameObject newHeroObject = Instantiate(GameSettings.GetHeroObject(heroManager.GetID()), heroesTransform); // this is the base object. it needs heroManager applied to it.   
-
-            HeroHomeZone homeZone = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
-            homeZone.SetHeroManager(newHeroObject.GetComponent<HeroManager>());
-
-            newHeroObject.GetComponent<HeroManager>().SetHomeZone(homeZone);
-
-            newHeroObject.transform.position = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).GetSpawnPosition();
+            heroManager.SetHomeZone(homeZone);
 
             tempHeroManagers.Add(heroManager);
         }
 
         // Reset idle heroes
         GameSettings.ClearIdleHeroes();
+        //Debug.Log("Clearing idle heroes");
 
         foreach (HeroManager heroManager in tempHeroManagers)
         {
-            GameSettings.AddToIdleHeroes(transform.GetComponent<HeroManager>());
+            //Debug.Log("And adding idle hero back again: " + heroManager);
+            GameSettings.AddToIdleHeroes(heroManager);            
         }
 
         tempHeroManagers.Clear(); // re-use it for party heroes
 
         // in party
-        Debug.Log("And party heroes");
         foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
-            Debug.Log("Instantiate " + heroManager.Hero().GetName());
-            // instantiate them each under the [Heroes] transform.  This will be instantiating the base object
-            // set their position to their anchor point
-            // Set HeroManager values so changes between scenes are saved
+            Debug.Log("Setting up Party Hero: " + heroManager.Hero().GetName());
+            HeroHomeZone homeZone = GetHomeZone(heroManager.GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
+            homeZone.SetHeroManager(heroManager);
+
+            heroManager.SetHomeZone(homeZone);
+
+            tempHeroManagers.Add(heroManager);
+        }
+
+        GameSettings.ClearParty();
+
+        foreach (HeroManager heroManager in tempHeroManagers)
+        {
+            GameSettings.AddToParty(heroManager);
         }
     }
 
@@ -161,43 +171,78 @@ public class SpawnManager : MonoBehaviour
         {
             case EnumHandler.MenuMode.FIELD:
                 Debug.Log("Moving heroes by field");
+
+                // Idle Heroes
+                foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
+                {
+                    // This is where we can turn off pathing and hide the object and whatever is needed to get them to chill.
+                    // set their scale to 0?  Unless we think of a better method in the future.
+
+                    if (ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.localScale.x != 0)
+                    {
+                        heroManager.HeroPathing().ToggleNavMeshAgent(false);
+                        ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.position = new Vector3(0, 0, 0);
+                        ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.localScale = new Vector3(0, 0, 0);
+                    }
+                }
+
+                // Heroes in Party
                 foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
                 {
-                    // Instantiate objects and set them under Heroes transform, then set them to partyfollow. maybe that will work idk.
-                    GameObject newHeroObj = Instantiate(GameSettings.GetHeroObject(heroManager.Hero().GetID()), heroManager.HeroParty().GetPartyAnchor().transform.position, Quaternion.identity);
-                    newHeroObj.transform.SetParent(heroesTransform);
+                    // disable navmeshagent
+                    heroManager.HeroPathing().ToggleNavMeshAgent(false);
+
+                    // Move these objects to their anchor point
+                    //Debug.Log("Move " + heroManager.Hero().GetName() + " to " + heroManager.HeroParty().GetPartyAnchor().GetPosition());
+                    ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.position = heroManager.HeroParty().GetPartyAnchor().GetPosition();
+
+                    // enable navmeshagent again
+                    heroManager.HeroPathing().ToggleNavMeshAgent(true);
+
+                    heroManager.HeroPathing().SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);
                 }
 
-                GameSettings.ClearParty();
-
-                foreach (Transform transform in heroesTransform)
-                {
-                    GameSettings.AddToParty(transform.GetComponent<HeroManager>());
-                }
-
-                PartyFollow.i = FindFirstObjectByType<PartyFollow>();
-
-                for (int i=0; i < GameSettings.GetHeroesInParty().Count; i++)
-                {
-                    PartyFollow.i.SetFollowAnchor(GameSettings.GetHeroesInParty()[i], i);
-
-                    GameSettings.GetHeroesInParty()[i].HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
-                }                
+                partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW);                     
 
                 break;
             case EnumHandler.MenuMode.HOME:
-                /*Debug.Log("Moving heroes by home");
-                foreach (HeroManager idleHero in GameSettings.GetIdleHeroes())
+                // Idle Heroes
+                foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
                 {
-                    Debug.Log("Should move " + idleHero + " to " + GetHomeZone(idleHero.GetID()).GetSpawnPosition());
-                    GameObject newHeroObj = Instantiate(GameSettings.GetHeroObject(idleHero.GetID()), heroesTransform);
+                    // Debug.Log(heroManager.Hero().GetName() + " should be moved to home zone: " + GetHomeZone(heroManager.GetID()).GetSpawnPosition());
 
-                    HeroHomeZone homeZone = GetHomeZone(idleHero.GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
-                    homeZone.SetHeroManager(newHeroObj.GetComponent<HeroManager>());
-                    newHeroObj.GetComponent<HeroManager>().SetHomeZone(homeZone);
+                    ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.position = GetHomeZone(heroManager.GetID()).GetSpawnPosition();
 
-                    newHeroObj.transform.position = GetHomeZone(idleHero.GetID()).GetSpawnPosition();
-                }*/
+                    ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.localScale = new Vector3(1, 1, 1);
+
+                    // if working, enable navmeshagent again
+                    heroManager.HeroPathing().SetCollider();
+                    heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.WALK);
+
+                    heroManager.HeroPathing().ToggleNavMeshAgent(true);
+
+                    heroManager.HeroPathing().SetPathMode(EnumHandler.pathModes.RANDOM);
+                }
+
+                // Heroes in Party
+                partyFollow.SetAnchoredHeroesList();
+
+                foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+                {
+                    // Debug.Log(heroManager.Hero().GetName() + " should be moved to party anchor: " + heroManager.HeroParty().GetPartyAnchor().GetPosition());
+
+                    heroManager.HeroPathing().ToggleNavMeshAgent(false);
+                    ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.position = heroManager.HeroParty().GetPartyAnchor().GetPosition();                    
+
+                    // if working, enable navmeshagent again
+                    heroManager.HeroPathing().SetCollider();                    
+
+                    heroManager.HeroPathing().SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);
+
+                    heroManager.HeroPathing().ToggleNavMeshAgent(true);
+                }
+                
+                partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOWINBASE);
                 break;
         }        
     }
@@ -223,7 +268,6 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f); // need to figure out a way to wait until the scene is fully loaded before we can unload the next scene.  For now we will artifically wait 1.5 seconds.
 
         // Unload the last scene
-        Debug.Log("Unloading " + GameSettings.GetUnloadSceneIndex());
         SceneManager.UnloadSceneAsync(GameSettings.GetUnloadSceneIndex());
 
         // set up heroes

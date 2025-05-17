@@ -1,7 +1,4 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 
 // Purpose: Links all associated scripts together for each hero - this makes referencing any heroes scripts far easier and should reduce the spaghetti.
 // Directions: Attach to each hero

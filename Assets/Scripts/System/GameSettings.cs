@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public static class GameSettings
@@ -18,51 +19,4 @@ public static class GameSettings
     static int unloadSceneIndex;
     public static int GetUnloadSceneIndex() { return unloadSceneIndex; }
     public static void SetUnloadSceneIndex(int index) { unloadSceneIndex = index; }
-
-    static GameObject felricObject;
-    static GameObject archieObject;
-    static GameObject mayaObject;
-    static GameObject claraObject;
-    static GameObject nicholinObject;
-
-    public static void SetHeroObject(int ID, GameObject obj)
-    {
-        switch (ID)
-        {
-            case 0:
-                felricObject = obj;
-                break;
-            case 1:
-                archieObject = obj;
-                break;
-            case 2:
-                mayaObject = obj;
-                break;
-            case 3:
-                claraObject = obj;
-                break;
-            case 4:
-                nicholinObject = obj;
-                break;
-        }
-    }
-
-    public static GameObject GetHeroObject(int ID)
-    {
-        switch (ID)
-        {
-            case 0:
-                return felricObject;
-            case 1:
-                return archieObject;
-            case 2:
-                return mayaObject;
-            case 3:
-                return claraObject;
-            case 4:
-                return nicholinObject;
-            default:
-                return null;
-        }
-    }
 }

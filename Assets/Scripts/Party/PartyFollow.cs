@@ -121,12 +121,13 @@ public class PartyFollow : MonoBehaviour
     /// <summary>
     /// Sets the currentlyAnchoredHeroes list to active heroes in the PartyManager
     /// </summary>
-    void SetAnchoredHeroesList()
+    public void SetAnchoredHeroesList()
     {
         currentlyAnchoredHeroes.Clear();
 
-        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
+            Debug.Log("Adding " + heroManager + " to anchored heroes list");
             currentlyAnchoredHeroes.Add(heroManager);
         }
     }
@@ -145,10 +146,10 @@ public class PartyFollow : MonoBehaviour
                 heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
 
                 heroManager.HeroPathing().StartPartyRunHomePathing();
-            }
-        }
 
-        SetAnchoredHeroesList();
+                SetAnchoredHeroesList();
+            }
+        }        
     }
 
     /// <summary>
@@ -162,6 +163,7 @@ public class PartyFollow : MonoBehaviour
         {
             if (!currentlyAnchoredHeroes.Contains(heroManager))
             {
+                Debug.Log("Stopping " + heroManager.Hero().GetName());
                 // DebugManager.i.PartyDebugOut("PartyFollow", heroManager.Hero().GetName() + " should be anchored");
                 setNewAnchoredList = true;
 

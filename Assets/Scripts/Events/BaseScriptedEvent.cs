@@ -9,13 +9,6 @@ using UnityEngine.SceneManagement;
 
 public class BaseScriptedEvent : MonoBehaviour
 {
-    PartyFollow partyFollow;
-
-    private void Awake()
-    {
-        partyFollow = FindFirstObjectByType<PartyFollow>();
-    }
-
     //public string method; //name of the method to be run
 
     //GameMenu menu;
@@ -65,7 +58,6 @@ public class BaseScriptedEvent : MonoBehaviour
     public IEnumerator TransitionToScene(int sceneIndex, Vector3 spawnPosition)
     {
         GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("Should be unloading " + SceneManager.GetActiveScene().buildIndex);
 
         PlayerMovement.i.ToggleMovement(false);
 
@@ -73,11 +65,24 @@ public class BaseScriptedEvent : MonoBehaviour
         {
             Debug.Log("Stop " + heroManager.Hero().GetName());
             heroManager.HeroPathing().StopPathing();
+
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
+            ActiveHeroesSystem.i.SetHeroManager(heroManager);
         }
 
-        partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW); // <--- find a way to move this later
+        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
+        {
+            Debug.Log("Stop " + heroManager.Hero().GetName());
+            if (heroManager.HeroPathing().GetPathMode() != EnumHandler.pathModes.IDLE)
+            {
+                heroManager.HeroPathing().StopPathing();
+            }
+            
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
+            ActiveHeroesSystem.i.SetHeroManager(heroManager);
+        }
 
-        // save all current Gero Managers in their current state
+        // save all current Hero Managers in their current state
         foreach (Transform obj in GameObject.Find(UIManager.i.GetHeroesTransformName()).transform)
         {
             //GameSettings.SetHeroObject(obj.GetComponent<HeroManager>().GetID(), obj.gameObject);

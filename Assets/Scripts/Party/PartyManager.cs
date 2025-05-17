@@ -53,12 +53,13 @@ public class PartyManager : MonoBehaviour
     {
         foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
         {
-            Debug.Log("Idle hero: " + heroManager.Hero().GetName());
+            Debug.Log("Adding Idle hero: " + heroManager.Hero().GetName() + " to inactiveHeroes");
             inactiveHeroes.Add(heroManager); // set to home
         }
 
         foreach (HeroManager heroManager in activeHeroes)
         {
+            Debug.Log("Adding Active hero: " + heroManager.Hero().GetName() + " to ActiveHeroes");
             activeHeroes.Add(heroManager); // set to party
         }
     }

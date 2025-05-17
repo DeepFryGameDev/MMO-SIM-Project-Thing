@@ -69,16 +69,22 @@ public class HeroPathing : MonoBehaviour
         
         spawnPos = transform.position;
 
+        SetCollider();
+
+        SetPathMode(EnumHandler.pathModes.RANDOM);
+    }
+
+    public void SetCollider()
+    {
         switch (SceneInfo.i.GetMenuMode())
         {
             case EnumHandler.MenuMode.HOME:
+                // Debug.Log("Setting home zone collider");
                 homeZoneCollider = heroManager.HomeZone().GetComponent<BoxCollider>();
-
-                SetPathMode(EnumHandler.pathModes.RANDOM);
+                if (homeZoneCollider == null) { Debug.LogError("SetCollider: NULL"); }
                 break;
 
             case EnumHandler.MenuMode.FIELD:
-                SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);
 
                 break;
         }
@@ -105,6 +111,11 @@ public class HeroPathing : MonoBehaviour
         HandleMoveSpeed();
 
         SyncMoveSpeed();        
+    }
+
+    public void ToggleNavMeshAgent(bool toggle)
+    {
+        agent.enabled = toggle;
     }
 
     /// <summary>
