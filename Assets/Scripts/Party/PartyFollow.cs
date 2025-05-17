@@ -56,14 +56,9 @@ public class PartyFollow : MonoBehaviour
                 CheckForEnteringBaseZone();
                 break;
             case EnumHandler.PartyFollowStates.FOLLOW:
-                FollowInField();
+                
                 break;
         }       
-    }
-
-    void FollowInField()
-    {
-
     }
 
     /// <summary>

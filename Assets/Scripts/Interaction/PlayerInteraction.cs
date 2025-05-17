@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (ih == null)
         {
-            Debug.Log("Setting new IH");
+            //Debug.Log("Setting new IH");
             ih = FindFirstObjectByType<InteractionHandler>();
         }
 

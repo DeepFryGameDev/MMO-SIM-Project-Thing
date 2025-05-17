@@ -31,15 +31,13 @@ public class SpawnManager : MonoBehaviour
     {
         if (i == null || !i.gameSet)
         {
-            Singleton();
-
-            i.gameSet = true;                        
+            Singleton();                                  
 
             i.player = GameObject.FindWithTag("Player");
 
             i.playerSpawnPosition = i.player.transform.position;
 
-            InitializeHeroes();            
+                     
 
         } else // moved in from another scene
         {
@@ -73,6 +71,13 @@ public class SpawnManager : MonoBehaviour
                 
                 break;
         }
+
+        if (!i.gameSet)
+        {
+            InitializeHeroes();
+
+            i.gameSet = true;
+        }
     }
 
     void InitializeHeroes()
@@ -86,13 +91,19 @@ public class SpawnManager : MonoBehaviour
             GameObject newHeroObject = Instantiate(heroObject, heroesTransform);
 
             HeroHomeZone homeZone = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).transform.Find("HomeZone").GetComponent<HeroHomeZone>();
+            //Debug.Log("Home zone for " + newHeroObject.GetComponent<HeroManager>().Hero().GetName() + ": " + homeZone.transform.position);
             homeZone.SetHeroManager(newHeroObject.GetComponent<HeroManager>());
+            newHeroObject.GetComponent<HeroManager>().SetHomeZone(homeZone);            
 
-            newHeroObject.GetComponent<HeroManager>().SetHomeZone(homeZone);
+            heroObject.GetComponent<HeroPathing>().ToggleNavMeshAgent(false);                             
 
             GameSettings.AddToIdleHeroes(newHeroObject.GetComponent<HeroManager>());
 
             newHeroObject.transform.position = GetHomeZone(newHeroObject.GetComponent<HeroManager>().GetID()).GetSpawnPosition();
+
+            heroObject.GetComponent<HeroPathing>().ToggleNavMeshAgent(true);
+
+            //heroObject.GetComponent<HeroPathing>().SetPathMode(EnumHandler.pathModes.RANDOM);
 
             ActiveHeroesSystem.i.SetHeroObject(heroObject.GetComponent<HeroManager>().GetID(), heroObject);
             ActiveHeroesSystem.i.SetHeroManager(heroObject.GetComponent<HeroManager>());
@@ -193,7 +204,7 @@ public class SpawnManager : MonoBehaviour
                     heroManager.HeroPathing().ToggleNavMeshAgent(false);
 
                     // Move these objects to their anchor point
-                    //Debug.Log("Move " + heroManager.Hero().GetName() + " to " + heroManager.HeroParty().GetPartyAnchor().GetPosition());
+                    Debug.Log("Move " + heroManager.Hero().GetName() + " to " + heroManager.HeroParty().GetPartyAnchor().GetPosition());
                     ActiveHeroesSystem.i.GetHeroObject(heroManager.GetID()).transform.position = heroManager.HeroParty().GetPartyAnchor().GetPosition();
 
                     // enable navmeshagent again

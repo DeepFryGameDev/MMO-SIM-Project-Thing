@@ -48,7 +48,7 @@ public class HeroPathing : MonoBehaviour
     
     HeroManager heroManager; // Used to gather the other needed scripts attached to the hero
 
-    void Start() // For scripts attached to heroes, set vars in Start so that HeroManager vars are set in Awake first.
+    void Start()
     {
         Setup();
     }
@@ -56,8 +56,8 @@ public class HeroPathing : MonoBehaviour
     /// <summary>
     /// Sets variables needed for HeroPathing to function
     /// </summary>
-    void Setup()
-    {
+    public void Setup()
+    {        
         heroManager = GetComponent<HeroManager>();
 
         agent = GetComponent<NavMeshAgent>();

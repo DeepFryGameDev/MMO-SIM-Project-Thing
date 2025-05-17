@@ -12,9 +12,9 @@ public static class GameSettings
 
     static List<HeroManager> idleHeroes = new List<HeroManager>();
     public static List<HeroManager> GetIdleHeroes() { return idleHeroes; }
-    public static void AddToIdleHeroes(HeroManager heroManager) { idleHeroes.Add(heroManager); }
+    public static void AddToIdleHeroes(HeroManager heroManager) { idleHeroes.Add(heroManager); } // Debug.Log("Adding to idle heroes: " + heroManager.Hero().GetName();) }
     public static void RemoveFromIdleHeroes(HeroManager heroManager) { idleHeroes.Remove(heroManager); }
-    public static void ClearIdleHeroes() { idleHeroes.Clear(); }
+    public static void ClearIdleHeroes() { idleHeroes.Clear(); } // Debug.Log("Clearing idle heroes"); }
 
     static int unloadSceneIndex;
     public static int GetUnloadSceneIndex() { return unloadSceneIndex; }
