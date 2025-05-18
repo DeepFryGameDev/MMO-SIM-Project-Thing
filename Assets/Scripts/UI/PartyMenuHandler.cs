@@ -15,6 +15,7 @@ public class PartyMenuHandler : MonoBehaviour
 
     /// <summary>
     /// Sets the appropriate layout group in the UI with instantiated HeroFrames
+    /// Note: If you get an error here, it is likely because the Idle heroes were never instantiated correctly in SpawnManager.  Check SpawnManager.InitializeHeroes()
     /// </summary>
     /// <param name="heroManagers">List of HeroManagers to add to the UI</param>
     /// <param name="option">Use 0 to set inactive heroes, 1 to set active</param>
@@ -78,7 +79,7 @@ public class PartyMenuHandler : MonoBehaviour
         foreach (HeroManager heroManager in PartyManager.i.GetTempInactiveHeroes())
         {
             // save to inactive
-            Debug.Log("Saving to inactive: " + heroManager.Hero().name);
+            //Debug.Log("Saving to inactive: " + heroManager.Hero().name);
             PartyManager.i.AddToInactiveHeroes(heroManager);
             GameSettings.AddToIdleHeroes(heroManager);
         }

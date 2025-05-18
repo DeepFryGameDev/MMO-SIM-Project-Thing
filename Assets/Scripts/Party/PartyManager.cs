@@ -37,14 +37,14 @@ public class PartyManager : MonoBehaviour
 
     public static PartyManager i;
 
-    private void Awake()
+    void Awake()
     {
         i = this;
 
         partyMenuHandler = FindFirstObjectByType<PartyMenuHandler>();
     }
 
-    private void Start()
+    void Start()
     {
         SetDefaultLists();
     }
@@ -84,7 +84,7 @@ public class PartyManager : MonoBehaviour
 
         foreach (HeroManager heroManager in inactiveHeroes)
         {
-            Debug.Log("Add " + heroManager.Hero().GetName() + ", ID: " + heroManager.GetID() + " to  inactiveHeroes");
+            //Debug.Log("Add " + heroManager.Hero().GetName() + ", ID: " + heroManager.GetID() + " to  inactiveHeroes");
             tempInactiveHeroes.Add(heroManager);
         }
     }

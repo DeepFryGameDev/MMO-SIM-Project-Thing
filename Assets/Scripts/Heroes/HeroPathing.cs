@@ -60,7 +60,7 @@ public class HeroPathing : MonoBehaviour
     {        
         heroManager = GetComponent<HeroManager>();
 
-        Debug.Log("Setting agent");
+        // Debug.Log("Setting agent");
 
         agent = GetComponent<NavMeshAgent>();
 

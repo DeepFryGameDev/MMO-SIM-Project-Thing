@@ -122,7 +122,7 @@ public class PartyFollow : MonoBehaviour
 
         foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
-            Debug.Log("Adding " + heroManager + " to anchored heroes list");
+            //Debug.Log("Adding " + heroManager + " to anchored heroes list");
             currentlyAnchoredHeroes.Add(heroManager);
         }
     }
@@ -158,7 +158,7 @@ public class PartyFollow : MonoBehaviour
         {
             if (!currentlyAnchoredHeroes.Contains(heroManager))
             {
-                Debug.Log("Stopping " + heroManager.Hero().GetName());
+                //Debug.Log("Stopping " + heroManager.Hero().GetName());
                 // DebugManager.i.PartyDebugOut("PartyFollow", heroManager.Hero().GetName() + " should be anchored");
                 setNewAnchoredList = true;
 
@@ -183,7 +183,6 @@ public class PartyFollow : MonoBehaviour
         switch (slot)
         {
             case 0:
-                Debug.Log(gameObject.name);
                 anchorSlot0 = transform.Find("Anchor[0]").GetComponent<PartyAnchor>();
                 heroManager.HeroParty().SetPartyAnchor(anchorSlot0);
                 anchorSlot0.SetHeroManager(heroManager);

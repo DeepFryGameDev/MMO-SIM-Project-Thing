@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="toggle">True to enable movement, false to disable movement.</param>
     public void ToggleMovement (bool toggle)
     {
-        DebugManager.i.SystemDebugOut("PlayerMovement", "Movement toggled: " + toggle);
+        DebugManager.i.PlayerDebugOut("PlayerMovement", "Movement toggled: " + toggle);
         movementEnabled = toggle;
 
         if (rb == null) rb = GetComponent<Rigidbody>();

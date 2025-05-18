@@ -9,19 +9,6 @@ using UnityEngine;
 
 public class DateManager : MonoBehaviour
 {
-    int[] week = new int[4]; // used to progress the date
-    int[] month = new int[12]; // used to progress the date as well
-
-    int currentWeek; // used as the index for week[] to determine the current week
-    public int GetRealCurrentWeek() { return currentWeek + 1; }
-
-    int currentMonth; // used as the index for month[] to determine the current month
-    public int GetCurrentMonth() { return currentMonth; }
-    public int GetRealCurrentMonth() { return currentMonth + 1; }
-
-    int currentYear;
-    public int GetCurrentYear() { return currentYear; }
-
     IEnumerator nextWeekToast;
 
     CanvasGroup canvasGroup;
@@ -59,14 +46,17 @@ public class DateManager : MonoBehaviour
 
         
         // Setting some base vals
-        currentYear = DateSettings.startingYear;
+        DateSettings.SetCurrentYear(DateSettings.startingYear);
 
         i = this;
     }
 
     void Start()
     {
-        InitializeDates();
+        if (!DateSettings.GetDatesInitialized())
+        {
+            InitializeDates();
+        }        
 
         heroManagers = PartyManager.i.GetInactiveHeroes();
 
@@ -81,16 +71,18 @@ public class DateManager : MonoBehaviour
     {
         for (int i=0; i <= 3; i++)
         {
-            week[i] = i + 1; // Sets each week to week 1,2,3,4.
+            DateSettings.SetWeek(i, i + 1); // Sets each week to week 1,2,3,4.
         }
 
         for (int i=0; i <= 11; i++)
         {
-            month[i] = i + 1; // Sets each month to 1,2,3, etc to 12.
+            DateSettings.SetMonth(i, i + 1); // Sets each month to 1,2,3, etc to 12.
         }
 
-        currentWeek = 0;
-        currentMonth = 0;
+        DateSettings.SetCurrentWeek(0);
+        DateSettings.SetCurrentMonth(0);
+
+        DateSettings.SetDatesInitialized(true);
     }
 
     /// <summary>
@@ -98,18 +90,18 @@ public class DateManager : MonoBehaviour
     /// </summary>
     public void RollForwardDate()
     {
-        currentWeek++;
+        DateSettings.SetCurrentWeek(DateSettings.GetCurrentWeek() + 1);
 
-        if (currentWeek > 3)
+        if (DateSettings.GetCurrentWeek() > 3)
         {
-            currentWeek = 0;
-            currentMonth++;
+            DateSettings.SetCurrentWeek(0);
+            DateSettings.SetCurrentMonth(DateSettings.GetCurrentMonth() + 1);
         }
 
-        if (currentMonth > 11)
+        if (DateSettings.GetCurrentMonth() > 11)
         {
-            currentMonth = 0;
-            currentYear++;
+            DateSettings.SetCurrentMonth(0);
+            DateSettings.SetCurrentYear(DateSettings.GetCurrentYear() + 1);
         }
     }
 
@@ -189,8 +181,7 @@ public class DateManager : MonoBehaviour
         yield return new WaitForSeconds(DateSettings.transitionSeconds / 2);
 
         // -*-*-*-*- Start here -*-*-*-*-
-
-        string debugOut = "Starting week: " + week[currentWeek] + " of Month " + month[currentMonth];
+        string debugOut = "Starting week: " + DateSettings.GetWeek()[DateSettings.GetCurrentWeek()] + " of Month " + DateSettings.GetMonth()[DateSettings.GetCurrentMonth()];
         DebugManager.i.ScheduleDebugOut("DateManager", debugOut, false, false);
 
         // move all heroes to starting position
@@ -239,11 +230,11 @@ public class DateManager : MonoBehaviour
         // brighten screen
         StartCoroutine(UIManager.i.FadeToBlack(false));
 
-        // Save heroes (update idle heroes in GameSettings)
-        foreach (HeroManager heroManager in heroManagers)
+        // Save heroes (update idle heroes in GameSettings) - not sure if needed.  Don't think so.
+        /*foreach (HeroManager heroManager in heroManagers)
         {
-            //GameSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
-        }        
+            GameSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
+        }*/       
 
         GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
 
@@ -292,8 +283,8 @@ public class DateManager : MonoBehaviour
     /// </summary>
     void SetToastText()
     {
-        weekText.text = week[currentWeek].ToString();
-        monthText.text = GetMonthString(currentMonth);
+        weekText.text = DateSettings.GetWeek()[DateSettings.GetCurrentWeek()].ToString();
+        monthText.text = GetMonthString(DateSettings.GetCurrentMonth());
     }
 
     /// <summary>
@@ -362,7 +353,7 @@ public class DateManager : MonoBehaviour
     /// <returns>Which week of the month it is</returns>
     public int GetWeekFromWeeksOut(int weeksOut)
     {
-        int tempWeek = currentWeek;
+        int tempWeek = DateSettings.GetCurrentWeek();
 
         for (int i=0; i < weeksOut; i++)
         {
@@ -384,8 +375,8 @@ public class DateManager : MonoBehaviour
     /// <returns>The month that it will be in weeksOut weeks</returns>
     public string GetMonthFromWeeksOut(int weeksOut)
     {
-        int tempMonth = currentMonth;
-        int tempWeek = currentWeek;
+        int tempMonth = DateSettings.GetCurrentMonth();
+        int tempWeek = DateSettings.GetCurrentWeek();
 
         int tempWeeksOut = weeksOut;
 
@@ -399,14 +390,14 @@ public class DateManager : MonoBehaviour
             if (tempWeek > 3 && tempWeeksOut < 4) // 1 month out
             {
                 //Debug.Log("Returning one month out: " + GetMonthString(currentMonth + 1));
-                return GetMonthString(currentMonth + 1);
+                return GetMonthString(DateSettings.GetCurrentMonth() + 1);
             }
             else if (tempWeek >= 4) // 2 months out 
             {
                 //Debug.Log("Returning two months out: " + GetMonthString(currentMonth + 2));
-                return GetMonthString(currentMonth + 2);
+                return GetMonthString(DateSettings.GetCurrentMonth() + 2);
             }                
         }
-        return GetMonthString(currentMonth);
+        return GetMonthString(DateSettings.GetCurrentMonth());
     }
 }

@@ -73,26 +73,28 @@ public class HeroManager : MonoBehaviour
 
     public void Setup() 
     {
-        hero = transform.GetComponent<BaseHero>();
+        hero = GetComponent<BaseHero>();
 
-        heroPathing = transform.GetComponent<HeroPathing>();
-        heroInteraction = transform.GetComponent<HeroInteraction>();
+        heroPathing = GetComponent<HeroPathing>();
+        heroInteraction = GetComponent<HeroInteraction>();
 
-        heroClass = transform.GetComponent<HeroClass>();
+        heroClass = GetComponent<HeroClass>();
 
-        heroTraining = transform.GetComponent<HeroTraining>();
-        heroTrainingEquipment = transform.GetComponent<HeroTrainingEquipment>();
+        heroTraining = GetComponent<HeroTraining>();
+        heroTrainingEquipment = GetComponent<HeroTrainingEquipment>();
 
-        heroInventory = transform.GetComponent<HeroInventory>();
-        heroEquipment = transform.GetComponent<HeroEquipment>();
+        heroInventory = GetComponent<HeroInventory>();
+        heroEquipment = GetComponent<HeroEquipment>();
 
-        heroParty = transform.GetComponent<HeroParty>();
+        heroParty = GetComponent<HeroParty>();
 
-        heroSchedule = transform.GetComponent<HeroSchedule>();
+        heroSchedule = GetComponent<HeroSchedule>();
 
-        collider = transform.GetComponent<Collider>();
+        collider = GetComponent<Collider>();
 
-        animHandler = transform.GetComponent<HeroAnimHandler>();
+        animHandler = GetComponent<HeroAnimHandler>();
+
+        gameObject.name = "[" + ID + "] " + hero.GetName();
     }
 
     void CheckForNulls()

@@ -168,8 +168,8 @@ public class ScheduleMenuHandler : MonoBehaviour
     /// </summary>
     public void SetTexts()
     {
-        dateText.text = DateManager.i.GetMonthString(DateManager.i.GetCurrentMonth()) + "\n" + DateManager.i.GetCurrentYear().ToString();
-        currentScheduleEventLabel.text = ScheduleSettings.weekText + " " + DateManager.i.GetRealCurrentWeek() + ":";
+        dateText.text = DateManager.i.GetMonthString(DateSettings.GetCurrentMonth()) + "\n" + DateSettings.GetCurrentYear().ToString();
+        currentScheduleEventLabel.text = ScheduleSettings.weekText + " " + DateSettings.GetRealCurrentWeek() + ":";
 
         slot1MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(1);
         slot2MonthLabel.text = DateManager.i.GetMonthFromWeeksOut(2);

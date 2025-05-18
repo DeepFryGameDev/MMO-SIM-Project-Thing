@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DebugSettingsEditor : MonoBehaviour
 {
+    public Color playerDebugColor;
+
     public Color uiDebugColor;
 
     public Color scheduleDebugColor;
@@ -24,6 +26,8 @@ public class DebugSettingsEditor : MonoBehaviour
 
     private void SetSettings()
     {
+        DebugSettings.playerDebugColor = playerDebugColor;
+
         DebugSettings.uiDebugColor = uiDebugColor;
 
         DebugSettings.scheduleDebugColor = scheduleDebugColor;

@@ -1,14 +1,15 @@
 using UnityEngine;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 public class BaseInteractOnTouch : MonoBehaviour
 {
     protected static BaseScriptedEvent scriptedEvent;
 
-    Collider attachedCollider;
-
     private void Awake()
     {
-        attachedCollider = GetComponent<Collider>();
         scriptedEvent = gameObject.AddComponent<BaseScriptedEvent>();
     }
 

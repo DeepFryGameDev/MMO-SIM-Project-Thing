@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // Purpose: Provides the basis for all common events that can be called via script in the world
-// Directions: Set this on the [System] GameObject along with InteractionHandler
+// Directions: This should be instantiated on any object that should contain an event.  When adding a new type of event interaction, use BaseInteractOnTouch as an example.
 // Other notes: This script was taken from an old project - most of it will be rewritten
 
 public class BaseScriptedEvent : MonoBehaviour
@@ -51,55 +50,55 @@ public class BaseScriptedEvent : MonoBehaviour
     #region ---SCENE MANAGEMENT---
 
     /// <summary>
-    /// Will probably be re-worked, but works for now
-    /// Simply uses SceneManager to load the given sceneIndex in build settings
+    /// Moves the player along with any heroes in party to the given scene.
+    /// Ensure this is always ran as a coroutine (StartCoroutine)
     /// </summary>
-    /// <param name="sceneIndex"></param>
+    /// <param name="sceneIndex">The build index of the scene to be loaded</param>
+    /// <param name="spawnPosition">The position in the world in the given scene where the player should load</param>
     public IEnumerator TransitionToScene(int sceneIndex, Vector3 spawnPosition)
     {
-        GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex);
+        DebugManager.i.SystemDebugOut("TransitionToScene", "Loading Scene - Build Index: " + sceneIndex);
 
-        PlayerMovement.i.ToggleMovement(false);
+        GameSettings.SetSceneTransitionStarted(true);
 
-        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex); // SpawnManager will unload this scene after it detects that it is done loading.
+
+        PlayerMovement.i.ToggleMovement(false); // Disables the player's movement during transition
+
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty()) // For all heroes in party
         {
-            Debug.Log("Stop " + heroManager.Hero().GetName());
-            heroManager.HeroPathing().StopPathing();
+            //Debug.Log("Stop " + heroManager.Hero().GetName());
+            heroManager.HeroPathing().StopPathing(); // Stop moving and set to idle
 
-            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
-            ActiveHeroesSystem.i.SetHeroManager(heroManager);
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject); // may not be needed.  They are set once during Awake() in SpawnManager.
+            ActiveHeroesSystem.i.SetHeroManager(heroManager); // may not be needed.  They are set once during Awake() in SpawnManager.
         }
 
-        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
+        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes()) // For all idle heroes
         {
-            Debug.Log("Stop " + heroManager.Hero().GetName());
-            if (heroManager.HeroPathing().GetPathMode() != EnumHandler.pathModes.IDLE)
+            //Debug.Log("Stop " + heroManager.Hero().GetName());
+            if (heroManager.HeroPathing().GetPathMode() != EnumHandler.pathModes.IDLE) // Set pathing to idle if it isn't already
             {
-                heroManager.HeroPathing().StopPathing();
+                heroManager.HeroPathing().StopPathing(); // and stop moving
             }
             
-            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
-            ActiveHeroesSystem.i.SetHeroManager(heroManager);
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject); // may not be needed.  They are set once during Awake() in SpawnManager.
+            ActiveHeroesSystem.i.SetHeroManager(heroManager); // may not be needed.  They are set once during Awake() in SpawnManager.
         }
 
-        // save all current Hero Managers in their current state
-        foreach (Transform obj in GameObject.Find(UIManager.i.GetHeroesTransformName()).transform)
-        {
-            //GameSettings.SetHeroObject(obj.GetComponent<HeroManager>().GetID(), obj.gameObject);
-        }
+        yield return UIManager.i.FadeToBlack(true); // The fade to black starts here and runtime will continue once it is done fading
 
-        yield return UIManager.i.FadeToBlack(true);        
-
-        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition);
-
-        Debug.Log("Loading scene");
-
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition); // Sets the player to the new spawn position
+                
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive); // And finally load the scene
         
         while (!asyncLoad.isDone)
         {
             yield return new WaitForEndOfFrame();
         }
+
+        DebugManager.i.SystemDebugOut("TransitionToScene", "Scene Loaded: " + sceneIndex);
+        GameSettings.SetSceneTransitionStarted(false);
     }
 
     //void OpenSave

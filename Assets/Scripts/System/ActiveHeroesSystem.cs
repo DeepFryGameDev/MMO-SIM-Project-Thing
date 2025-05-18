@@ -1,5 +1,9 @@
 using UnityEngine;
 
+// Purpose: 
+// Directions: 
+// Other notes: 
+
 public class ActiveHeroesSystem : MonoBehaviour
 {
     public static ActiveHeroesSystem i;
@@ -15,7 +19,7 @@ public class ActiveHeroesSystem : MonoBehaviour
     GameObject nicholinObject;
     HeroManager nicholinHeroManager;
 
-    private void Awake()
+    void Awake()
     {
         Singleton();
     }

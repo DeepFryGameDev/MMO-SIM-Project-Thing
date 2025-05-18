@@ -1,6 +1,9 @@
 using System.Collections.Generic;
-using UnityEditorInternal;
-using UnityEngine;
+using Unity.VisualScripting;
+
+// Purpose: 
+// Directions: 
+// Other notes: 
 
 public static class GameSettings
 {
@@ -19,4 +22,8 @@ public static class GameSettings
     static int unloadSceneIndex;
     public static int GetUnloadSceneIndex() { return unloadSceneIndex; }
     public static void SetUnloadSceneIndex(int index) { unloadSceneIndex = index; }
+
+    static bool sceneTransitionStarted;
+    public static bool GetSceneTransitionStarted() { return sceneTransitionStarted; }
+    public static void SetSceneTransitionStarted(bool transitionStarted) { sceneTransitionStarted = transitionStarted; }
 }

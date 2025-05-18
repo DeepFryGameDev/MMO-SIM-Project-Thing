@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class DebugSettings
 {
+    public static Color playerDebugColor;
+
     public static Color uiDebugColor;
 
     public static Color scheduleDebugColor;

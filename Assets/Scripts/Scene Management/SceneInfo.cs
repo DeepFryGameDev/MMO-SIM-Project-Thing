@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-// Purpose: Unsure if this is needed yet.
+// Purpose: This will be used to give various information about the scene so Unity knows how to handle various requests by the user (such as opening the menu).
 // Directions: Create a SceneInfo object in the editor, and attach this to it.
 // Other notes:
 

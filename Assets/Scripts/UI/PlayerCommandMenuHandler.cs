@@ -79,9 +79,9 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     void SetDateTexts()
     {
-        weekText.text = "Week " + DateManager.i.GetRealCurrentWeek().ToString();
-        monthText.text = DateManager.i.GetMonthString(DateManager.i.GetCurrentMonth());
-        yearText.text = DateManager.i.GetCurrentYear().ToString();
+        weekText.text = "Week " + DateSettings.GetRealCurrentWeek().ToString();
+        monthText.text = DateManager.i.GetMonthString(DateSettings.GetCurrentMonth());
+        yearText.text = DateSettings.GetCurrentYear().ToString();
     }
 
     /// <summary>
