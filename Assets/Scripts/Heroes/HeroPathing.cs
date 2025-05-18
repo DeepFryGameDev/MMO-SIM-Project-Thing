@@ -74,22 +74,6 @@ public class HeroPathing : MonoBehaviour
         SetPathMode(EnumHandler.pathModes.RANDOM);
     }
 
-    public void SetCollider()
-    {
-        switch (SceneInfo.i.GetMenuMode())
-        {
-            case EnumHandler.MenuMode.HOME:
-                // Debug.Log("Setting home zone collider");
-                homeZoneCollider = heroManager.HomeZone().GetComponent<BoxCollider>();
-                if (homeZoneCollider == null) { Debug.LogError("SetCollider: NULL"); }
-                break;
-
-            case EnumHandler.MenuMode.FIELD:
-
-                break;
-        }
-    }
-
     void Update()
     {
         switch (pathMode)
@@ -110,9 +94,33 @@ public class HeroPathing : MonoBehaviour
 
         HandleMoveSpeed();
 
-        SyncMoveSpeed();        
+        SyncMoveSpeed();
     }
 
+    /// <summary>
+    /// Sets the collider set on the heroManager's HomeZone to homeZoneCollider
+    /// This is used for finding positions strictly within their home zone's bounds
+    /// </summary>
+    public void SetCollider()
+    {
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.HOME:
+                // Debug.Log("Setting home zone collider");
+                homeZoneCollider = heroManager.HomeZone().GetComponent<BoxCollider>();
+                if (homeZoneCollider == null) { Debug.LogError("SetCollider: NULL"); }
+                break;
+
+            case EnumHandler.SceneMode.FIELD:
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Turns the navmesh agent on or off.  This is mainly used for transporting heroes between scenes smoothly.
+    /// </summary>
+    /// <param name="toggle">True to enable the agent, false to disable it</param>
     public void ToggleNavMeshAgent(bool toggle)
     {
         //Debug.Log("Toggling NavMeshAgent: " + toggle);
@@ -125,12 +133,12 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     void HandleMoveSpeed()
     {
-        switch (SceneInfo.i.GetMenuMode())
+        switch (SceneInfo.i.GetSceneMode())
         {
-            case EnumHandler.MenuMode.FIELD:
+            case EnumHandler.SceneMode.FIELD:
                 runMode = EnumHandler.pathRunMode.CANRUN;
                 break;
-            case EnumHandler.MenuMode.HOME:
+            case EnumHandler.SceneMode.HOME:
                 
                 break;
         }

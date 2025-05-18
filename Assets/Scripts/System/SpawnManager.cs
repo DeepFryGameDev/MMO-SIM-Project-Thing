@@ -39,12 +39,12 @@ public class SpawnManager : MonoBehaviour
         {
             if (!i.transitioning)
             {
-                switch (SceneInfo.i.GetMenuMode())
+                switch (SceneInfo.i.GetSceneMode())
                 {
-                    case EnumHandler.MenuMode.FIELD:
+                    case EnumHandler.SceneMode.FIELD:
                         
                         break;
-                    case EnumHandler.MenuMode.HOME:
+                    case EnumHandler.SceneMode.HOME:
                         
                         break;
                 }
@@ -78,12 +78,12 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        switch (SceneInfo.i.GetMenuMode())
+        switch (SceneInfo.i.GetSceneMode())
         {
-            case EnumHandler.MenuMode.FIELD:
+            case EnumHandler.SceneMode.FIELD:
 
                 break;
-            case EnumHandler.MenuMode.HOME:
+            case EnumHandler.SceneMode.HOME:
                 
                 break;
         }
@@ -227,12 +227,12 @@ public class SpawnManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(GameSettings.GetUnloadSceneIndex());        
 
         // set up heroes
-        switch (SceneInfo.i.GetMenuMode())
+        switch (SceneInfo.i.GetSceneMode())
         {
-            case EnumHandler.MenuMode.HOME:
+            case EnumHandler.SceneMode.HOME:
                 HeroHomeSetup();
                 break;
-            case EnumHandler.MenuMode.FIELD:
+            case EnumHandler.SceneMode.FIELD:
 
                 break;
         }
@@ -276,12 +276,12 @@ public class SpawnManager : MonoBehaviour
     /// </summary>
     void MoveHeroesToPosition()
     {
-        switch (SceneInfo.i.GetMenuMode())
+        switch (SceneInfo.i.GetSceneMode())
         {
             // -----------------------------------------------------------------
             // -- FIELD --
 
-            case EnumHandler.MenuMode.FIELD:
+            case EnumHandler.SceneMode.FIELD:
                 //Debug.Log("Moving heroes by field");
 
                 // -- IDLE HEROES --
@@ -323,7 +323,7 @@ public class SpawnManager : MonoBehaviour
             // -----------------------------------------------------------------
             // -- HOME --
 
-            case EnumHandler.MenuMode.HOME:
+            case EnumHandler.SceneMode.HOME:
                 // -- IDLE HEROES --
                 foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
                 {

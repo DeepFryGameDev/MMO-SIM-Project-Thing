@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used as the base level script for any events that should be triggered when the player touches an object.
+// Directions: Derive any second level event scripts that should interact on touch to this.
 // Other notes: 
 
 public class BaseInteractOnTouch : MonoBehaviour

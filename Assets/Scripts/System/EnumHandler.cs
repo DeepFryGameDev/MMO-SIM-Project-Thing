@@ -180,7 +180,10 @@ public static class EnumHandler
         ROOT
     }
 
-    public enum MenuMode
+    /// <summary>
+    /// Used to determine what type of menu should be displayed, among other functions
+    /// </summary>
+    public enum SceneMode
     {
         HOME,
         FIELD

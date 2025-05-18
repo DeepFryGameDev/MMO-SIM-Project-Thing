@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
-// Purpose: 
-// Directions: 
+// Purpose: Used as a static class to keep these values from being lost when transitioning scenes.  This will be used as a source of truth for heroes in the party and idle, as well as various other vars.
+// Directions: Just call this class to reference it - it's static.
 // Other notes: 
 
 public static class GameSettings
