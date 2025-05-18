@@ -40,7 +40,7 @@ public class PlayerWhistle : MonoBehaviour
     /// </summary>
     void ListenForWhistle()
     {
-        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle && GlobalSettings.GetUIState() == GlobalSettings.UIStates.IDLE)
+        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
         {
             // Check if standing on home zone
             RaycastHit hit;
@@ -52,7 +52,7 @@ public class PlayerWhistle : MonoBehaviour
                 heroManagerWhistled = hit.transform.gameObject.GetComponent<HeroHomeZone>().GetHeroManager();
                 // Debug.Log("Hero manager: " + heroManagerWhistled.Hero().name);
 
-                GlobalSettings.SetUIState(GlobalSettings.UIStates.HEROCOMMAND);
+                UISettings.SetUIState(EnumHandler.UIStates.HEROCOMMAND);
 
                 StartCoroutine(StartCommandFromWhistle());
             }
@@ -96,6 +96,6 @@ public class PlayerWhistle : MonoBehaviour
 
         // open command menu
         hcp.SetHeroManager(heroManagerWhistled);
-        hcp.OpenHeroCommand();
+        hcp.OpenHeroHomeCommand();
     }    
 }

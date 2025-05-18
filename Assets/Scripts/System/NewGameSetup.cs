@@ -60,7 +60,7 @@ public class NewGameSetup : MonoBehaviour
 
         PlayerSetup();
 
-        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
     }
 
     /// <summary>

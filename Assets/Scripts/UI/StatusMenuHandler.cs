@@ -114,7 +114,7 @@ public class StatusMenuHandler : MonoBehaviour
     /// </summary>
     public void OpenStatusMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.STATUS);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.STATUS);
     }
 
     /// <summary>
@@ -123,6 +123,6 @@ public class StatusMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseStatusMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
     }
 }

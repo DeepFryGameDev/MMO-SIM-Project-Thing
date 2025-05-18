@@ -17,6 +17,8 @@ public class TransitionToDebugField : SceneTransitionEvent
             if (!running)
             {
                 running = true;
+                
+
                 base.OnTriggerEnter(other);
 
                 StartCoroutine(scriptedEvent.TransitionToScene(sceneIndex, spawnPosition));

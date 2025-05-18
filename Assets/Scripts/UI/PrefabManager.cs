@@ -10,6 +10,7 @@ public class PrefabManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Prefab manager setting i");
         i = this;
     }
 
@@ -39,4 +40,6 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the button to be used for the inventory context menu for 'Give To x Hero' button")]
     public GameObject ContextMenuItemHeroGiveToHeroButton;
+
+    public GameObject HeroCommandFieldMenuPanel;
 }

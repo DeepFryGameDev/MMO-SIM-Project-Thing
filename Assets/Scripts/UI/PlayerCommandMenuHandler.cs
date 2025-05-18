@@ -48,30 +48,53 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     void CheckForMenuKey()
     {
-        if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && GlobalSettings.GetUIState() == GlobalSettings.UIStates.IDLE)
+        switch (SceneInfo.i.GetSceneMode())
         {
-            // disable player movement
-            playerMovement.ToggleMovement(false);
+            case EnumHandler.SceneMode.FIELD:
+                if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
+                {
+                    // For now we are disabling player movement.  Eventually I think it would be cool to allow player movement while action is happening, but we need to figure out how to switch to a camera mode that works without needing the mouse.
+                    playerMovement.ToggleMovement(false);
+                    cam.ToggleCameraRotation(false);
 
-            // disable player whistle ability
-            playerWhistle.ToggleCanWhistle(false);
+                    MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
 
-            // Set the date text labels
-            SetDateTexts();
+                    // should put in a better function later
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
 
-            // open menu
-            MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);
+                    UISettings.SetUIState(EnumHandler.UIStates.PLAYERCOMMAND);
 
-            // should fix later
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+                    MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
+                }              
+                break;
+            case EnumHandler.SceneMode.HOME:
+                if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
+                {
+                    // disable player movement
+                    playerMovement.ToggleMovement(false);
 
-            cam.ToggleCameraRotation(false);
+                    // disable player whistle ability
+                    playerWhistle.ToggleCanWhistle(false);
 
-            GlobalSettings.SetUIState(GlobalSettings.UIStates.PLAYERCOMMAND);
+                    // Set the date text labels
+                    SetDateTexts();
 
-            DateManager.i.StopNewWeekToast();
-        }
+                    // open menu
+                    MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.ROOT);
+
+                    // should fix later
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+
+                    cam.ToggleCameraRotation(false);
+
+                    UISettings.SetUIState(EnumHandler.UIStates.PLAYERCOMMAND);
+
+                    DateManager.i.StopNewWeekToast();
+                }
+                break;
+        }        
     }
 
     /// <summary>
@@ -90,17 +113,17 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseMenuButtonClicked()
     {
-        CloseMenu(true);
+        CloseHomeMenu(true);
     }
 
     /// <summary>
     /// Closes the menu and sets the menu states back to idle
     /// </summary>
     /// <param name="allowMovement">If the player simply closed the menu and can move again, or if the system is moving to the next day and blocks movement.</param>
-    void CloseMenu(bool allowMovement)
+    void CloseHomeMenu(bool allowMovement)
     {
         // close menu
-        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.IDLE);
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.IDLE);
 
         if (allowMovement)
         {
@@ -115,9 +138,37 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
         // should fix later
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;        
+        Cursor.visible = false;
 
-        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
+    }
+
+    void CloseFieldMenu(bool allowMovement)
+    {
+        // close menu
+        MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.IDLE);
+
+        if (allowMovement)
+        {
+            // enable player movement
+            playerMovement.ToggleMovement(true);
+
+            // enable player whistle ability
+            playerWhistle.ToggleCanWhistle(true);
+
+            cam.ToggleCameraRotation(true);
+        }
+
+        // should fix later
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
+    }
+
+    public void CloseFieldMenuButtonClicked()
+    {
+        CloseFieldMenu(true);
     }
 
     /// <summary>
@@ -128,7 +179,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     {
         StartCoroutine(DateManager.i.ProcessStartWeek());
 
-        CloseMenu(false);
+        CloseHomeMenu(false);
     }
 
     /// <summary>
@@ -142,6 +193,6 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         PartyManager.i.SetPartyMenuUI();
 
         // show party UI
-        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.PARTY);
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.PARTY);
     }
 }

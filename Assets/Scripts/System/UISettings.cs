@@ -1,4 +1,5 @@
 using UnityEngine;
+using static GlobalSettings;
 
 // Purpose: Used to call various global settings related to UI functionality.
 // Directions: Just call UISettings to receive functionality.
@@ -6,6 +7,11 @@ using UnityEngine;
 
 public static class UISettings
 {
+    static EnumHandler.UIStates uiState; // Set any time a menu is opened so we know what menu is opened (or if it should be blocked from being opened)
+
+    public static void SetUIState(EnumHandler.UIStates newUIState) { uiState = newUIState; }
+    public static EnumHandler.UIStates GetUIState() { return uiState; }
+
     public static Color junkItemColor;
     public static Color uncommonItemColor;
     public static Color rareItemColor;

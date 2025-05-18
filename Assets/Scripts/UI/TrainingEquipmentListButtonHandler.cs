@@ -50,6 +50,6 @@ public class TrainingEquipmentListButtonHandler : MonoBehaviour
         heroManager.HomeZone().InstantiateTrainingEquipmentPrefabs();
 
         // hide the List window
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIP);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIP);
     }
 }

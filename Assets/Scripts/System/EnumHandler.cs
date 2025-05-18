@@ -156,9 +156,20 @@ public static class EnumHandler
     // --- UI ---
 
     /// <summary>
+    /// Used to determine which menu is opened between Hero and Player
+    /// </summary>
+    public enum UIStates
+    {
+        IDLE,
+        HEROCOMMAND,
+        PLAYERCOMMAND,
+        BLOCKED
+    }
+
+    /// <summary>
     /// Used to navigate through the hero command menu.
     /// </summary>
-    public enum HeroCommandMenuStates
+    public enum HeroCommandHomeMenuStates
     {
         IDLE,
         ROOT,
@@ -173,10 +184,31 @@ public static class EnumHandler
     /// <summary>
     /// Used to navigate through the player command menu. Not yet implemented.
     /// </summary>
-    public enum PlayerCommandMenuStates
+    public enum PlayerCommandHomeMenuStates
     {
         IDLE,
         PARTY,
+        ROOT
+    }
+
+    /// <summary>
+    /// Used to navigate through the hero command menu.
+    /// </summary>
+    public enum HeroCommandFieldMenuStates
+    {
+        IDLE,
+        ROOT,
+        STATUS,
+        INVENTORY,
+        EQUIP
+    }
+
+    /// <summary>
+    /// Used to navigate through the player command menu. Not yet implemented.
+    /// </summary>
+    public enum PlayerCommandFieldMenuStates
+    {
+        IDLE,
         ROOT
     }
 

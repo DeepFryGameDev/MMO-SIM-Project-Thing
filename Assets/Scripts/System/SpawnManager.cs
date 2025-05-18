@@ -226,7 +226,7 @@ public class SpawnManager : MonoBehaviour
         DebugManager.i.SystemDebugOut("SpawnManager", "Unloading Scene: " + GameSettings.GetUnloadSceneIndex());
         SceneManager.UnloadSceneAsync(GameSettings.GetUnloadSceneIndex());        
 
-        // set up heroes
+        // set Heroes up
         switch (SceneInfo.i.GetSceneMode())
         {
             case EnumHandler.SceneMode.HOME:
@@ -242,6 +242,21 @@ public class SpawnManager : MonoBehaviour
 
         // Allow the player to move again
         PlayerMovement.i.ToggleMovement(true);
+
+        // And any last minute stuff that should happen
+        // --------------------------------------------
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.HOME:
+
+                break;
+            case EnumHandler.SceneMode.FIELD:
+
+                break;
+        }
+
+        MenuProcessingHandler.i = FindFirstObjectByType<MenuProcessingHandler>();
+        // ---------------------------------------------
 
         // Fade the black back out so the user can see again
         StartCoroutine(UIManager.i.FadeToBlack(false));

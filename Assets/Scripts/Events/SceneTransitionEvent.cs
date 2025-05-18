@@ -10,5 +10,11 @@ public class SceneTransitionEvent : BaseInteractOnTouch
     [SerializeField] protected int sceneIndex;
 
     [Tooltip("The position in the new scene that the player should spawn at.")]
-    [SerializeField] protected Vector3 spawnPosition;    
+    [SerializeField] protected Vector3 spawnPosition;
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (SceneInfo.i.GetSceneMode() == EnumHandler.SceneMode.HOME) DateManager.i.StopNewWeekToast();
+    }
 }

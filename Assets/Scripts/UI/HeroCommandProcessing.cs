@@ -1,13 +1,11 @@
 using UnityEngine;
 
-// Purpose: Handles the procedures in which the command window operates when on a Hero Home Zone
-// Directions: For now, attach to the [UI]/HeroZoneCanvas/HeroCommand object
+// Purpose: Handles the procedures in which the command window operates when on a Hero Home Zone or out in the field
+// Directions: For now, attach to the [UI]/HeroCommandMenu/HeroCommand object
 // Other notes: 
 
 public class HeroCommandProcessing : MonoBehaviour
 {  
-    CanvasGroup CommandCanvasGroup; // Set to the canvasGroup attached to the HeroCommand UI panel
-
     HeroManager heroManager;
     public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
 
@@ -23,6 +21,8 @@ public class HeroCommandProcessing : MonoBehaviour
 
     [SerializeField] StatusMenuHandler statusMenuHandler;
 
+    [SerializeField] Transform heroPanelGroupTransform;
+
     void Awake()
     {
         Setup();
@@ -30,7 +30,6 @@ public class HeroCommandProcessing : MonoBehaviour
 
     void Setup()
     {
-        CommandCanvasGroup = GameObject.Find("HeroZoneCanvas/HeroCommand").GetComponent<CanvasGroup>(); //hacky, need to fix this later
         playerInteraction = FindFirstObjectByType<PlayerInteraction>(); // and this
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
@@ -42,14 +41,14 @@ public class HeroCommandProcessing : MonoBehaviour
     public void OnInteract()
     {
         // should eventually make sure player and hero are on a hero zone first.
-        OpenHeroCommand();
+        OpenHeroHomeCommand();
     }
 
     /// <summary>
     /// Function called when the hero command window should be opened.  
     /// This includes any methods related to allowing the user to interact with the UI like toggling player movement
     /// </summary>
-    public void OpenHeroCommand()
+    public void OpenHeroHomeCommand()
     {
         // Turn off interaction image in UI
         playerInteraction.SetIgnoreRay(true);
@@ -61,10 +60,33 @@ public class HeroCommandProcessing : MonoBehaviour
         heroManager.HeroPathing().StopPathing();
 
         //3. ToggleCommandMenu to open it
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
 
         // Stop show toast
         DateManager.i.StopNewWeekToast();
+    }
+
+    public void GenerateHeroFieldCommandMenu()
+    {
+        ClearHeroFieldCommandMenu();
+
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        {
+            if (PrefabManager.i == null) { PrefabManager.i = FindFirstObjectByType<PrefabManager>(); }
+            GameObject newObject = Instantiate(PrefabManager.i.HeroCommandFieldMenuPanel, heroPanelGroupTransform);
+
+            HeroCommandFieldMenuHandler handler = newObject.GetComponent<HeroCommandFieldMenuHandler>();
+
+            handler.SetValues(heroManager);
+        }
+    }
+
+    void ClearHeroFieldCommandMenu()
+    {
+        foreach (Transform transform in heroPanelGroupTransform)
+        {
+            Destroy(transform.gameObject);
+        }
     }
 
     /// <summary>
@@ -74,7 +96,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseHeroCommand()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.IDLE);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.IDLE);
 
         heroManager.HeroPathing().StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
 
@@ -82,7 +104,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
         playerInteraction.SetIgnoreRay(false);
 
-        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
     }
 
     /// <summary>
@@ -94,7 +116,7 @@ public class HeroCommandProcessing : MonoBehaviour
         // draw 'equip' slots for HeroTrainingEquipment.trainingEquipmentSlots
         trainingEquipmentMenu.InstantiateEquipmentSlots(heroManager);
 
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIP);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIP);
     }
 
     /// <summary>
@@ -103,7 +125,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseTrainingEquipmentMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
     }
 
     /// <summary>
@@ -119,7 +141,7 @@ public class HeroCommandProcessing : MonoBehaviour
         heroInventoryUIHandler.SetHeroDetailsPanel(heroManager);
         heroInventoryUIHandler.GenerateInventory(heroManager);
 
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.INVENTORY);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.INVENTORY);
     }
 
     /// <summary>
@@ -128,7 +150,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseInventoryMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
     }
 
     /// <summary>
@@ -144,6 +166,6 @@ public class HeroCommandProcessing : MonoBehaviour
         statusMenuHandler.ToggleMenu(true);
 
         // display HeroEquipCanvas
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.EQUIP);
+        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.EQUIP);
     }
 }

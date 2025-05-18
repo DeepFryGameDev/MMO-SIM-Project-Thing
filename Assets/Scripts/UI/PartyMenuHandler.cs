@@ -137,7 +137,7 @@ public class PartyMenuHandler : MonoBehaviour
             partyHUDHandler.ToggleHUD(false);
         }
 
-        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.ROOT);
     }
 
     /// <summary>
@@ -151,6 +151,6 @@ public class PartyMenuHandler : MonoBehaviour
         PartyManager.i.ClearTempActiveHeroes();
         PartyManager.i.ClearTempInactiveHeroes();
 
-        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandMenuStates.ROOT);
+        MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.ROOT);
     }
 }

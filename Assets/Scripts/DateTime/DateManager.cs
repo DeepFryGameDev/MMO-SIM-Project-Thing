@@ -116,7 +116,7 @@ public class DateManager : MonoBehaviour
     {
         #region pre-transition
         // keep player from opening any other menus
-        GlobalSettings.SetUIState(GlobalSettings.UIStates.BLOCKED);
+        UISettings.SetUIState(EnumHandler.UIStates.BLOCKED);
 
         // hide mouse cursor
         ToggleCursor(false);
@@ -236,7 +236,7 @@ public class DateManager : MonoBehaviour
             GameSettings.SetHeroObject(heroManager.GetID(), heroManager.gameObject);
         }*/       
 
-        GlobalSettings.SetUIState(GlobalSettings.UIStates.IDLE);
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
 
         #endregion
     }

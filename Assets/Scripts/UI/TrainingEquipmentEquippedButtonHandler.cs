@@ -26,13 +26,13 @@ public class TrainingEquipmentEquippedButtonHandler : MonoBehaviour
         Debug.Log("Should show some kind of highlight on object " + trainingEquipMenu.GetClickedEquippedTrainingButton());
         trainingEquipMenu.SetClickedEquippedTrainingButtonHandler(this);
 
-        if (MenuProcessingHandler.i.GetHeroCommandMenuState() != EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST)
+        if (MenuProcessingHandler.i.GetHeroCommandMenuState() != EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIPLIST)
         {
             // instantiate all training equipment from inventory into list
             trainingEquipMenu.InstantiateEquipmentInventoryList(heroManager);
 
             // open the list menu
-            MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandMenuStates.TRAININGEQUIPLIST);
+            MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIPLIST);
         }
     }
 }
