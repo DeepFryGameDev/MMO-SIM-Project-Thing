@@ -223,6 +223,8 @@ public class SpawnManager : MonoBehaviour
         }
 
         // Unload the last scene
+        DebugManager.i.SystemDebugOut("TransitionToScene", "------------And here.  Keep on rocking in the free world, and doot doola doot doo.-------------");
+
         DebugManager.i.SystemDebugOut("SpawnManager", "Unloading Scene: " + GameSettings.GetUnloadSceneIndex());
         SceneManager.UnloadSceneAsync(GameSettings.GetUnloadSceneIndex());        
 

@@ -552,7 +552,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseEquipMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
 
         CloseEquipScroll();
     }

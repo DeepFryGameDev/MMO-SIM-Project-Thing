@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class HeroCommandFieldMenuHandler : MonoBehaviour
 {
     int heroID;
+    HeroManager heroManager;
 
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI levelText;
@@ -28,6 +29,7 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
     public void SetValues(HeroManager heroManager)
     {
         heroID = heroManager.GetID();
+        this.heroManager = heroManager;
 
         nameText.SetText(heroManager.Hero().GetName());
 
@@ -48,7 +50,17 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
 
     public void StatusButtonOnClick()
     {
+        if (StatusMenuHandler.i == null) { StatusMenuHandler.i = FindFirstObjectByType<StatusMenuHandler>(); }
 
+        MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.STATUS);
+        DebugManager.i.UIDebugOut("HeroCommandFieldMenu", "Display status for " + heroManager.Hero().GetName());
+
+        StatusMenuHandler.i.SetHeroManager(heroManager);
+
+        StatusMenuHandler.i.SetStatusValues();
+        StatusMenuHandler.i.SetFacePanelValues();
+
+        StatusMenuHandler.i.ToggleActiveEffectsStatusMenu(true);
     }
 
     public void OnInventoryButtonOnClick()

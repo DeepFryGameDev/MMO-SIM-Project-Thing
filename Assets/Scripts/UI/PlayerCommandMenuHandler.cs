@@ -58,6 +58,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
                     cam.ToggleCameraRotation(false);
 
                     MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
+                    MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.ROOT);
 
                     // should put in a better function later
                     Cursor.lockState = CursorLockMode.None;

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,25 +31,30 @@ public class StatusMenuHandler : MonoBehaviour
     [SerializeField] Animator activeEffectsPanelAnim;
     [SerializeField] CanvasGroup closeButtonCanvasGroup;
 
+    [SerializeField] Animator heroFacePanelAnim;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Image faceImage;
+
+    public static StatusMenuHandler i;
+
+    HeroManager heroManager;
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
+    public HeroManager GetHeroManager() { return heroManager; }
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
+
+        i = this;
     }
 
     /// <summary>
     /// Simply sets the text values in UI to the hero's parameters in the heroManager.
     /// </summary>
     /// <param name="heroManager">HeroManager of the hero to set the status values.</param>
-    public void SetStatusValues(HeroManager heroManager)
+    public void SetStatusValues()
     {
-        expBarFill.fillAmount = 0; // update
-        expBarText.SetText("0/0"); // update
-
-        hpBarFill.fillAmount = 0; // update
-        hpBarText.SetText("0/0"); // update
-
-        mpBarFill.fillAmount = 0; // update
-        mpBarText.SetText("0/0"); // update
+        ClearValues();
 
         classText.SetText(heroManager.HeroClass().GetCurrentClass().name);
 
@@ -60,19 +66,27 @@ public class StatusMenuHandler : MonoBehaviour
         faithValue.SetText(heroManager.Hero().GetFaith().ToString());
     }
 
+    public void SetFacePanelValues()
+    {
+        faceImage.sprite = heroManager.GetFaceImage();
+        nameText.SetText(heroManager.Hero().GetName());        
+
+        heroFacePanelAnim.SetBool("toggleOn", true);
+    }
+
     /// <summary>
     /// Maybe not needed.  Just clears the text values in UI.
     /// </summary>
     public void ClearValues()
     {
-        expBarFill.fillAmount = 0; // update
-        expBarText.SetText("0/0"); // update
+        expBarFill.fillAmount = 0;
+        expBarText.SetText("0/0");
 
-        hpBarFill.fillAmount = 0; // update
-        hpBarText.SetText("0/0"); // update
+        hpBarFill.fillAmount = 0;
+        hpBarText.SetText("0/0");
 
-        mpBarFill.fillAmount = 0; // update
-        mpBarText.SetText("0/0"); // update
+        mpBarFill.fillAmount = 0;
+        mpBarText.SetText("0/0");
 
         classText.SetText(string.Empty);
 
@@ -108,13 +122,20 @@ public class StatusMenuHandler : MonoBehaviour
         closeButtonCanvasGroup.blocksRaycasts = toggle;
     }
 
+    public void ToggleFacePanelStatusMenu(bool toggle)
+    {
+        heroFacePanelAnim.SetBool("toggleOn", toggle);
+    }
+
     /// <summary>
     /// Called when the user clicks the Status button in the Hero Command menu
     /// Assigned to: [UI]/HeroZoneCanvas/HeroCommand/Holder/ButtonGroup/StatusButton.OnClick()
     /// </summary>
     public void OpenStatusMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.STATUS);
+        SetStatusValues();
+
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.STATUS);
     }
 
     /// <summary>
@@ -123,6 +144,15 @@ public class StatusMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseStatusMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.FIELD:
+                MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.ROOT);
+                MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
+                break;
+            case EnumHandler.SceneMode.HOME:
+                MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+                break;
+        }        
     }
 }

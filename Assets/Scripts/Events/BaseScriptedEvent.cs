@@ -58,6 +58,8 @@ public class BaseScriptedEvent : MonoBehaviour
     public IEnumerator TransitionToScene(int sceneIndex, Vector3 spawnPosition)
     {
         DebugManager.i.SystemDebugOut("TransitionToScene", "Loading Scene - Build Index: " + sceneIndex);
+        DebugManager.i.SystemDebugOut("TransitionToScene", "Warnings may occur between these lines.  You should be safe to ignore them as they are caused to two scenes existing at once, but double check.");
+        DebugManager.i.SystemDebugOut("TransitionToScene", "---------------------------------------------------------------------------------------");
 
         GameSettings.SetSceneTransitionStarted(true);
 

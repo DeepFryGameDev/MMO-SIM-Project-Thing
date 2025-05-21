@@ -74,6 +74,11 @@ public class PartyManager : MonoBehaviour
     /// </summary>
     public void GenerateHeroManagerListsForMenu()
     {
+        if (inactiveHeroes.Count == 0 && activeHeroes.Count == 0)
+        {
+            SetDefaultLists();
+        }
+
         ClearTempActiveHeroes();
         ClearTempInactiveHeroes();
 

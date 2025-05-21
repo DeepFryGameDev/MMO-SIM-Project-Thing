@@ -10,7 +10,7 @@ public class PrefabManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Prefab manager setting i");
+        //Debug.Log("Prefab manager setting i");
         i = this;
     }
 

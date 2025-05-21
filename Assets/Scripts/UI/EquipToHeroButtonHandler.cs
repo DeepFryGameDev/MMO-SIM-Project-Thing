@@ -25,8 +25,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
 
     HeroEquipMenuHandler heroEquipMenuHandler;
 
-    StatusMenuHandler statusMenuHandler;
-
     int ringSlotClicked = 0;
     public void SetRingSlotClicked(int slotClicked) { ringSlotClicked = slotClicked; }
 
@@ -36,7 +34,6 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
     void Awake()
     {
         heroEquipMenuHandler = FindFirstObjectByType<HeroEquipMenuHandler>();
-        statusMenuHandler = FindFirstObjectByType<StatusMenuHandler>();
     }
 
     /// <summary>
@@ -183,7 +180,8 @@ public class EquipToHeroButtonHandler : MonoBehaviour, IPointerEnterHandler, IPo
         // clear inventory list
         heroEquipMenuHandler.ClearInventoryList();
 
-        statusMenuHandler.SetStatusValues(heroManager);
+        StatusMenuHandler.i.SetHeroManager(heroManager);
+        StatusMenuHandler.i.SetStatusValues();
     }
 
    /// <summary>

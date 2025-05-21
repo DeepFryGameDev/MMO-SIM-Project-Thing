@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 // Purpose: Used as a static class to keep these values from being lost when transitioning scenes.  This will be used as a source of truth for heroes in the party and idle, as well as various other vars.
 // Directions: Just call this class to reference it - it's static.
@@ -16,7 +17,10 @@ public static class GameSettings
     public static List<HeroManager> GetIdleHeroes() { return idleHeroes; }
     public static void AddToIdleHeroes(HeroManager heroManager) { idleHeroes.Add(heroManager); } // Debug.Log("Adding to idle heroes: " + heroManager.Hero().GetName();) }
     public static void RemoveFromIdleHeroes(HeroManager heroManager) { idleHeroes.Remove(heroManager); }
-    public static void ClearIdleHeroes() { idleHeroes.Clear(); } // Debug.Log("Clearing idle heroes"); }
+    public static void ClearIdleHeroes() 
+    { 
+        idleHeroes.Clear();
+    }
 
     static int unloadSceneIndex;
     public static int GetUnloadSceneIndex() { return unloadSceneIndex; }

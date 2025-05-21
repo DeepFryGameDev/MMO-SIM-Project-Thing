@@ -209,7 +209,8 @@ public static class EnumHandler
     public enum PlayerCommandFieldMenuStates
     {
         IDLE,
-        ROOT
+        ROOT,
+        INHEROMENU
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ using UnityEngine;
 public class HeroCommandProcessing : MonoBehaviour
 {  
     HeroManager heroManager;
-    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; StatusMenuHandler.i.SetHeroManager(heroManager); }
 
     PlayerMovement playerMovement; // Just used to toggle player's movement when command window is opened
 
@@ -18,8 +18,6 @@ public class HeroCommandProcessing : MonoBehaviour
     [SerializeField] HeroInventoryUIHandler heroInventoryUIHandler;
 
     [SerializeField] HeroEquipMenuHandler heroEquipMenuHandler;
-
-    [SerializeField] StatusMenuHandler statusMenuHandler;
 
     [SerializeField] Transform heroPanelGroupTransform;
 
@@ -60,7 +58,7 @@ public class HeroCommandProcessing : MonoBehaviour
         heroManager.HeroPathing().StopPathing();
 
         //3. ToggleCommandMenu to open it
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
 
         // Stop show toast
         DateManager.i.StopNewWeekToast();
@@ -96,7 +94,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseHeroCommand()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.IDLE);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.IDLE);
 
         heroManager.HeroPathing().StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
 
@@ -116,7 +114,7 @@ public class HeroCommandProcessing : MonoBehaviour
         // draw 'equip' slots for HeroTrainingEquipment.trainingEquipmentSlots
         trainingEquipmentMenu.InstantiateEquipmentSlots(heroManager);
 
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIP);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIP);
     }
 
     /// <summary>
@@ -125,7 +123,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseTrainingEquipmentMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
     }
 
     /// <summary>
@@ -141,7 +139,7 @@ public class HeroCommandProcessing : MonoBehaviour
         heroInventoryUIHandler.SetHeroDetailsPanel(heroManager);
         heroInventoryUIHandler.GenerateInventory(heroManager);
 
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.INVENTORY);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.INVENTORY);
     }
 
     /// <summary>
@@ -150,7 +148,7 @@ public class HeroCommandProcessing : MonoBehaviour
     /// </summary>
     public void CloseInventoryMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
     }
 
     /// <summary>
@@ -162,10 +160,12 @@ public class HeroCommandProcessing : MonoBehaviour
         // set any already equipped items to the EquipButtonsPanel
         heroEquipMenuHandler.GenerateEquippedEquipmentButtons(heroManager);
 
-        statusMenuHandler.SetStatusValues(heroManager);
-        statusMenuHandler.ToggleMenu(true);
+        StatusMenuHandler.i.SetHeroManager(heroManager);
+        StatusMenuHandler.i.SetStatusValues();
+
+        StatusMenuHandler.i.ToggleMenu(true);
 
         // display HeroEquipCanvas
-        MenuProcessingHandler.i.SetHeroCommandMenuState(EnumHandler.HeroCommandHomeMenuStates.EQUIP);
+        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.EQUIP);
     }
 }
