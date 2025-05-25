@@ -18,11 +18,12 @@ public class PartyFollow : MonoBehaviour
     [SerializeField] PartyAnchor anchorSlot3;
     [SerializeField] PartyAnchor anchorSlot4;
 
-    EnumHandler.PartyFollowStates partyFollowState;
+    public EnumHandler.PartyFollowStates partyFollowState;
     public EnumHandler.PartyFollowStates GetPartyFollowState() { return partyFollowState; }
     public void SetPartyFollowState(EnumHandler.PartyFollowStates followState) { partyFollowState = followState; }
 
-    List<HeroManager> currentlyAnchoredHeroes = new List<HeroManager>();
+    List<HeroManager> currentlyAnchoredHeroes = new List<HeroManager>(); // Used as a list to store heroes that are actually anchored to the player
+    List<HeroManager> tempCurrentlyAnchoredHeroes = new List<HeroManager>(); // Used as a list to store when heroes are still in the 'catch up' state
 
     public static PartyFollow i;
 
@@ -37,6 +38,7 @@ public class PartyFollow : MonoBehaviour
     {
         leavingBaseZoneLayer = LayerMask.GetMask("LeavingBaseZone");
         isFloorLayer = LayerMask.GetMask("whatIsBaseFloor");
+        partyFollowState = EnumHandler.PartyFollowStates.IDLE;
     }
 
     void Update()
@@ -44,19 +46,29 @@ public class PartyFollow : MonoBehaviour
         switch (partyFollowState)
         {
             case EnumHandler.PartyFollowStates.IDLE:
+
                 CheckForLeavingBaseZone();
+
                 break;
             case EnumHandler.PartyFollowStates.FOLLOWINBASE:
-                // Ensure any heroes in the party are anchored
-                KeepActiveHeroesAnchored();
+                //Debug.Log("In followinbase");
 
                 // at any point, if a hero is inactive AND anchored, they should be sent home immediately.  This means they were removed from the party before leaving the leaveZone.
                 ReleaseAnchoredInactiveHeroes();
 
+                // Ensure anyone in temp list goes to catchup
+                RunCatchup();
+
+                // Ensure any heroes in the party are anchored
+                KeepActiveHeroesAnchored();                
+
+
                 CheckForEnteringBaseZone();
+
                 break;
-            case EnumHandler.PartyFollowStates.FOLLOW:
+            case EnumHandler.PartyFollowStates.FOLLOW: // this is for outside of base.  So far i haven't had to do anything with this.
                 
+                CheckForLeavingBaseZone();
                 break;
         }       
     }
@@ -71,9 +83,11 @@ public class PartyFollow : MonoBehaviour
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z),
             transform.TransformDirection(Vector3.down), out hit, raycastDist, leavingBaseZoneLayer))
         {
-            // DebugManager.i.PartyDebugOut("PartyFollow", "HitLeavingBaseZone", false, false);
+            DebugManager.i.PartyDebugOut("PartyFollow", "Leaving home - party members anchoring!", false, false);
 
             //SetAnchoredHeroesList();
+
+            SetTempFollowList();
 
             // set the heroes to the anchor points and change their pathing
             partyFollowState = EnumHandler.PartyFollowStates.FOLLOWINBASE;            
@@ -91,12 +105,21 @@ public class PartyFollow : MonoBehaviour
 
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z),
             transform.TransformDirection(Vector3.down), out hit, raycastDist, isFloorLayer))
-        {
-             // DebugManager.i.PartyDebugOut("PartyFollow", "HitEnteringBaseZone", false, false);
+        {            
+            DebugManager.i.PartyDebugOut("PartyFollow", "Entering home - party members going back to their business!", false, false);
 
             // Send all heroes back to their starting point
 
             foreach (HeroManager heroManager in currentlyAnchoredHeroes)
+            {
+                heroManager.HeroPathing().StopPathing();
+
+                heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
+
+                heroManager.HeroPathing().StartPartyRunHomePathing();
+            }
+
+            foreach (HeroManager heroManager in tempCurrentlyAnchoredHeroes)
             {
                 heroManager.HeroPathing().StopPathing();
 
@@ -118,12 +141,24 @@ public class PartyFollow : MonoBehaviour
     /// </summary>
     public void SetAnchoredHeroesList()
     {
+        //Debug.Log("Setting anchored heroes list");
+
         currentlyAnchoredHeroes.Clear();
 
         foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             //Debug.Log("Adding " + heroManager + " to anchored heroes list");
-            currentlyAnchoredHeroes.Add(heroManager);
+            // check if they are close enough to their anchor part to add them to currentlyAnchored
+            // if so, add them to currentlyAnchored.  If not, add them to temporary list instead.
+            //
+            //
+            if (Vector3.Distance(heroManager.HeroParty().GetPartyAnchor().GetPosition(), heroManager.transform.position) > 3)
+            {
+                tempCurrentlyAnchoredHeroes.Add(heroManager);
+            } else
+            {
+                currentlyAnchoredHeroes.Add(heroManager);
+            }                
         }
     }
 
@@ -132,18 +167,44 @@ public class PartyFollow : MonoBehaviour
     /// </summary>
     void ReleaseAnchoredInactiveHeroes()
     {
-        foreach (HeroManager heroManager in currentlyAnchoredHeroes)
+        foreach (HeroManager heroManager in tempCurrentlyAnchoredHeroes)
         {
-            if (PartyManager.i.GetInactiveHeroes().Contains(heroManager))
+            if (GameSettings.GetIdleHeroes().Contains(heroManager))
             {
                 heroManager.HeroPathing().StopPathing();
-
                 heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);
-
                 heroManager.HeroPathing().StartPartyRunHomePathing();
-
                 SetAnchoredHeroesList();
             }
+
+            /*if (tempCurrentlyAnchoredHeroes.Contains(heroManager))
+            {
+                Debug.Log("Hero is in tempCurrentlyAnchoredHeroes");
+
+                if (GameSettings.GetHeroesInParty().Contains(heroManager))
+                {
+                    Debug.Log("Hero is in party");
+                }
+                else
+                {
+                    Debug.Log("Hero is not in party");
+                }
+            } else
+            {
+                Debug.Log("Hero is not in tempCurrentlyAnchoredHeroes");
+
+            }
+
+            if (currentlyAnchoredHeroes.Contains(heroManager))
+            {
+                Debug.Log("hero is currently anchored");
+            }
+            else
+            {
+                Debug.Log("Hero is not currently anchored.");
+                break;
+            }*/
+
         }        
     }
 
@@ -152,9 +213,11 @@ public class PartyFollow : MonoBehaviour
     /// </summary>
     void KeepActiveHeroesAnchored()
     {
-        bool setNewAnchoredList = false;
+        // Run catchup on anyone who is in the temp list. (should be in a separate method)
 
-        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        // if they are currently anchored, run party pathing instead
+        bool setNewAnchoredList = false;
+        foreach (HeroManager heroManager in currentlyAnchoredHeroes)
         {
             if (!currentlyAnchoredHeroes.Contains(heroManager))
             {
@@ -162,15 +225,77 @@ public class PartyFollow : MonoBehaviour
                 // DebugManager.i.PartyDebugOut("PartyFollow", heroManager.Hero().GetName() + " should be anchored");
                 setNewAnchoredList = true;
 
-                heroManager.HeroPathing().StopPathing();
-
-                heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CATCHUP);
-
                 heroManager.HeroPathing().StartPartyPathing();
             }          
         }
 
         if (setNewAnchoredList) SetAnchoredHeroesList();
+    }
+
+   /// <summary>
+   /// 
+   /// </summary>
+    void RunCatchup()
+    {
+        {
+            foreach (HeroManager heroManager in tempCurrentlyAnchoredHeroes)
+            {
+                if (heroManager.HeroPathing().GetRunMode() != EnumHandler.pathRunMode.CATCHUP && !currentlyAnchoredHeroes.Contains(heroManager))
+                {
+                    heroManager.HeroPathing().StopPathing();
+
+                    heroManager.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CATCHUP);
+                    heroManager.HeroPathing().SetPathMode(EnumHandler.pathModes.PARTYFOLLOW);
+
+                    // check if they should are close enough to be considered 'anchored', and them add them to currentlyAnchoredHeroes, and remove them from tempCurrentlyAnchoredHeroes.  Will probably need to use a separate list for this.
+
+                    if (IfCloseEnoughForAnchor(heroManager))
+                    {
+                        // remove them from tempCurrentlyAnchored and set them to anchored
+                        currentlyAnchoredHeroes.Add(heroManager);
+                    }
+                }
+            }
+        }
+
+        // If we run this in the above loop, we will get a Collection was modified error.  This just removes them from the temp list once they are actually anchored.
+        foreach (HeroManager heroManager in currentlyAnchoredHeroes)
+        {
+            if (tempCurrentlyAnchoredHeroes.Contains(heroManager))
+            {
+                tempCurrentlyAnchoredHeroes.Remove(heroManager);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="heroManager"></param>
+    /// <returns></returns>
+    bool IfCloseEnoughForAnchor(HeroManager heroManager)
+    {
+        if (Vector3.Distance(heroManager.transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()) > 5) // will need to be set to a value in a settings script.  For now, this is ok.
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void SetTempFollowList()
+    {
+        tempCurrentlyAnchoredHeroes.Clear();
+
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        {
+            tempCurrentlyAnchoredHeroes.Add(heroManager);
+        }
     }
 
     /// <summary>

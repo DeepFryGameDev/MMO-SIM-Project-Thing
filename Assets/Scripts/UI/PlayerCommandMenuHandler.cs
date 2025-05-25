@@ -7,21 +7,20 @@ using UnityEngine;
 
 public class PlayerCommandMenuHandler : MonoBehaviour
 {
-    CanvasGroup canvasGroup;
-
     PlayerMovement playerMovement;
 
     ThirdPersonCam cam;
 
     PlayerWhistle playerWhistle;
 
-    Animator anim;
-
     [SerializeField] PartyMenuHandler partyMenuHandler;
 
-    [SerializeField] TextMeshProUGUI weekText;
-    [SerializeField] TextMeshProUGUI monthText;
-    [SerializeField] TextMeshProUGUI yearText;
+    [SerializeField] TextMeshProUGUI homeWeekText;
+    [SerializeField] TextMeshProUGUI homeMonthText;
+    [SerializeField] TextMeshProUGUI homeYearText;
+    [SerializeField] TextMeshProUGUI fieldWeekText;
+    [SerializeField] TextMeshProUGUI fieldMonthText;
+    [SerializeField] TextMeshProUGUI fieldYearText;
 
     void Awake()
     {
@@ -30,12 +29,9 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
     void Setup()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
-
-        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -60,6 +56,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
                     MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
                     MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.ROOT);
 
+                    SetFieldDateTexts();
+
                     // should put in a better function later
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -79,7 +77,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
                     playerWhistle.ToggleCanWhistle(false);
 
                     // Set the date text labels
-                    SetDateTexts();
+                    SetHomeDateTexts();
 
                     // open menu
                     MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.ROOT);
@@ -101,11 +99,21 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     /// <summary>
     /// Just sets the texts on the player command menu to the current date.
     /// </summary>
-    void SetDateTexts()
+    void SetHomeDateTexts()
     {
-        weekText.text = "Week " + DateSettings.GetRealCurrentWeek().ToString();
-        monthText.text = DateManager.i.GetMonthString(DateSettings.GetCurrentMonth());
-        yearText.text = DateSettings.GetCurrentYear().ToString();
+        homeWeekText.text = "Week " + DateSettings.GetRealCurrentWeek().ToString();
+        homeMonthText.text = DateManager.i.GetMonthString(DateSettings.GetCurrentMonth());
+        homeYearText.text = DateSettings.GetCurrentYear().ToString();
+    }
+
+    /// <summary>
+    /// Just sets the texts on the player command menu to the current date.
+    /// </summary>
+    void SetFieldDateTexts()
+    {
+        fieldWeekText.text = "Week " + DateSettings.GetRealCurrentWeek().ToString();
+        fieldMonthText.text = DateManager.i.GetMonthString(DateSettings.GetCurrentMonth());
+        fieldYearText.text = DateSettings.GetCurrentYear().ToString();
     }
 
     /// <summary>
@@ -144,34 +152,6 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         UISettings.SetUIState(EnumHandler.UIStates.IDLE);
     }
 
-    void CloseFieldMenu(bool allowMovement)
-    {
-        // close menu
-        MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.IDLE);
-
-        if (allowMovement)
-        {
-            // enable player movement
-            playerMovement.ToggleMovement(true);
-
-            // enable player whistle ability
-            playerWhistle.ToggleCanWhistle(true);
-
-            cam.ToggleCameraRotation(true);
-        }
-
-        // should fix later
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
-    }
-
-    public void CloseFieldMenuButtonClicked()
-    {
-        CloseFieldMenu(true);
-    }
-
     /// <summary>
     /// These are the functions that will run when the player clicks this button
     /// Assigned to: PlayerCommandMenu/PlayerCommand/Holder/ButtonGroup/NextWeekButton.OnClick()
@@ -195,5 +175,41 @@ public class PlayerCommandMenuHandler : MonoBehaviour
 
         // show party UI
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.PARTY);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="allowMovement"></param>
+    void CloseFieldMenu(bool allowMovement)
+    {
+        // close menu
+        MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.IDLE);
+        MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.IDLE);
+
+        if (allowMovement)
+        {
+            // enable player movement
+            playerMovement.ToggleMovement(true);
+
+            // enable player whistle ability
+            playerWhistle.ToggleCanWhistle(true);
+
+            cam.ToggleCameraRotation(true);
+        }
+
+        // should fix later
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        UISettings.SetUIState(EnumHandler.UIStates.IDLE);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CloseFieldMenuButtonClicked()
+    {
+        CloseFieldMenu(true);
     }
 }

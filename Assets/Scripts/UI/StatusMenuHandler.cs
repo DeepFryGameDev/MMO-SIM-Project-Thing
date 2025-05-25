@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,10 +30,6 @@ public class StatusMenuHandler : MonoBehaviour
     [SerializeField] Animator activeEffectsPanelAnim;
     [SerializeField] CanvasGroup closeButtonCanvasGroup;
 
-    [SerializeField] Animator heroFacePanelAnim;
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] Image faceImage;
-
     public static StatusMenuHandler i;
 
     HeroManager heroManager;
@@ -48,30 +43,40 @@ public class StatusMenuHandler : MonoBehaviour
         i = this;
     }
 
+    public void Setup()
+    {
+        i = this;
+    }
+
     /// <summary>
     /// Simply sets the text values in UI to the hero's parameters in the heroManager.
     /// </summary>
     /// <param name="heroManager">HeroManager of the hero to set the status values.</param>
     public void SetStatusValues()
     {
-        ClearValues();
+        ClearValues(); // maybe need i.?
 
-        classText.SetText(heroManager.HeroClass().GetCurrentClass().name);
+        if (i.heroManager == null)
+        {
+            switch (SceneInfo.i.GetSceneMode())
+            {
+                case EnumHandler.SceneMode.FIELD:
 
-        strengthValue.SetText(heroManager.Hero().GetStrength().ToString());
-        enduranceValue.SetText(heroManager.Hero().GetEndurance().ToString());
-        agilityValue.SetText(heroManager.Hero().GetAgility().ToString());
-        dexterityValue.SetText(heroManager.Hero().GetDexterity().ToString());
-        intelligenceValue.SetText(heroManager.Hero().GetIntelligence().ToString());
-        faithValue.SetText(heroManager.Hero().GetFaith().ToString());
-    }
+                    break;
+                case EnumHandler.SceneMode.HOME:
+                    i.heroManager = FindFirstObjectByType<PlayerWhistle>().GetHeroManagerWhistled();
+                    break;
+            }
+        }
 
-    public void SetFacePanelValues()
-    {
-        faceImage.sprite = heroManager.GetFaceImage();
-        nameText.SetText(heroManager.Hero().GetName());        
+        classText.SetText(i.heroManager.HeroClass().GetCurrentClass().name);
 
-        heroFacePanelAnim.SetBool("toggleOn", true);
+        strengthValue.SetText(i.heroManager.Hero().GetStrength().ToString());
+        enduranceValue.SetText(i.heroManager.Hero().GetEndurance().ToString());
+        agilityValue.SetText(i.heroManager.Hero().GetAgility().ToString());
+        dexterityValue.SetText(i.heroManager.Hero().GetDexterity().ToString());
+        intelligenceValue.SetText(i.heroManager.Hero().GetIntelligence().ToString());
+        faithValue.SetText(i.heroManager.Hero().GetFaith().ToString());
     }
 
     /// <summary>
@@ -79,6 +84,7 @@ public class StatusMenuHandler : MonoBehaviour
     /// </summary>
     public void ClearValues()
     {
+        if (expBarFill == null) { Debug.Log("Is null"); }
         expBarFill.fillAmount = 0;
         expBarText.SetText("0/0");
 
@@ -113,18 +119,15 @@ public class StatusMenuHandler : MonoBehaviour
     /// <param name="toggle"></param>
     public void ToggleActiveEffectsStatusMenu(bool toggle)
     {
-        activeEffectsPanelAnim.SetBool("toggleOn", toggle);
+        if (i == null) { i = FindFirstObjectByType<StatusMenuHandler>(); }
 
-        if (toggle) closeButtonCanvasGroup.alpha = 1;
-        else closeButtonCanvasGroup.alpha = 0;
+        i.activeEffectsPanelAnim.SetBool("toggleOn", toggle);
 
-        closeButtonCanvasGroup.interactable = toggle;
-        closeButtonCanvasGroup.blocksRaycasts = toggle;
-    }
+        if (toggle) i.closeButtonCanvasGroup.alpha = 1;
+        else i.closeButtonCanvasGroup.alpha = 0;
 
-    public void ToggleFacePanelStatusMenu(bool toggle)
-    {
-        heroFacePanelAnim.SetBool("toggleOn", toggle);
+        i.closeButtonCanvasGroup.interactable = toggle;
+        i.closeButtonCanvasGroup.blocksRaycasts = toggle;
     }
 
     /// <summary>

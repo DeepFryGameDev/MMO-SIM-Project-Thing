@@ -11,6 +11,7 @@ public class PlayerWhistle : MonoBehaviour
     int layerMask = 1 << 10; // Set to layer homeZone - this ensures only objects in the home zone layer will be returned when raycasting
        
     HeroManager heroManagerWhistled; // Is just set to the heroManager that was whistled
+    public HeroManager GetHeroManagerWhistled() { return heroManagerWhistled; }
 
     PlayerMovement pm; // Just used to toggle player movement
     HeroCommandProcessing hcp; // Used to allow the player to interface with the hero

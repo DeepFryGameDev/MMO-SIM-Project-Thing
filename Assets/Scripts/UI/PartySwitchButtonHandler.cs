@@ -31,8 +31,8 @@ public class PartySwitchButtonHandler : MonoBehaviour
     /// </summary>
     public void JoinPartyButtonOnClick()
     {
-        PartyManager.i.AddToTempActiveHeroes(heroManager);
-        PartyManager.i.RemoveFromTempInactiveHeroes(heroManager);
+        PartyManager.i.AddToTempPartyHeroes(heroManager);
+        PartyManager.i.RemoveFromTempIdleHeroes(heroManager);
 
         PartyManager.i.SetPartyMenuUI();
     }
@@ -42,8 +42,8 @@ public class PartySwitchButtonHandler : MonoBehaviour
     /// </summary>
     public void LeavePartyButtonOnClick()
     {
-        PartyManager.i.AddToTempInactiveHeroes(heroManager);
-        PartyManager.i.RemoveFromTempActiveHeroes(heroManager);
+        PartyManager.i.AddToTempIdleHeroes(heroManager);
+        PartyManager.i.RemoveFromTempPartyHeroes(heroManager);
 
         PartyManager.i.SetPartyMenuUI();
     }

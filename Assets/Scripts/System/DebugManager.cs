@@ -24,15 +24,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.playerDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.playerDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.playerDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.playerDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.playerDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.playerDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -42,7 +42,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void PlayerDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.playerDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.playerDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     /// <summary>
@@ -55,15 +55,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.uiDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.uiDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.uiDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.uiDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.uiDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.uiDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -73,7 +73,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void UIDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.uiDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.uiDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -86,15 +86,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -104,7 +104,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void ScheduleDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.scheduleDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -117,15 +117,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.heroDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.heroDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.heroDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.heroDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.heroDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.heroDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -135,7 +135,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void HeroDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.heroDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.heroDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -148,15 +148,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.systemDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.systemDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -166,7 +166,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void SystemDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.systemDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -179,15 +179,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.partyDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.partyDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -197,7 +197,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void PartyDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.partyDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -210,15 +210,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -228,7 +228,7 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void InventoryDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.inventoryDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
     }
 
     // <summary>
@@ -241,15 +241,15 @@ public class DebugManager : MonoBehaviour
     {
         if (error)
         {
-            Debug.LogError("<#" + DebugSettings.classDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogError("<#" + DebugSettings.classDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else if (warning)
         {
-            Debug.LogWarning("<#" + DebugSettings.classDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.LogWarning("<#" + DebugSettings.classDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
         else
         {
-            Debug.Log("<#" + DebugSettings.classDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+            Debug.Log("<#" + DebugSettings.classDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
         }
     }
 
@@ -259,6 +259,11 @@ public class DebugManager : MonoBehaviour
     /// <param name="debugOutput">The string to output</param>
     public void ClassDebugOut(string header, string debugOutput)
     {
-        Debug.Log("<#" + DebugSettings.classDebugColor.ToHexString() + ">[" + header + "]</color> " + debugOutput);
+        Debug.Log("<#" + DebugSettings.classDebugColor.ToHexString() + ">" + GetFormattedHeader(header) + "</color>" + debugOutput);
+    }
+
+    string GetFormattedHeader(string header)
+    {
+        return "<b><u>[" + header + "]</u></b>: ";
     }
 }

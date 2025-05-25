@@ -22,6 +22,27 @@ public static class GameSettings
         idleHeroes.Clear();
     }
 
+    static List<HeroManager> allHeroes = new List<HeroManager>();
+    public static void SetAllHeroes()
+    {
+        allHeroes.Clear();
+
+        List<HeroManager> tempList = new List<HeroManager>();
+
+        foreach (HeroManager heroManager in idleHeroes)
+        {
+            tempList.Add(heroManager);
+        }
+
+        foreach (HeroManager heroManager in heroesInParty)
+        {
+            tempList.Add(heroManager);
+        }
+
+        allHeroes = tempList;
+    }
+    public static List<HeroManager> GetAllHeroes() { return allHeroes; }
+
     static int unloadSceneIndex;
     public static int GetUnloadSceneIndex() { return unloadSceneIndex; }
     public static void SetUnloadSceneIndex(int index) { unloadSceneIndex = index; }

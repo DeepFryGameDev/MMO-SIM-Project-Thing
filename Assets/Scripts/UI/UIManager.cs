@@ -1,8 +1,9 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+// Purpose: 
+// Directions: 
+// Other notes: 
 
 public class UIManager : MonoBehaviour
 {

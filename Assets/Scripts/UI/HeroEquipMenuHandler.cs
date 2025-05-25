@@ -96,6 +96,12 @@ public class HeroEquipMenuHandler : MonoBehaviour
     public void SetEquipmentClickedInMenu(HeroBaseEquipment equipment) { equipmentClickedInMenu = equipment; }
     public HeroBaseEquipment GetEquipmentClickedInMenu() { return equipmentClickedInMenu; }
 
+    public static HeroEquipMenuHandler i;
+
+    HeroManager heroManager;
+    public void SetHeroManager(HeroManager heroManager) { this.heroManager = heroManager; }
+    public HeroManager GetHeroManager() { return heroManager; }
+
     void Awake()
     {
         equipScrollCanvasGroup = transform.Find("EquipScroll").GetComponent<CanvasGroup>();
@@ -104,6 +110,8 @@ public class HeroEquipMenuHandler : MonoBehaviour
         ClearEquipmentDetails();
 
         SetDefaultIcons();
+
+        i = this;
     }
 
     /// <summary>
@@ -133,6 +141,7 @@ public class HeroEquipMenuHandler : MonoBehaviour
     /// <param name="heroManager">HeroManager of the hero to have equipment drawn to the UI</param>
     public void GenerateEquippedEquipmentButtons(HeroManager heroManager)
     {
+        Debug.Log("Displaying equipment for " + heroManager.Hero().GetName());
         #region Armor
 
         // gather anything equipped to the hero and set buttons for them in the menu
@@ -552,7 +561,18 @@ public class HeroEquipMenuHandler : MonoBehaviour
     /// </summary>
     public void CloseEquipMenu()
     {
-        MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.FIELD:
+                MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.ROOT);
+                MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
+
+                break;
+            case EnumHandler.SceneMode.HOME:
+                MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+
+                break;
+        }
 
         CloseEquipScroll();
     }

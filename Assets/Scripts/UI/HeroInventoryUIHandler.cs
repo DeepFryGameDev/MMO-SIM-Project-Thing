@@ -84,6 +84,12 @@ public class HeroInventoryUIHandler : MonoBehaviour
 
     List<HeroItem> itemsAccountedFor = new List<HeroItem>();
 
+    public static HeroInventoryUIHandler i;
+
+    private void Awake()
+    {
+        i = this;
+    }
 
     /// <summary>
     /// Any hero specific details should go here.  For now it's just carry weight.
@@ -509,6 +515,23 @@ public class HeroInventoryUIHandler : MonoBehaviour
         foreach (Transform transform in layoutGroupTransform)
         {
             Destroy(transform.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Called when the user clicks the "Close" button in the inventory menu.  Just goes back to the root menu.
+    /// </summary>
+    public void OnCloseButtonClick()
+    {
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.FIELD:
+                MenuProcessingHandler.i.SetHeroCommandFieldMenuState(EnumHandler.HeroCommandFieldMenuStates.ROOT);
+                MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
+                break;
+            case EnumHandler.SceneMode.HOME:
+                MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.ROOT);
+                break;
         }
     }
 }

@@ -63,39 +63,38 @@ public class PartyMenuHandler : MonoBehaviour
     /// </summary>
     void SavePartyGroups()
     {
-        PartyManager.i.ClearActiveHeroes();
-        PartyManager.i.ClearInactiveHeroes();
-
-        GameSettings.ClearParty();
-        GameSettings.ClearIdleHeroes();
+        if (PartyFollow.i == null) { PartyFollow.i = FindFirstObjectByType<PartyFollow>(); }
 
         // clear follow anchors
-        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             heroManager.HeroParty().GetPartyAnchor().SetHeroManager(null);
             heroManager.HeroParty().SetPartyAnchor(null);
         }
 
-        foreach (HeroManager heroManager in PartyManager.i.GetTempInactiveHeroes())
+        GameSettings.ClearParty();
+        GameSettings.ClearIdleHeroes();
+
+        foreach (HeroManager heroManager in PartyManager.i.GetTempIDleHeroes())
         {
-            // save to inactive
-            //Debug.Log("Saving to inactive: " + heroManager.Hero().name);
-            PartyManager.i.AddToInactiveHeroes(heroManager);
+            // save to idle
+            //Debug.Log("Saving to idle: " + heroManager.Hero().name);
             GameSettings.AddToIdleHeroes(heroManager);
         }
 
-        foreach (HeroManager heroManager in PartyManager.i.GetTempActiveHeroes())
+        foreach (HeroManager heroManager in PartyManager.i.GetTempPartyHeroes())
         {
-            // save to active
-            PartyManager.i.AddToActiveHeroes(heroManager);
+            // save to party
             GameSettings.AddToParty(heroManager);
         }
 
         // Set follow anchors here
-        for (int i = 0; i < PartyManager.i.GetActiveHeroes().Count; i++)
+        for (int i = 0; i < GameSettings.GetHeroesInParty().Count; i++)
         {
-            PartyFollow.i.SetFollowAnchor(PartyManager.i.GetActiveHeroes()[i], i);
+            PartyFollow.i.SetFollowAnchor(GameSettings.GetHeroesInParty()[i], i);
         }
+
+        PartyFollow.i.SetAnchoredHeroesList();
 
         // And make sure they are all children of SpawnManager so they can leave the scene.
         //foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
@@ -124,15 +123,17 @@ public class PartyMenuHandler : MonoBehaviour
         SavePartyGroups();
 
         // Show party HUD
-        partyHUDHandler.SetHeroManagers(PartyManager.i.GetActiveHeroes());
+        partyHUDHandler.SetHeroManagers(GameSettings.GetHeroesInParty());
         partyHUDHandler.SetPartyHUD();
 
-        if (!heroZoneUIHandler.getHeroZoneUIShowing() && PartyManager.i.GetActiveHeroes().Count > 0)
+        PartyFollow.i.SetTempFollowList();
+
+        if (!heroZoneUIHandler.getHeroZoneUIShowing() && GameSettings.GetHeroesInParty().Count > 0)
         {
             partyHUDHandler.ToggleHUD(true);
         }
 
-        if (PartyManager.i.GetActiveHeroes().Count == 0) // if user sets an empty party
+        if (GameSettings.GetHeroesInParty().Count == 0) // if user sets an empty party
         {
             partyHUDHandler.ToggleHUD(false);
         }
@@ -148,8 +149,8 @@ public class PartyMenuHandler : MonoBehaviour
         ClearLayoutGroup(homeHeroGroupTransform);
         ClearLayoutGroup(partyHeroGroupTransform);
 
-        PartyManager.i.ClearTempActiveHeroes();
-        PartyManager.i.ClearTempInactiveHeroes();
+        PartyManager.i.ClearTempPartyHeroes();
+        PartyManager.i.ClearTempIdleHeroes();
 
         MenuProcessingHandler.i.SetPlayerCommandMenuState(EnumHandler.PlayerCommandHomeMenuStates.ROOT);
     }

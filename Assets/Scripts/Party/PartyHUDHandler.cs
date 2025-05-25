@@ -31,7 +31,7 @@ public class PartyHUDHandler : MonoBehaviour
         ClearPartyHUD();
 
         // for each active hero
-        foreach (HeroManager heroManager in PartyManager.i.GetActiveHeroes())
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             // instantiate new party hud frame
             GameObject newPartyHudFrame = Instantiate(PrefabManager.i.PartyHUDFrame, transform);

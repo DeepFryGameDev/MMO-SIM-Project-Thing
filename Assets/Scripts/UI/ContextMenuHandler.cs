@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // Purpose: Used to facilitate action with interacting with the context menu in the UI. (This is the menu that appears when right clicking on a UI object)
@@ -27,10 +28,17 @@ public class ContextMenuHandler : MonoBehaviour
     [SerializeField] Transform giveToHeroListTransform;
     public Transform GetGiveToHeroListTransform() { return giveToHeroListTransform; }
 
+    public static ContextMenuHandler i;
+
+    HeroManager fieldHeroManager;
+    public void SetFieldHeroManager(HeroManager heroManager) { fieldHeroManager = heroManager; }
+
     void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         parentCanvas = transform.parent.GetComponent<Canvas>();
+
+        i = this;
     }
 
     void Update()
@@ -92,23 +100,45 @@ public class ContextMenuHandler : MonoBehaviour
     /// </summary>
     public void PrepGiveToHeroList()
     {
-        foreach (HeroManager heroManager in PartyManager.i.GetInactiveHeroes()) // This should only be used at home. this will need to be different for being out in the field.
+        List<HeroManager> tempList = new List<HeroManager>();
+
+        HeroManager giveFromHeroManager = null;
+
+        switch (SceneInfo.i.GetSceneMode())
         {
-            // make sure the heroManager you're checking isn't the one you're giving from (you dont want to show the current hero from heroManager instantiated)
-            if (heroManager != HomeZoneManager.i.GetHeroManager())
-            {
-                // generate ContextMenuItemHeroGiveItemToHeroButtons under the GiveToHeroList transform
-                GameObject newButton = Instantiate(PrefabManager.i.ContextMenuItemHeroGiveToHeroButton, giveToHeroListTransform);
+            case EnumHandler.SceneMode.HOME:
+                // all heroes
+                foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
+                {
+                    if (heroManager != HomeZoneManager.i.GetHeroManager()) tempList.Add(heroManager);
+                }
 
-                // set the nameText, giveToHero, giveFromHero, and item for each
-                ContextMenuItemHeroGiveToHeroButtonHandler handler = newButton.GetComponent<ContextMenuItemHeroGiveToHeroButtonHandler>();
+                giveFromHeroManager = HomeZoneManager.i.GetHeroManager();
+                break;
+            case EnumHandler.SceneMode.FIELD:
+                // just in party
+                foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+                { 
+                    if (heroManager != fieldHeroManager) tempList.Add(heroManager);
+                }
 
-                handler.SetNameText(heroManager.Hero().GetName());
-                handler.SetGiveFromHeroManager(HomeZoneManager.i.GetHeroManager());
-                handler.SetGiveToHeroManager(heroManager);
+                giveFromHeroManager = fieldHeroManager;
+                break;
+        }
 
-                handler.SetItemToSwap(clickedItem);
-            }
+        foreach (HeroManager heroManager in tempList)
+        {
+            // generate ContextMenuItemHeroGiveItemToHeroButtons under the GiveToHeroList transform
+            GameObject newButton = Instantiate(PrefabManager.i.ContextMenuItemHeroGiveToHeroButton, giveToHeroListTransform);
+
+            // set the nameText, giveToHero, giveFromHero, and item for each
+            ContextMenuItemHeroGiveToHeroButtonHandler handler = newButton.GetComponent<ContextMenuItemHeroGiveToHeroButtonHandler>();
+
+            handler.SetNameText(heroManager.Hero().GetName());
+            handler.SetGiveFromHeroManager(giveFromHeroManager);
+            handler.SetGiveToHeroManager(heroManager);
+
+            handler.SetItemToSwap(clickedItem);
         }
     }
 

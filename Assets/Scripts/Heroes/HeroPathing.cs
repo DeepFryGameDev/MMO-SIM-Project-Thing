@@ -337,7 +337,14 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     void ProcessPartyFollowPathing()
     {
-        // Debug.Log("Abs diff between " + transform.position + " and " + heroManager.HeroParty().GetPartyAnchor().GetPosition() + " is " + (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()))));
+        if (heroManager.HeroParty().GetPartyAnchor() == null)
+        {
+            // pathing changed. uhh.. we return?
+            ProcessPartyRunHomePathing();
+            return;
+        }
+         //Debug.Log("Abs diff between " + transform.position + " and " + heroManager.HeroParty().GetPartyAnchor().GetPosition() + " is " + (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()))));
+
 
         if (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition())) > HeroSettings.stoppingDistance)
         {
@@ -353,11 +360,13 @@ public class HeroPathing : MonoBehaviour
     {
         // Debug.Log("Abs diff between " + transform.position + " and " + spawnPos + " is " + (Mathf.Abs(Vector3.Distance(transform.position, spawnPos))));
 
+        if (runMode != EnumHandler.pathRunMode.CANRUN) runMode = EnumHandler.pathRunMode.CANRUN;
+
         if (Mathf.Abs(transform.position.x - spawnPos.x) <= HeroSettings.stoppingDistance && Mathf.Abs(transform.position.z - spawnPos.z) <= HeroSettings.stoppingDistance) // If hero is standing at their spawn position
         {
             // set back to random
 
-            DebugManager.i.PartyDebugOut("HeroPathing", "Starting random pathing from PartyRunHomePathing()");
+            DebugManager.i.PartyDebugOut("HeroPathing", heroManager.Hero().GetName() + ": Starting random pathing from PartyRunHomePathing()");
             StopPathing();
             StartNewRandomPathing();
         }
@@ -404,6 +413,8 @@ public class HeroPathing : MonoBehaviour
     /// </summary>
     public void StopPathing()
     {
+        DebugManager.i.HeroDebugOut("HeroPathing", heroManager.Hero().GetName() + " - Pathing stopped");
+
         agent.ResetPath();
         agent.isStopped = true;
 
@@ -413,6 +424,8 @@ public class HeroPathing : MonoBehaviour
         randomWaiting = false;
 
         whistleTargetWithinRange = false;
+
+        agent.isStopped = false; // maybe wrong place for this?
 
         pathMode = EnumHandler.pathModes.IDLE;
     }

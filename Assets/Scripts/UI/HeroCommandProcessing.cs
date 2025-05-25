@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Purpose: Handles the procedures in which the command window operates when on a Hero Home Zone or out in the field
 // Directions: For now, attach to the [UI]/HeroCommandMenu/HeroCommand object
@@ -21,16 +23,24 @@ public class HeroCommandProcessing : MonoBehaviour
 
     [SerializeField] Transform heroPanelGroupTransform;
 
+    [SerializeField] Animator heroFacePanelAnim;
+    [SerializeField] TextMeshProUGUI facePanelNameText;
+    [SerializeField] Image facePanelImage;
+
+    public static HeroCommandProcessing i;
+
     void Awake()
     {
         Setup();
     }
 
-    void Setup()
+    public void Setup()
     {
         playerInteraction = FindFirstObjectByType<PlayerInteraction>(); // and this
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
+
+        i = this;
     }
 
     /// <summary>
@@ -81,7 +91,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
     void ClearHeroFieldCommandMenu()
     {
-        foreach (Transform transform in heroPanelGroupTransform)
+        foreach (Transform transform in heroPanelGroupTransform) // it cant find this
         {
             Destroy(transform.gameObject);
         }
@@ -160,6 +170,8 @@ public class HeroCommandProcessing : MonoBehaviour
         // set any already equipped items to the EquipButtonsPanel
         heroEquipMenuHandler.GenerateEquippedEquipmentButtons(heroManager);
 
+        StatusMenuHandler.i = FindFirstObjectByType<StatusMenuHandler>();
+
         StatusMenuHandler.i.SetHeroManager(heroManager);
         StatusMenuHandler.i.SetStatusValues();
 
@@ -167,5 +179,17 @@ public class HeroCommandProcessing : MonoBehaviour
 
         // display HeroEquipCanvas
         MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.EQUIP);
+    }
+
+    public void SetFacePanelValues()
+    {
+        facePanelImage.sprite = heroManager.GetFaceImage();
+        facePanelNameText.SetText(heroManager.Hero().GetName());
+    }
+
+    public void ToggleFacePanel(bool toggle)
+    {
+        if (i.heroFacePanelAnim == null) { i.heroFacePanelAnim = transform.Find("HeroFacePanel").GetComponent<Animator>(); }
+        i.heroFacePanelAnim.SetBool("toggleOn", toggle);
     }
 }

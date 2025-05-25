@@ -28,7 +28,16 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     /// <param name="slotIndex">The index assigned in the inspector for the script to understand which button was clicked</param>
     public void OnClick(int slotIndex)
     {
-        heroManager = HomeZoneManager.i.GetHeroManager();
+        switch (SceneInfo.i.GetSceneMode())
+        {
+            case EnumHandler.SceneMode.FIELD:
+                FieldOnClick();
+                break;
+            case EnumHandler.SceneMode.HOME:
+                HomeOnClick();
+                break;
+        }
+
         heroEquipMenuHandler.SetEquipmentClickedInMenu(assignedEquipment);
 
         List<ArmorEquipment> armorEquipmentInInventory;
@@ -74,7 +83,8 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                     if (heroManager.HeroEquipment().GetEquippedHead() == null)
                     {
                         DebugManager.i.UIDebugOut("HeroEquipButtonHandler", "No wearable helmets in inventory and not wearing any helmet", true, false);
-                    } else
+                    }
+                    else
                     {
                         // Display a blank icon to allow player to unequip helmet
                         InstantiateUnequipIcon();
@@ -83,7 +93,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                         heroEquipMenuHandler.ToggleEquipScroll(true);
                     }
                 }
-                    break;
+                break;
             case 1: // chest
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the chest equip slot");
 
@@ -273,7 +283,7 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                         heroEquipMenuHandler.ToggleEquipScroll(true);
                     }
                 }
-                    break;
+                break;
             case 7: // relic 1
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the relic 1 equip slot");
 
@@ -407,6 +417,22 @@ public class HeroEquipButtonHandler : MonoBehaviour, IPointerEnterHandler, IPoin
                 DebugManager.i.HeroDebugOut("HeroEquipButtonHandler", "Clicked the off hand equip slot - NOT YET IMPLEMENTED.", true, false);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Special method to run when the Equip button is clicked and player is currently in a Field scene
+    /// </summary>
+    void FieldOnClick()
+    {
+        heroManager = HeroEquipMenuHandler.i.GetHeroManager();
+    }
+
+    /// <summary>
+    /// Special method to run when the Equip button is clicked and the player is currently in a Home scene
+    /// </summary>
+    void HomeOnClick()
+    {
+        heroManager = HomeZoneManager.i.GetHeroManager();        
     }
 
     /// <summary>

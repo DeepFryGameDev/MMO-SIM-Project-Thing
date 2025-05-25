@@ -22,14 +22,10 @@ public class ContextMenuItemHeroGiveToHeroButtonHandler : MonoBehaviour, IPointe
 
     ContextMenuHandler contextMenuHandler;
 
-    HeroInventoryUIHandler inventoryUIHandler;
-
     private void Awake()
     {
         nameText = transform.Find("NameText").GetComponent<TextMeshProUGUI>();
         contextMenuHandler = FindFirstObjectByType<ContextMenuHandler>();
-
-        inventoryUIHandler = FindFirstObjectByType<HeroInventoryUIHandler>();
     }
 
     /// <summary>
@@ -64,10 +60,11 @@ public class ContextMenuItemHeroGiveToHeroButtonHandler : MonoBehaviour, IPointe
         contextMenuHandler.CloseGiveToHeroList();
 
         // refresh ui
-        inventoryUIHandler.ResetUI();
-        inventoryUIHandler.ClearUI();
+        if (HeroInventoryUIHandler.i == null) { HeroInventoryUIHandler.i = FindFirstObjectByType<HeroInventoryUIHandler>(); }
+        HeroInventoryUIHandler.i.ResetUI();
+        HeroInventoryUIHandler.i.ClearUI();
 
-        inventoryUIHandler.SetHeroDetailsPanel(giveFromHeroManager);
-        inventoryUIHandler.GenerateInventory(giveFromHeroManager);
+        HeroInventoryUIHandler.i.SetHeroDetailsPanel(giveFromHeroManager);
+        HeroInventoryUIHandler.i.GenerateInventory(giveFromHeroManager);
     }
 }

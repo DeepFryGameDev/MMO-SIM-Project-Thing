@@ -109,7 +109,7 @@ public class TrainingManager : MonoBehaviour
     /// </summary>
     /// <returns>Yields for DateSettings.trainingResultsFillDelaySeconds and then animates the fill bars</returns>
     public IEnumerator ShowTrainingResults(HeroManager heroManager)
-    {        
+    {
         // Create new TrainingResult prefab and instantiate it in the LayoutGroup.
         GameObject newTrainingResult = Instantiate(PrefabManager.i.TrainingResult, layoutGroupTransform);
 
@@ -674,6 +674,7 @@ public class TrainingManager : MonoBehaviour
     /// <param name="toggle">True to show the Training Results canvas group.  False to hide it.</param>
     public void ToggleCanvasGroup(bool toggle)
     {
+        // DebugManager.i.ScheduleDebugOut("TrainingManager", "Toggling CanvasGroup: " + toggle);
         if (toggle)
         {
             canvasGroup.alpha = 1;

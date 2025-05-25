@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 // Purpose: Facilitates control of which menu is available to the user at a given time
@@ -36,7 +37,8 @@ public class MenuProcessingHandler : MonoBehaviour
 
     EnumHandler.PlayerCommandFieldMenuStates tempPlayerCommandFieldMenuState; // Used so UI is only updated once.
 
-    HeroCommandProcessing heroCommandProcessing;
+    HeroCommandFieldMenuHandler heroCommandFieldMenuHandler;
+    public void SetHeroCommandFieldMenuHandler(HeroCommandFieldMenuHandler handler) { heroCommandFieldMenuHandler = handler; }
 
     // Schedule System
     [SerializeField] ScheduleMenuHandler scheduleMenuHandler;
@@ -52,8 +54,10 @@ public class MenuProcessingHandler : MonoBehaviour
     [SerializeField] Animator playerCommandHomeAnimator;
 
     [SerializeField] CanvasGroup heroInventoryCanvasGroup;
+    [SerializeField] Animator heroInventoryAnimator;
 
     [SerializeField] CanvasGroup heroEquipCanvasGroup;
+    [SerializeField] Animator heroEquipAnimator;
 
     // -- FIELD
     [SerializeField] CanvasGroup playerCommandFieldCanvasGroup;
@@ -71,9 +75,8 @@ public class MenuProcessingHandler : MonoBehaviour
     [SerializeField] CanvasGroup scheduleCanvasGroup;
     public CanvasGroup GetScheduleCanvasGroup() { return scheduleCanvasGroup; }
 
-    [SerializeField] StatusMenuHandler statusMenuHandler;
-
     [SerializeField] CanvasGroup statusMenuCanvasGroup;
+    [SerializeField] Animator statusMenuAnimator;
 
     //----
 
@@ -85,7 +88,6 @@ public class MenuProcessingHandler : MonoBehaviour
         i = this;
 
         cam = FindFirstObjectByType<ThirdPersonCam>();
-        heroCommandProcessing = FindFirstObjectByType<HeroCommandProcessing>();
     }
 
     void Start()
@@ -128,14 +130,14 @@ public class MenuProcessingHandler : MonoBehaviour
                 }
                 else if (tempHeroCommandHomeMenuState == EnumHandler.HeroCommandHomeMenuStates.STATUS)
                 {
-                    statusMenuHandler.ToggleActiveEffectsStatusMenu(false);
+                    StatusMenuHandler.i.ToggleActiveEffectsStatusMenu(false);
                     TransitionToMenu(heroCommandHomeCanvasGroup, tempCanvasGroup);
 
                 }
                 else if (tempHeroCommandHomeMenuState == EnumHandler.HeroCommandHomeMenuStates.EQUIP)
                 {
                     TransitionToMenu(heroCommandHomeCanvasGroup, tempCanvasGroup);
-                    statusMenuHandler.ToggleMenu(false);
+                    StatusMenuHandler.i.ToggleMenu(false);
 
                 }
                 else
@@ -146,7 +148,7 @@ public class MenuProcessingHandler : MonoBehaviour
                     break;
             case EnumHandler.HeroCommandHomeMenuStates.STATUS:
                 TransitionToMenu(statusMenuCanvasGroup, true);
-                statusMenuHandler.ToggleActiveEffectsStatusMenu(true);
+                StatusMenuHandler.i.ToggleActiveEffectsStatusMenu(true);
 
                 break;
             case EnumHandler.HeroCommandHomeMenuStates.INVENTORY: // Display inventory menu for hero
@@ -155,7 +157,7 @@ public class MenuProcessingHandler : MonoBehaviour
                 break;
             case EnumHandler.HeroCommandHomeMenuStates.EQUIP:
                 TransitionToMenu(heroEquipCanvasGroup, true);
-                statusMenuHandler.ToggleMenu(true);
+                StatusMenuHandler.i.ToggleMenu(true);
 
                 break;
             case EnumHandler.HeroCommandHomeMenuStates.TRAININGEQUIP: // Display training equipment menu
@@ -218,9 +220,11 @@ public class MenuProcessingHandler : MonoBehaviour
                 break;
             case EnumHandler.HeroCommandFieldMenuStates.ROOT:
                 if (tempHeroCommandFieldMenuState == EnumHandler.HeroCommandFieldMenuStates.IDLE) // coming from idle (no menu)
-                {                  
-                    // generate hero panels
-                    heroCommandProcessing.GenerateHeroFieldCommandMenu();
+                {
+                    // generate hero panels <-- this isn't refreshing
+                    //Debug.Log("Generate heroes here");
+                    HeroCommandProcessing.i = FindFirstObjectByType<HeroCommandProcessing>();
+                    HeroCommandProcessing.i.GenerateHeroFieldCommandMenu();
 
                     ToggleMenu(heroCommandFieldCanvasGroup, true);
 
@@ -228,29 +232,75 @@ public class MenuProcessingHandler : MonoBehaviour
                 }
                 else
                 {
-                    //TransitionToMenu(heroCommandFieldCanvasGroup, tempCanvasGroup);
+                    // generate hero panels 
+                    HeroCommandProcessing.i.GenerateHeroFieldCommandMenu();
 
-                    // generate hero panels
-                    heroCommandProcessing.GenerateHeroFieldCommandMenu();
+                    //Debug.Log("Generate from " + tempCanvasGroup.gameObject.name);
+                    
+                    switch (tempHeroCommandFieldMenuState)
+                    {
+                        case EnumHandler.HeroCommandFieldMenuStates.STATUS:
+
+                            SimpleToggleMenu(statusMenuCanvasGroup, false);
+                            StatusMenuHandler.i.ToggleActiveEffectsStatusMenu(false);
+
+                            HeroCommandProcessing.i.ToggleFacePanel(false);
+
+                            break;
+                        case EnumHandler.HeroCommandFieldMenuStates.INVENTORY:
+
+                            SimpleToggleMenu(heroInventoryCanvasGroup, false);
+
+                            HeroCommandProcessing.i.ToggleFacePanel(false);
+
+                            break;
+                        case EnumHandler.HeroCommandFieldMenuStates.EQUIP:
+                            SimpleToggleMenu(heroEquipCanvasGroup, false);
+                            StatusMenuHandler.i.ToggleMenu(false);
+
+                            HeroCommandProcessing.i.ToggleFacePanel(false);
+                            break;
+                    }
 
                     SimpleToggleMenu(heroCommandFieldCanvasGroup, true);
-                    
-                    if (tempHeroCommandFieldMenuState == EnumHandler.HeroCommandFieldMenuStates.STATUS)
-                    {
-                        statusMenuHandler.ToggleActiveEffectsStatusMenu(false);
-                        statusMenuHandler.ToggleFacePanelStatusMenu(false);
-                    }
+
+                    tempCanvasGroup = heroCommandFieldCanvasGroup;
                 }                
 
                 break;
             case EnumHandler.HeroCommandFieldMenuStates.STATUS:
                 SimpleToggleMenu(heroCommandFieldCanvasGroup, false);
                 //Debug.Log("Should be hiding player command field canvas");
+                HeroCommandProcessing.i = FindFirstObjectByType<HeroCommandProcessing>();
+
+                HeroCommandProcessing.i.Setup();
+                HeroCommandProcessing.i.SetFacePanelValues();
+                HeroCommandProcessing.i.ToggleFacePanel(true);
 
                 playerCommandFieldMenuState = EnumHandler.PlayerCommandFieldMenuStates.INHEROMENU;
                 TransitionToMenu(statusMenuCanvasGroup, heroCommandFieldCanvasGroup);
 
                 break;
+            case EnumHandler.HeroCommandFieldMenuStates.INVENTORY:
+                SimpleToggleMenu(heroCommandFieldCanvasGroup, false);
+
+                TransitionToMenu(heroInventoryCanvasGroup, true);
+
+                HeroCommandProcessing.i.Setup();
+                HeroCommandProcessing.i.SetFacePanelValues();
+                HeroCommandProcessing.i.ToggleFacePanel(true);
+
+                playerCommandFieldMenuState = EnumHandler.PlayerCommandFieldMenuStates.INHEROMENU;
+                break;
+            case EnumHandler.HeroCommandFieldMenuStates.EQUIP:
+                SimpleToggleMenu(heroCommandFieldCanvasGroup, false);
+
+                TransitionToMenu(heroEquipCanvasGroup, true);
+                StatusMenuHandler.i.ToggleMenu(true);
+
+                playerCommandFieldMenuState = EnumHandler.PlayerCommandFieldMenuStates.INHEROMENU;
+                break;
+
         }
 
         tempHeroCommandFieldMenuState = heroCommandFieldMenuState;
@@ -297,7 +347,7 @@ public class MenuProcessingHandler : MonoBehaviour
     {
         DebugManager.i.UIDebugOut("MenuProcessingHandler", "Transitioning: " + canvasGroup.gameObject.name + " / " + closePrevious);
 
-        if (closePrevious && tempCanvasGroup != null)
+        if (closePrevious && tempCanvasGroup != null && tempCanvasGroup != heroCommandFieldCanvasGroup)
         {
             // close stuff from tempCanvasGroup
             tempCanvasGroup.GetComponent<Animator>().SetBool("toggleOn", false);
@@ -318,10 +368,13 @@ public class MenuProcessingHandler : MonoBehaviour
 
     void SimpleToggleMenu(CanvasGroup canvasGroup, bool toggle)
     {
-        DebugManager.i.UIDebugOut("MenuProcessingHandler", "Toggling: " + canvasGroup.gameObject.name + " / " + toggle);
+        DebugManager.i.UIDebugOut("MenuProcessingHandler", "SimpleToggling: " + canvasGroup.gameObject.name + " / " + toggle);
 
-        if (canvasGroup == playerCommandFieldCanvasGroup) playerCommandFieldAnimator.SetBool("toggleOn", toggle);
-        if (canvasGroup == heroCommandFieldCanvasGroup) heroCommandFieldAnimator.SetBool("toggleOn", toggle);
+        if (canvasGroup == playerCommandFieldCanvasGroup) { playerCommandFieldAnimator.SetBool("toggleOn", toggle); return; }
+        if (canvasGroup == heroCommandFieldCanvasGroup) { heroCommandFieldAnimator.SetBool("toggleOn", toggle); return; }
+        if (canvasGroup == statusMenuCanvasGroup) { statusMenuAnimator.SetBool("toggleOn", toggle); return; }
+        if (canvasGroup == heroInventoryCanvasGroup) { heroInventoryAnimator.SetBool("toggleOn", toggle); return; }
+        if (canvasGroup == heroEquipCanvasGroup) { heroEquipAnimator.SetBool("toggleOn", toggle); return; }
 
         canvasGroup.interactable = toggle;
         canvasGroup.blocksRaycasts = toggle;

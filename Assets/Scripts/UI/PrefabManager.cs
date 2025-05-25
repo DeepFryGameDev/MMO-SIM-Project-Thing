@@ -41,5 +41,6 @@ public class PrefabManager : MonoBehaviour
     [Tooltip("Set this to the button to be used for the inventory context menu for 'Give To x Hero' button")]
     public GameObject ContextMenuItemHeroGiveToHeroButton;
 
+    [Tooltip("Set this to the panel that should be instantiated for each hero when opening the menu in the field")]
     public GameObject HeroCommandFieldMenuPanel;
 }

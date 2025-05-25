@@ -9,7 +9,12 @@ public class SceneInfo : MonoBehaviour
     public static SceneInfo i;
 
     [SerializeField] EnumHandler.SceneMode sceneMode;
+    /// <summary>
+    /// If the current scene you are in is a field, this will return FIELD.  Likewise for home.
+    /// </summary>
+    /// <returns>FIELD or HOME</returns>
     public EnumHandler.SceneMode GetSceneMode() { return sceneMode; }
+    public void SetSceneMode(EnumHandler.SceneMode sceneMode) { this.sceneMode = sceneMode; }
 
     private void Awake()
     {

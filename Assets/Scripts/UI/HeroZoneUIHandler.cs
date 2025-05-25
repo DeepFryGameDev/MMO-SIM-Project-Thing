@@ -182,7 +182,7 @@ public class HeroZoneUIHandler : MonoBehaviour
         anim.SetBool("toggleOn", show);
 
         if (show) {
-            if (PartyManager.i.GetActiveHeroes().Count > 0)
+            if (GameSettings.GetHeroesInParty().Count > 0)
             {
                 partyHudHandler.ToggleHUD(false); // hide the party HUD
             }
@@ -191,7 +191,7 @@ public class HeroZoneUIHandler : MonoBehaviour
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
         } else {
-            if (PartyManager.i.GetActiveHeroes().Count > 0)
+            if (GameSettings.GetHeroesInParty().Count > 0)
             {
                 partyHudHandler.ToggleHUD(true); // show the party HUD again
             }

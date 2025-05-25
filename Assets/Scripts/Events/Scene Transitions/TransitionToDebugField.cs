@@ -12,12 +12,11 @@ public class TransitionToDebugField : SceneTransitionEvent
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && canTransition)
         {
             if (!running)
             {
-                running = true;
-                
+                running = true;                
 
                 base.OnTriggerEnter(other);
 
@@ -25,9 +24,4 @@ public class TransitionToDebugField : SceneTransitionEvent
             }
         }         
     }
-
-    /*void MoveToDebugField()
-    {
-        //StartCoroutine(scriptedEvent.TransitionToScene(1, new Vector3(32, 99.61497f, 200)));        
-    }*/
 }

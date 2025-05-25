@@ -19,8 +19,6 @@ public class DateManager : MonoBehaviour
 
     ThirdPersonCam cam;
 
-    List<HeroManager> heroManagers = new List<HeroManager>();
-
     PlayerWhistle playerWhistle;
 
     public static DateManager i;
@@ -56,9 +54,7 @@ public class DateManager : MonoBehaviour
         if (!DateSettings.GetDatesInitialized())
         {
             InitializeDates();
-        }        
-
-        heroManagers = PartyManager.i.GetInactiveHeroes();
+        }              
 
         nextWeekToast = ShowNewWeekToast();
         StartCoroutine(nextWeekToast);
@@ -81,6 +77,8 @@ public class DateManager : MonoBehaviour
 
         DateSettings.SetCurrentWeek(0);
         DateSettings.SetCurrentMonth(0);
+
+        DateSettings.SetCurrentYear(DateSettings.startingYear);
 
         DateSettings.SetDatesInitialized(true);
     }
@@ -131,7 +129,7 @@ public class DateManager : MonoBehaviour
         cam.ToggleCameraRotation(false);
 
         // reset hero pathing
-        foreach (HeroManager heroManager in heroManagers)
+        foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
         {
             heroManager.HeroPathing().StopPathing();
         }
@@ -139,7 +137,7 @@ public class DateManager : MonoBehaviour
         RollForwardDate();
 
         // calculate and show training results
-        foreach (HeroManager heroManager in heroManagers)
+        foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
         {
             TrainingManager.i.AddToHeroManagers(heroManager);
 
@@ -185,7 +183,7 @@ public class DateManager : MonoBehaviour
         DebugManager.i.ScheduleDebugOut("DateManager", debugOut, false, false);
 
         // move all heroes to starting position
-        foreach (HeroManager heroManager in heroManagers)
+        foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
         {
             heroManager.HeroPathing().MoveToStartingPosition();
         }
@@ -207,13 +205,13 @@ public class DateManager : MonoBehaviour
         StartCoroutine(nextWeekToast);
 
         // roll forward schedule
-        foreach (HeroManager heroManager in heroManagers)
+        foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
         {
             heroManager.HeroSchedule().RollForwardSchedule();
         }
 
         // change all hero pathing to random again (should eventually be set to whatever the schedule has them doing)
-        foreach (HeroManager heroManager in heroManagers)
+        foreach (HeroManager heroManager in GameSettings.GetAllHeroes())
         {
             heroManager.HeroPathing().StartNewRandomPathing();
         }

@@ -134,7 +134,9 @@ public class SpawnManager : MonoBehaviour
             //heroObject.GetComponent<HeroPathing>().SetPathMode(EnumHandler.pathModes.RANDOM); // re-enable this if it's removed in Awake() in HeroPathing.
 
             // Step 7. Initializes the Idle Heroes values in GameSettings
-            GameSettings.AddToIdleHeroes(newHeroObject.GetComponent<HeroManager>());            
+            GameSettings.AddToIdleHeroes(newHeroObject.GetComponent<HeroManager>());
+
+            GameSettings.SetAllHeroes();
 
             // Step 8. Initializes Hero Objects and HeroManagers for active heroes.  Not sure if the HeroManager will be needed, but when I removed it, everything blew up.  Shrug.
             ActiveHeroesSystem.i.SetHeroObject(heroObject.GetComponent<HeroManager>().GetID(), heroObject);
@@ -207,6 +209,20 @@ public class SpawnManager : MonoBehaviour
         {
             GameSettings.AddToParty(heroManager);
         }
+
+        // --- Instantiate Training Equip Prefabs
+        // for each hero in idle
+        // check each training equip slot. if equipped, instantiate it into the necessary slot
+        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes())
+        {
+            heroManager.HomeZone().InstantiateTrainingEquipmentPrefabs();
+        }
+
+        // do the same for each hero in party
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        {
+            heroManager.HomeZone().InstantiateTrainingEquipmentPrefabs();
+        }        
     }
 
     /// <summary>
@@ -386,9 +402,23 @@ public class SpawnManager : MonoBehaviour
                     // Enable navmeshagent again for pathing to work
                     heroManager.HeroPathing().ToggleNavMeshAgent(true);
                 }
-                
-                // And sets the party follow to follow in base
-                partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOWINBASE);
+
+                if (GameSettings.GetHeroesInParty().Count > 0)
+                {
+                    // set the temporary Follow list
+                    partyFollow.SetTempFollowList();
+
+                    // And sets the party follow to follow
+                    switch (SceneInfo.i.GetSceneMode())
+                    {
+                        case EnumHandler.SceneMode.FIELD:
+                            partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOW);
+                            break;
+                        case EnumHandler.SceneMode.HOME:
+                            partyFollow.SetPartyFollowState(EnumHandler.PartyFollowStates.FOLLOWINBASE);
+                            break;
+                    }                    
+                }                
                 break;
         }        
     }
