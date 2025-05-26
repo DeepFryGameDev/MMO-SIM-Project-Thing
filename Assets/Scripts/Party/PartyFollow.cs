@@ -67,7 +67,7 @@ public class PartyFollow : MonoBehaviour
 
                 break;
             case EnumHandler.PartyFollowStates.FOLLOW: // this is for outside of base.  So far i haven't had to do anything with this.
-                
+
                 // Not sure if this is needed
                 CheckForLeavingBaseZone();
                 break;

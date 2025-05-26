@@ -173,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
             }
         } else
         {
-            
+            rb.linearVelocity = Vector3.zero; // Keeps player object from sliding around after movement
         }
 
         // when to jump
