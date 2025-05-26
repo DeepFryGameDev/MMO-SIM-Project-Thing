@@ -62,12 +62,13 @@ public class PartyFollow : MonoBehaviour
                 // Ensure any heroes in the party are anchored
                 KeepActiveHeroesAnchored();                
 
-
+                // And finally check if you are exiting the 'Leaving Home' area to allow the heroes to go back to their business
                 CheckForEnteringBaseZone();
 
                 break;
             case EnumHandler.PartyFollowStates.FOLLOW: // this is for outside of base.  So far i haven't had to do anything with this.
                 
+                // Not sure if this is needed
                 CheckForLeavingBaseZone();
                 break;
         }       
@@ -233,7 +234,7 @@ public class PartyFollow : MonoBehaviour
     }
 
    /// <summary>
-   /// 
+   /// Any tempCurrentlyAnchoredHeroes (which should be running to the player) during FOLLOWINBASE are processed here - this is where they are set to run catchup
    /// </summary>
     void RunCatchup()
     {
@@ -269,10 +270,10 @@ public class PartyFollow : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Returns if the hero is close enough to their anchor point to be considered "anchored".
     /// </summary>
-    /// <param name="heroManager"></param>
-    /// <returns></returns>
+    /// <param name="heroManager">Hero to check</param>
+    /// <returns>True if they are close enough to be anchored, false if they are not</returns>
     bool IfCloseEnoughForAnchor(HeroManager heroManager)
     {
         if (Vector3.Distance(heroManager.transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition()) > 5) // will need to be set to a value in a settings script.  For now, this is ok.
@@ -286,7 +287,10 @@ public class PartyFollow : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// This sets the temp follow list for any heroes that have just joined the party
+    /// 1. They are moved to this list
+    /// 2. And then ran through CATCHUP
+    /// 3. Finally when the hero is close enough to be anchored, is removed from this list and added to the CurrentlyAnchoredHeroes list
     /// </summary>
     public void SetTempFollowList()
     {

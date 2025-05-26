@@ -55,8 +55,20 @@ public class SceneTransitionEvent : BaseInteractOnTouch
         SetColliderSettings();
     }
 
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (canTransition)
+        {
+            TransitionFunctions();
+
+            base.OnTriggerEnter(other);
+        }
+    }
+
     /// <summary>
-    /// 
+    /// Used to set the collider depending if the player is able to transition.
+    /// If the player is able to transition, the collider is set to 'Trigger' and the default values to match the object it is on.
+    /// If the player is unable to transition, the trigger is turned off, and the collider is set to a large size as to block any movement from occurring on it.
     /// </summary>
     void SetColliderSettings()
     {
@@ -85,20 +97,10 @@ public class SceneTransitionEvent : BaseInteractOnTouch
     }
 
     /// <summary>
-    /// 
+    /// Any functions that should occur when the player transitions scenes.
     /// </summary>
-    void Transition()
+    void TransitionFunctions()
     {
         if (SceneInfo.i.GetSceneMode() == EnumHandler.SceneMode.HOME) DateManager.i.StopNewWeekToast();
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        if (canTransition)
-        {
-            Transition();
-
-            base.OnTriggerEnter(other);
-        }        
     }
 }

@@ -74,6 +74,9 @@ public class HeroCommandProcessing : MonoBehaviour
         DateManager.i.StopNewWeekToast();
     }
 
+    /// <summary>
+    /// Generates the Hero Field Command Panels needed for the user to interact with the Hero Field Menu.
+    /// </summary>
     public void GenerateHeroFieldCommandMenu()
     {
         ClearHeroFieldCommandMenu();
@@ -89,9 +92,12 @@ public class HeroCommandProcessing : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Just clears the Hero Panel group so it can be filled in again
+    /// </summary>
     void ClearHeroFieldCommandMenu()
     {
-        foreach (Transform transform in heroPanelGroupTransform) // it cant find this
+        foreach (Transform transform in heroPanelGroupTransform)
         {
             Destroy(transform.gameObject);
         }
@@ -181,12 +187,19 @@ public class HeroCommandProcessing : MonoBehaviour
         MenuProcessingHandler.i.SetHeroCommandHomeMenuState(EnumHandler.HeroCommandHomeMenuStates.EQUIP);
     }
 
+    /// <summary>
+    /// When the face panel should be displayed, this will set the values on it.
+    /// </summary>
     public void SetFacePanelValues()
     {
         facePanelImage.sprite = heroManager.GetFaceImage();
         facePanelNameText.SetText(heroManager.Hero().GetName());
     }
 
+    /// <summary>
+    /// Displays/hides the face panel.  This is used to help the user distinguish who the menu is opened for.
+    /// </summary>
+    /// <param name="toggle">True to show the panel, False to hide it.</param>
     public void ToggleFacePanel(bool toggle)
     {
         if (i.heroFacePanelAnim == null) { i.heroFacePanelAnim = transform.Find("HeroFacePanel").GetComponent<Animator>(); }

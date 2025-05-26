@@ -178,7 +178,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Function that is called when the user closes the field menu - this enables movement again, etc.
     /// </summary>
     /// <param name="allowMovement"></param>
     void CloseFieldMenu(bool allowMovement)
@@ -206,7 +206,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Called when user clicks the 'close' button on the field menu.
+    /// Assigned to: [UI]/PlayerCommandMenu/PlayerCommandFieldMenu/Holder/ButtonGroup/CloseButton.OnClick()
     /// </summary>
     public void CloseFieldMenuButtonClicked()
     {

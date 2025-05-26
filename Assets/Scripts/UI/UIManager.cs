@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-// Purpose: 
-// Directions: 
+// Purpose: This mainly just houses some UI tasks and allows the [UI] object to persist through scenes via singleton.
+// Directions: Assign to the [UI] object
 // Other notes: 
 
 public class UIManager : MonoBehaviour

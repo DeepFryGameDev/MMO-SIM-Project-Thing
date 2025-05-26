@@ -2,8 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Purpose: 
-// Directions: 
+// Purpose: This handles all needed interactions between the user and the hero's field menu.  This involves filling out the UI values and opening the menus.
+// Directions: Assign it to the HeroCommandFieldMenuPanel prefab
 // Other notes: 
 
 public class HeroCommandFieldMenuHandler : MonoBehaviour
@@ -26,6 +26,10 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
     [SerializeField] Image mpFill;
     [SerializeField] TextMeshProUGUI mpFillText;
 
+    /// <summary>
+    /// Sets the UI text values to the given heroManager's details
+    /// </summary>
+    /// <param name="heroManager">HeroManager of the hero to display</param>
     public void SetValues(HeroManager heroManager)
     {
         heroID = heroManager.GetID();
@@ -48,6 +52,9 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
         mpFillText.SetText("1/1");
     }
 
+    /// <summary>
+    /// Opens the status menu when the user clicks the 'Status' button on the Hero Field menu.
+    /// </summary>
     public void StatusButtonOnClick()
     {
         if (StatusMenuHandler.i == null) { StatusMenuHandler.i = FindFirstObjectByType<StatusMenuHandler>(); }
@@ -65,6 +72,9 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
         StatusMenuHandler.i.ToggleActiveEffectsStatusMenu(true);
     }
 
+    /// <summary>
+    /// Opens the inventory menu when the user clicks the 'Inventory' button on the Hero Field menu.
+    /// </summary>
     public void OnInventoryButtonOnClick()
     {
         if (HeroCommandProcessing.i == null) HeroCommandProcessing.i = FindFirstObjectByType<HeroCommandProcessing>();
@@ -83,11 +93,14 @@ public class HeroCommandFieldMenuHandler : MonoBehaviour
         DebugManager.i.UIDebugOut("HeroCommandFieldMenu", "Display inventory for " + heroManager.Hero().GetName());
     }
 
+    /// <summary>
+    /// Opens the equip menu when the user clicks the 'Equip' button on the Hero Field menu.
+    /// </summary>
     public void OnEquipButtonOnClick()
     {
         if (HeroCommandProcessing.i == null) { HeroCommandProcessing.i = FindFirstObjectByType<HeroCommandProcessing>(); }
         if (HeroEquipMenuHandler.i == null) { HeroEquipMenuHandler.i = FindFirstObjectByType<HeroEquipMenuHandler>(); }
-        if (StatusMenuHandler.i == null) { StatusMenuHandler.i = FindFirstObjectByType<StatusMenuHandler>(); }
+        if (StatusMenuHandler.i == null) { StatusMenuHandler.i = FindFirstObjectByType<StatusMenuHandler>(); } // maybe I can put all needed new i's in one function and call it at the start of every onclick.
         ContextMenuHandler.i = FindFirstObjectByType<ContextMenuHandler>();
 
         ContextMenuHandler.i.SetFieldHeroManager(heroManager);       

@@ -339,7 +339,7 @@ public class MenuProcessingHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Opens the given menu
+    /// Opens the given menu by setting the Animator's bool and tweaking the canvas group
     /// </summary>
     /// <param name="canvasGroup">CanvasGroup of the menu to be opened</param>
     /// <param name="closePrevious">If the previous menu should be closed, set this to true.</param>
@@ -366,6 +366,11 @@ public class MenuProcessingHandler : MonoBehaviour
         tempCanvasGroup = canvasGroup;
     }
 
+    /// <summary>
+    /// Just displays or hides the canvas with no added scripting.
+    /// </summary>
+    /// <param name="canvasGroup">Canvas Group to display/hide</param>
+    /// <param name="toggle">True to display the canvasGroup, false to hide it.</param>
     void SimpleToggleMenu(CanvasGroup canvasGroup, bool toggle)
     {
         DebugManager.i.UIDebugOut("MenuProcessingHandler", "SimpleToggling: " + canvasGroup.gameObject.name + " / " + toggle);
