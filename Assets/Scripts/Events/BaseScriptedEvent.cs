@@ -65,7 +65,7 @@ public class BaseScriptedEvent : MonoBehaviour
 
         GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex); // SpawnManager will unload this scene after it detects that it is done loading.
 
-        PlayerMovement.i.ToggleMovement(false); // Disables the player's movement during transition
+        //PlayerMovement.i.ToggleMovement(false); // Disables the player's movement during transition
 
         foreach (HeroManager heroManager in GameSettings.GetHeroesInParty()) // For all heroes in party
         {

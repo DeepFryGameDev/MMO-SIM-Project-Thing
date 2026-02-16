@@ -33,13 +33,13 @@ public class ThirdPersonCam : MonoBehaviour
 
     void Update()
     {
-        if (cameraSetupComplete) UpdateRotations();
+        //if (cameraSetupComplete) UpdateRotations();
     }
 
     /// <summary>
     /// Keeps orientation and rotation of camera updated for each camera mode
     /// </summary>
-    void UpdateRotations()
+    /*void UpdateRotations()
     {
         // rotate orientation
         Vector3 viewDir = playerParent.position - new Vector3(transform.position.x, playerParent.position.y, transform.position.z);
@@ -64,7 +64,7 @@ public class ThirdPersonCam : MonoBehaviour
 
             playerObj.forward = dirToCombatLookAt.normalized;
         }
-    }
+    }*/
 
     public void ToggleCameraRotation(bool toggle)
     {

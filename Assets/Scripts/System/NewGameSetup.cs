@@ -124,7 +124,7 @@ public class NewGameSetup : MonoBehaviour
     /// </summary>
     void PlayerMovementSetup(GameObject newPlayerObject)
     {
-        playerMovement.SetVars(newPlayerObject);
+        //playerMovement.SetVars(newPlayerObject);
     }
 
     /// <summary>

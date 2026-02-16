@@ -123,7 +123,7 @@ public class DateManager : MonoBehaviour
         StartCoroutine(UIManager.i.FadeToBlack(true));
 
         // disable player movement
-        playerMovement.ToggleMovement(false);
+        //playerMovement.ToggleMovement(false);
 
         // disable camera movement
         cam.ToggleCameraRotation(false);
@@ -217,7 +217,7 @@ public class DateManager : MonoBehaviour
         }
 
         // enable player movement
-        playerMovement.ToggleMovement(true);
+        //playerMovement.ToggleMovement(true);
 
         // enable camera movement
         cam.ToggleCameraRotation(true);

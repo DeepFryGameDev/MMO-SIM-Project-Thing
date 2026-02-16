@@ -110,8 +110,8 @@ public class CameraManager : MonoBehaviour
     void SetCameraMode()
     {
         // switch styles
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCameraMode(EnumHandler.CameraModes.BASIC);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCameraMode(EnumHandler.CameraModes.COMBAT);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCameraMode(EnumHandler.CameraModes.TOPDOWN);
+        //if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchCameraMode(EnumHandler.CameraModes.BASIC);
+        //if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchCameraMode(EnumHandler.CameraModes.COMBAT);
+        //if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchCameraMode(EnumHandler.CameraModes.TOPDOWN);
     }
 }

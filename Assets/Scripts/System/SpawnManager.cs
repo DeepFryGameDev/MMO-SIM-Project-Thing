@@ -259,7 +259,7 @@ public class SpawnManager : MonoBehaviour
         MoveHeroesToPosition();
 
         // Allow the player to move again
-        PlayerMovement.i.ToggleMovement(true);
+        //PlayerMovement.i.ToggleMovement(true);
 
         // And any last minute stuff that should happen
         // --------------------------------------------

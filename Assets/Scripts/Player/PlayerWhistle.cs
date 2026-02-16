@@ -33,13 +33,13 @@ public class PlayerWhistle : MonoBehaviour
 
     void Update()
     {
-        ListenForWhistle();
+        //ListenForWhistle();
     }
 
     /// <summary>
     /// When the player hits the 'whistleKey' keybind, this will fire.
     /// </summary>
-    void ListenForWhistle()
+    /*void ListenForWhistle()
     {
         if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
         {
@@ -62,7 +62,7 @@ public class PlayerWhistle : MonoBehaviour
                 DebugManager.i.HeroDebugOut("PlayerWhistle", "Player is not standing on home zone!", true, false);
             }
         }
-    }
+    }*/
 
     /// <summary>
     /// The coroutine in which the hero runs to the player when they are whistled
@@ -76,7 +76,7 @@ public class PlayerWhistle : MonoBehaviour
         DebugManager.i.HeroDebugOut("PlayerWhistle", "Whistling for " + heroManagerWhistled.Hero().GetName(), false, false);
 
         // stop player movement
-        pm.ToggleMovement(false);
+        //pm.ToggleMovement(false);
 
         // increase hero pathing run speed
         heroManagerWhistled.HeroPathing().SetRunMode(EnumHandler.pathRunMode.CANRUN);

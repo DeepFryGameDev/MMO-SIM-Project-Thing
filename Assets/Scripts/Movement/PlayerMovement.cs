@@ -5,8 +5,10 @@ using UnityEngine;
 // Other notes: Written from YouTube tutorial: https://www.youtube.com/watch?v=f473C43s8nE
 
 public class PlayerMovement : MonoBehaviour
-{
+{    
     public bool movementEnabled;
+
+    [SerializeField] InputSubscription inputSubscription;
 
     [Header("Movement")]
     [Tooltip("Base speed at which the player moves while sprinting")]
@@ -57,14 +59,18 @@ public class PlayerMovement : MonoBehaviour
 
     public static PlayerMovement i;
 
-    // -- Disabled for now - jumping is not active
-    //public float jumpForce;
-    //public float jumpCooldown;
-    // bool readyToJump;
+    // testing stuff
+    Vector3 playerMovement;
+
+    float moveSpeed = 5; // testing
+
+    // ------------------
 
     void Awake()
     {
         Singleton();
+
+        SetVars(transform.GetChild(0).gameObject);
 
         movementEnabled = true;
     }
@@ -88,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         {
             MovePlayer();
         }
-        
+
     }
 
     void Update()
@@ -114,15 +120,21 @@ public class PlayerMovement : MonoBehaviour
             {
                 //Debug.Log("Not grounded");
                 rb.linearDamping = 0;
-            }            
+            }
         }
+
+        // start new code --------------------------
+        //playerMovement = new Vector3(inputSubscription.moveInput.x, inputSubscription.moveInput.y, inputSubscription.moveInput.z);
+        //rb.linearVelocity = new Vector3(playerMovement.x, playerMovement.y, playerMovement.z) * moveSpeed;
+
+        //--------------------------------
     }
 
     /// <summary>
     /// Turns movement for the player on or off.  Will also toggle player's rigidbody isKinematic.
     /// </summary>
     /// <param name="toggle">True to enable movement, false to disable movement.</param>
-    public void ToggleMovement (bool toggle)
+    public void ToggleMovement(bool toggle)
     {
         DebugManager.i.PlayerDebugOut("PlayerMovement", "Movement toggled: " + toggle);
         movementEnabled = toggle;
@@ -159,32 +171,31 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void GetInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        //horizontalInput = Input.GetAxisRaw("Horizontal");
+        //verticalInput = Input.GetAxisRaw("Vertical");
+
+        // set correct vars here:
+        horizontalInput = inputSubscription.moveInput.x;
+        verticalInput = inputSubscription.moveInput.z;
+
+        DebugManager.i.SystemDebugOut("PlayerMovement", "horizontalInput: " + horizontalInput + " / verticalInput: " + verticalInput);
+
 
         if (horizontalInput != 0 || verticalInput != 0)
         {
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            /*if (Input.GetKey(sprintKey) && !IsMovingBackwards())
             {
                 //nothing for now
-            } else
-            { 
-                //nothing for now
             }
-        } else
+            else
+            {
+                //nothing for now
+            }*/
+        }
+        else
         {
             rb.linearVelocity = Vector3.zero; // Keeps player object from sliding around after movement
         }
-
-        // when to jump
-        /*if (Input.GetKey(jumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }*/
     }
 
     /// <summary>
@@ -192,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleAnimations()
     {
-        if (horizontalInput != 0 || verticalInput != 0)
+        /*if (horizontalInput != 0 || verticalInput != 0)
         {
             if (Input.GetKey(sprintKey))
             {
@@ -209,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("isRunning", false);
             anim.SetBool("isSprinting", false);
-        }   
+        }*/
     }
 
     /// <summary>
@@ -261,13 +272,14 @@ public class PlayerMovement : MonoBehaviour
         // in air
         else if (!grounded)
         {
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            /*if (Input.GetKey(sprintKey) && !IsMovingBackwards())
             {
                 rb.AddForce(moveDirection.normalized * sprintSpeed * moveSpeedModifier * airMultiplier, ForceMode.Force);
-            } else
+            }
+            else
             {
                 rb.AddForce(moveDirection.normalized * pm.GetMoveSpeed() * moveSpeedModifier * airMultiplier, ForceMode.Force);
-            }
+            }*/
         }
     }
 
@@ -277,13 +289,14 @@ public class PlayerMovement : MonoBehaviour
     /// <returns>True if vertical input is < 0. False if >= 0.</returns>
     bool IsMovingBackwards()
     {
-        if (verticalInput < 0 )
+        if (verticalInput < 0)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
-        }        
+        }
     }
 
     /// <summary>
@@ -308,17 +321,4 @@ public class PlayerMovement : MonoBehaviour
             rb.isKinematic = false;
         }*/
     }
-
-    /*void Jump()
-    {
-        // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    void ResetJump()
-    {
-        readyToJump = true;
-    }*/
 }
