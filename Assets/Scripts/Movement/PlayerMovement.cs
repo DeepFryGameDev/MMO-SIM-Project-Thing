@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public bool movementEnabled;
+    [Tooltip("Toggles whether player movement is enabled or not.")]
+    [SerializeField] bool movementEnabled;
 
     [Header("Movement")]
     [Tooltip("Base speed at which the player moves while sprinting")]
@@ -17,12 +18,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Tooltip("Any additional force to add while the player is in the air")]
     [SerializeField] float airMultiplier;
-
-    [Header("Keybinds")]
-    [Tooltip("Key to hold to sprint")]
-    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    //[Tooltip("Key to press to jump (not being used right now)")]
-    //[SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     [Tooltip("Raycast is shot downward from the player's height to ensure they are grounded")]
@@ -35,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
     Transform orientation; // Set to the Player -> Orientation Transform during SetVars()
 
     float moveSpeedModifier = 10f; // Speed modifier used during calculation to determine how fast player should move
-
-    float combatCameraMovingBackwardsSpeedModifier = 5f; // Speed modifier used during calculation to determine how fast player should move when moving backwards during combat
 
     float horizontalInput; // Set to any movement from the player along the X axis
     float verticalInput; // Set to any movement from the player along the Y axis
@@ -55,12 +48,11 @@ public class PlayerMovement : MonoBehaviour
 
     bool movementSet; // Set to true when all movement variables have been set for a game startup
 
-    public static PlayerMovement i;
+    [SerializeField] InputSubscription inputSubscription; // update this to grab the object from System object instead of being set in the inspector
 
-    // -- Disabled for now - jumping is not active
-    //public float jumpForce;
-    //public float jumpCooldown;
-    // bool readyToJump;
+    public static PlayerMovement i; // Instance of this script that can be called from other scripts via PlayerMovement.i
+
+    // ------------------
 
     void Awake()
     {
@@ -82,23 +74,10 @@ public class PlayerMovement : MonoBehaviour
         DontDestroyOnLoad(gameObject); //set this to be persistable across scenes
     }
 
-    void FixedUpdate()
-    {
-        if (movementSet)
-        {
-            MovePlayer();
-        }
-        
-    }
-
     void Update()
     {
         if (movementSet && movementEnabled)
         {
-            // ground check
-            //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .1f, whatIsGround);
-            grounded = Physics.Raycast(transform.position, Vector3.down, col.bounds.extents.y + .1f, whatIsGround);
-
             GetInput();
             SpeedControl();
 
@@ -114,7 +93,26 @@ public class PlayerMovement : MonoBehaviour
             {
                 //Debug.Log("Not grounded");
                 rb.linearDamping = 0;
-            }            
+            }
+        }
+
+        //--------------------------------
+    }
+
+    void FixedUpdate()
+    {
+        if (movementSet && movementEnabled)
+        {
+            MovePlayer();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("whatIsGround"))
+        {
+            Debug.Log("Grounded");
+            grounded = true;
         }
     }
 
@@ -122,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
     /// Turns movement for the player on or off.  Will also toggle player's rigidbody isKinematic.
     /// </summary>
     /// <param name="toggle">True to enable movement, false to disable movement.</param>
-    public void ToggleMovement (bool toggle)
+    public void ToggleMovement(bool toggle)
     {
         DebugManager.i.PlayerDebugOut("PlayerMovement", "Movement toggled: " + toggle);
         movementEnabled = toggle;
@@ -147,7 +145,8 @@ public class PlayerMovement : MonoBehaviour
 
         // readyToJump = true;
 
-        col = playerParent.GetComponentInChildren<Collider>();
+        //col = playerParent.GetComponentInChildren<Collider>();
+        col = GetComponent<Collider>();
 
         orientation = playerParent.transform.Find("Orientation");
 
@@ -159,32 +158,30 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void GetInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        //horizontalInput = Input.GetAxisRaw("Horizontal");
+        //verticalInput = Input.GetAxisRaw("Vertical");
+
+        // set correct vars here:
+        horizontalInput = inputSubscription.moveInput.x;
+        verticalInput = inputSubscription.moveInput.z;
+
+        //DebugManager.i.SystemDebugOut("PlayerMovement", "horizontalInput: " + horizontalInput + " / verticalInput: " + verticalInput);
 
         if (horizontalInput != 0 || verticalInput != 0)
         {
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            if (inputSubscription.sprintInput)
             {
                 //nothing for now
-            } else
-            { 
+            }
+            else
+            {
                 //nothing for now
             }
-        } else
+        }
+        else
         {
             rb.linearVelocity = Vector3.zero; // Keeps player object from sliding around after movement
         }
-
-        // when to jump
-        /*if (Input.GetKey(jumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-
-            Jump();
-
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }*/
     }
 
     /// <summary>
@@ -194,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (horizontalInput != 0 || verticalInput != 0)
         {
-            if (Input.GetKey(sprintKey))
+            if (inputSubscription.sprintInput)
             {
                 anim.SetBool("isRunning", false);
                 anim.SetBool("isSprinting", true);
@@ -209,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("isRunning", false);
             anim.SetBool("isSprinting", false);
-        }   
+        }
     }
 
     /// <summary>
@@ -231,59 +228,34 @@ public class PlayerMovement : MonoBehaviour
                 case EnumHandler.CameraModes.BASIC:
                     speedModifier = moveSpeedModifier;
                     break;
-                case EnumHandler.CameraModes.COMBAT:
-                    if (!IsMovingBackwards())
-                    {
-                        speedModifier = moveSpeedModifier;
-
-                        //Debug.Log("Normal move speed: " + finalSpeed);
-                    }
-                    else
-                    {
-                        //Debug.Log("move at half speed");
-                        speedModifier = combatCameraMovingBackwardsSpeedModifier;
-
-                        //Debug.Log("Half move speed: " + finalSpeed);
-                    }
-                    break;
             }
 
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards()) // Player is sprinting
+            if (inputSubscription.sprintInput) // Player is sprinting
             {
                 rb.AddForce(moveDirection.normalized * (sprintSpeed * speedModifier), ForceMode.Force);
+                //Debug.Log("Sprinting: " + "moveDir: " + moveDirection + " / sprintSpeed: " + sprintSpeed + " / speedModifier: " + speedModifier);
             }
             else // Player is walking
             {
                 rb.AddForce(moveDirection.normalized * (pm.GetMoveSpeed() * speedModifier), ForceMode.Force);
+                //if (moveDirection != Vector3.zero) Debug.Log("Walking: moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + speedModifier);
             }
         }
 
         // in air
         else if (!grounded)
         {
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            if (inputSubscription.sprintInput)
             {
                 rb.AddForce(moveDirection.normalized * sprintSpeed * moveSpeedModifier * airMultiplier, ForceMode.Force);
-            } else
+                //Debug.Log("We're sprinting in the air! moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + moveSpeedModifier * airMultiplier);
+            }
+            else
             {
                 rb.AddForce(moveDirection.normalized * pm.GetMoveSpeed() * moveSpeedModifier * airMultiplier, ForceMode.Force);
+                //Debug.Log("We're in the air! moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + moveSpeedModifier * airMultiplier);
             }
         }
-    }
-
-    /// <summary>
-    /// Simply checks if the player is moving backwards
-    /// </summary>
-    /// <returns>True if vertical input is < 0. False if >= 0.</returns>
-    bool IsMovingBackwards()
-    {
-        if (verticalInput < 0 )
-        {
-            return true;
-        } else
-        {
-            return false;
-        }        
     }
 
     /// <summary>
@@ -308,17 +280,4 @@ public class PlayerMovement : MonoBehaviour
             rb.isKinematic = false;
         }*/
     }
-
-    /*void Jump()
-    {
-        // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    void ResetJump()
-    {
-        readyToJump = true;
-    }*/
 }

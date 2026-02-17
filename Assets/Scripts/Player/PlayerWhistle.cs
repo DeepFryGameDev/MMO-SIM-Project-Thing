@@ -19,6 +19,8 @@ public class PlayerWhistle : MonoBehaviour
     bool canWhistle;
     public void ToggleCanWhistle(bool toggle) { canWhistle = toggle; }
 
+    [SerializeField] InputSubscription inputSubscription;
+
     void Awake()
     {
         pm = FindFirstObjectByType<PlayerMovement>();
@@ -41,7 +43,7 @@ public class PlayerWhistle : MonoBehaviour
     /// </summary>
     void ListenForWhistle()
     {
-        if (Input.GetKeyDown(KeyBindings.whistleKey) && canWhistle && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
+        if (inputSubscription.whistleInput && canWhistle && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
         {
             // Check if standing on home zone
             RaycastHit hit;

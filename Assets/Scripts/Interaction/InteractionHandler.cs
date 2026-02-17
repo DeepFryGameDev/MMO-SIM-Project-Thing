@@ -24,6 +24,8 @@ public class InteractionHandler : MonoBehaviour
 
     public CanvasGroup interactKeyCanvasGroup;
 
+    [SerializeField] InputSubscription inputSubscription;
+
 
     void Start()
     {
@@ -34,7 +36,7 @@ public class InteractionHandler : MonoBehaviour
 
     void Update()
     {
-        if (interactionReady && Input.GetKeyDown(KeyBindings.interactKey))
+        if (interactionReady && inputSubscription.actionInput)
         {
             Debug.Log("Interacting with " + interactedObject.name);
 

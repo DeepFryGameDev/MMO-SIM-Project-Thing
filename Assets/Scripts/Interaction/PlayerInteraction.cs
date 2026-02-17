@@ -8,7 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     InteractionHandler ih; // Used to display/hide interaction UI graphic, as well as set the interactedObject
 
-    int layerMask = 1 << 8; // Set to layer layerInteractable - this ensures only interactable objects will receive instruction from the raycast
+    [SerializeField] LayerMask collisionMask; // Used to determine what objects the interaction ray can hit.
 
     bool ignoreRay = false; // Used when interactions should not be possible - ie in a menu
     public void SetIgnoreRay(bool ignoreRay) { this.ignoreRay = ignoreRay; }
@@ -32,8 +32,9 @@ public class PlayerInteraction : MonoBehaviour
     void CheckForAvailableInteraction()
     {
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, ih.GetInteractDistance(), layerMask) && !ignoreRay)
+
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, ih.GetInteractDistance(), collisionMask) && !ignoreRay)
         {
             if (ih.GetShowInteractionRay()) Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
 
