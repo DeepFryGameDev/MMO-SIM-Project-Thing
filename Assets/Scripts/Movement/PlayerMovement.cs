@@ -88,22 +88,30 @@ public class PlayerMovement : MonoBehaviour
         DontDestroyOnLoad(gameObject); //set this to be persistable across scenes
     }
 
-    void FixedUpdate()
+    private void OnCollisionEnter(Collision collision)
     {
-        if (movementSet)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("whatIsGround"))
         {
-            MovePlayer();
+            Debug.Log("Grounded");
+            grounded = true;
         }
-
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (movementSet && movementEnabled)
         {
             // ground check
             //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .1f, whatIsGround);
-            grounded = Physics.Raycast(transform.position, Vector3.down, col.bounds.extents.y + .1f, whatIsGround);
+            //grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, 1, whatIsGround);
+            //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, Color.red);
+
+            /*if (!grounded)
+            {
+                Debug.Log("We're floating for some reason.");
+                Debug.Log("transform.position: " + new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y + .1f, transform.position.z));
+                Debug.Log("-----");
+            }*/
 
             GetInput();
             SpeedControl();
@@ -128,6 +136,52 @@ public class PlayerMovement : MonoBehaviour
         //rb.linearVelocity = new Vector3(playerMovement.x, playerMovement.y, playerMovement.z) * moveSpeed;
 
         //--------------------------------
+
+        if (movementSet)
+        {
+            MovePlayer();
+        }
+    }
+
+    void Update()
+    {
+        /*if (movementSet && movementEnabled)
+        {
+            // ground check
+            //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .1f, whatIsGround);
+            grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, 1, whatIsGround);
+            Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, Color.red);
+            
+            if (!grounded)
+            {
+                Debug.Log("We're floating for some reason.");
+                Debug.Log("transform.position: " + new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y + .1f, transform.position.z));
+                Debug.Log("-----");
+            }
+
+            GetInput();
+            SpeedControl();
+
+            HandleAnimations();
+
+            // handle drag
+            if (grounded)
+            {
+                //Debug.Log("Grounded");
+                rb.linearDamping = groundDrag;
+            }
+            else
+            {
+                //Debug.Log("Not grounded");
+                rb.linearDamping = 0;
+            }
+        }
+
+        // start new code --------------------------
+        //playerMovement = new Vector3(inputSubscription.moveInput.x, inputSubscription.moveInput.y, inputSubscription.moveInput.z);
+        //rb.linearVelocity = new Vector3(playerMovement.x, playerMovement.y, playerMovement.z) * moveSpeed;
+
+        //--------------------------------*/
     }
 
     /// <summary>
@@ -159,7 +213,8 @@ public class PlayerMovement : MonoBehaviour
 
         // readyToJump = true;
 
-        col = playerParent.GetComponentInChildren<Collider>();
+        //col = playerParent.GetComponentInChildren<Collider>();
+        col = GetComponent<Collider>();
 
         orientation = playerParent.transform.Find("Orientation");
 
@@ -178,19 +233,18 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = inputSubscription.moveInput.x;
         verticalInput = inputSubscription.moveInput.z;
 
-        DebugManager.i.SystemDebugOut("PlayerMovement", "horizontalInput: " + horizontalInput + " / verticalInput: " + verticalInput);
-
+        //DebugManager.i.SystemDebugOut("PlayerMovement", "horizontalInput: " + horizontalInput + " / verticalInput: " + verticalInput);
 
         if (horizontalInput != 0 || verticalInput != 0)
         {
-            /*if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            if (inputSubscription.sprintInput)
             {
                 //nothing for now
             }
             else
             {
                 //nothing for now
-            }*/
+            }
         }
         else
         {
@@ -203,9 +257,9 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleAnimations()
     {
-        /*if (horizontalInput != 0 || verticalInput != 0)
+        if (horizontalInput != 0 || verticalInput != 0)
         {
-            if (Input.GetKey(sprintKey))
+            if (inputSubscription.sprintInput)
             {
                 anim.SetBool("isRunning", false);
                 anim.SetBool("isSprinting", true);
@@ -220,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("isRunning", false);
             anim.SetBool("isSprinting", false);
-        }*/
+        }
     }
 
     /// <summary>
@@ -242,60 +296,32 @@ public class PlayerMovement : MonoBehaviour
                 case EnumHandler.CameraModes.BASIC:
                     speedModifier = moveSpeedModifier;
                     break;
-                case EnumHandler.CameraModes.COMBAT:
-                    if (!IsMovingBackwards())
-                    {
-                        speedModifier = moveSpeedModifier;
-
-                        //Debug.Log("Normal move speed: " + finalSpeed);
-                    }
-                    else
-                    {
-                        //Debug.Log("move at half speed");
-                        speedModifier = combatCameraMovingBackwardsSpeedModifier;
-
-                        //Debug.Log("Half move speed: " + finalSpeed);
-                    }
-                    break;
             }
 
-            if (Input.GetKey(sprintKey) && !IsMovingBackwards()) // Player is sprinting
+            if (inputSubscription.sprintInput) // Player is sprinting
             {
                 rb.AddForce(moveDirection.normalized * (sprintSpeed * speedModifier), ForceMode.Force);
+                //Debug.Log("Sprinting: " + "moveDir: " + moveDirection + " / sprintSpeed: " + sprintSpeed + " / speedModifier: " + speedModifier);
             }
             else // Player is walking
             {
                 rb.AddForce(moveDirection.normalized * (pm.GetMoveSpeed() * speedModifier), ForceMode.Force);
+                //if (moveDirection != Vector3.zero) Debug.Log("Walking: moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + speedModifier);
             }
         }
 
         // in air
         else if (!grounded)
         {
-            /*if (Input.GetKey(sprintKey) && !IsMovingBackwards())
+            if (inputSubscription.sprintInput)
             {
                 rb.AddForce(moveDirection.normalized * sprintSpeed * moveSpeedModifier * airMultiplier, ForceMode.Force);
             }
             else
             {
                 rb.AddForce(moveDirection.normalized * pm.GetMoveSpeed() * moveSpeedModifier * airMultiplier, ForceMode.Force);
-            }*/
-        }
-    }
-
-    /// <summary>
-    /// Simply checks if the player is moving backwards
-    /// </summary>
-    /// <returns>True if vertical input is < 0. False if >= 0.</returns>
-    bool IsMovingBackwards()
-    {
-        if (verticalInput < 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
+                //Debug.Log("We're in the air! moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + moveSpeedModifier * airMultiplier);
+            }
         }
     }
 

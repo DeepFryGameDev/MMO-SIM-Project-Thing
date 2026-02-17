@@ -26,6 +26,8 @@ public class ThirdPersonCam : MonoBehaviour
     bool cameraSetupComplete; // Set to true when the camera variables have all been set up for game startup
     public void SetCameraSetupComplete(bool set) { cameraSetupComplete = set; }
 
+    [SerializeField] InputSubscription inputSubscription;
+
     void Start()
     {
         cameraManager = FindFirstObjectByType<CameraManager>();
@@ -33,13 +35,13 @@ public class ThirdPersonCam : MonoBehaviour
 
     void Update()
     {
-        //if (cameraSetupComplete) UpdateRotations();
+        if (cameraSetupComplete) UpdateRotations();
     }
 
     /// <summary>
     /// Keeps orientation and rotation of camera updated for each camera mode
     /// </summary>
-    /*void UpdateRotations()
+    void UpdateRotations()
     {
         // rotate orientation
         Vector3 viewDir = playerParent.position - new Vector3(transform.position.x, playerParent.position.y, transform.position.z);
@@ -48,8 +50,10 @@ public class ThirdPersonCam : MonoBehaviour
         // rotate player object
         if (cameraManager.currentMode == EnumHandler.CameraModes.BASIC || cameraManager.currentMode == EnumHandler.CameraModes.TOPDOWN)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
+            //float horizontalInput = Input.GetAxis("Horizontal");
+            //float verticalInput = Input.GetAxis("Vertical");
+            float horizontalInput = inputSubscription.moveInput.x;
+            float verticalInput = inputSubscription.moveInput.z;
             Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
             if (inputDir != Vector3.zero)
@@ -64,7 +68,7 @@ public class ThirdPersonCam : MonoBehaviour
 
             playerObj.forward = dirToCombatLookAt.normalized;
         }
-    }*/
+    }
 
     public void ToggleCameraRotation(bool toggle)
     {

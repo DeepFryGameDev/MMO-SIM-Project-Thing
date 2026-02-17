@@ -55,6 +55,6 @@ public class InputSubscription : MonoBehaviour
     void Update()
     {
         actionInput = _Input.PlayerInput.ActionInput.WasPressedThisFrame();
-        sprintInput = _Input.PlayerInput.SprintInput.WasPressedThisFrame();
+        sprintInput = _Input.PlayerInput.SprintInput.IsPressed();
     }
 }
