@@ -32,6 +32,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CommandMenuInput",
+                    "type": "Button",
+                    "id": "eafe3fbe-539d-4558-a724-c5142a9bebe8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WhistleInput",
+                    "type": "Button",
+                    "id": "a281af08-3f13-4ceb-bb75-11e83860fad4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -142,6 +160,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ActionInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a00717fd-db79-4db4-b50f-cef9f47b7cc3",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CommandMenuInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d33c43e3-39fc-4e8a-a512-a4904272c8a6",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WhistleInput",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

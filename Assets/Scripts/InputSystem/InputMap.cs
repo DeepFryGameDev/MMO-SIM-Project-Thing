@@ -118,6 +118,24 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CommandMenuInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""eafe3fbe-539d-4558-a724-c5142a9bebe8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WhistleInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""a281af08-3f13-4ceb-bb75-11e83860fad4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -230,6 +248,28 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""action"": ""ActionInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a00717fd-db79-4db4-b50f-cef9f47b7cc3"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CommandMenuInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d33c43e3-39fc-4e8a-a512-a4904272c8a6"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WhistleInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +281,8 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         m_PlayerInput_MovementInput = m_PlayerInput.FindAction("MovementInput", throwIfNotFound: true);
         m_PlayerInput_SprintInput = m_PlayerInput.FindAction("SprintInput", throwIfNotFound: true);
         m_PlayerInput_ActionInput = m_PlayerInput.FindAction("ActionInput", throwIfNotFound: true);
+        m_PlayerInput_CommandMenuInput = m_PlayerInput.FindAction("CommandMenuInput", throwIfNotFound: true);
+        m_PlayerInput_WhistleInput = m_PlayerInput.FindAction("WhistleInput", throwIfNotFound: true);
     }
 
     ~@InputMap()
@@ -324,6 +366,8 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_MovementInput;
     private readonly InputAction m_PlayerInput_SprintInput;
     private readonly InputAction m_PlayerInput_ActionInput;
+    private readonly InputAction m_PlayerInput_CommandMenuInput;
+    private readonly InputAction m_PlayerInput_WhistleInput;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerInput".
     /// </summary>
@@ -347,6 +391,14 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerInput/ActionInput".
         /// </summary>
         public InputAction @ActionInput => m_Wrapper.m_PlayerInput_ActionInput;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerInput/CommandMenuInput".
+        /// </summary>
+        public InputAction @CommandMenuInput => m_Wrapper.m_PlayerInput_CommandMenuInput;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerInput/WhistleInput".
+        /// </summary>
+        public InputAction @WhistleInput => m_Wrapper.m_PlayerInput_WhistleInput;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -382,6 +434,12 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @ActionInput.started += instance.OnActionInput;
             @ActionInput.performed += instance.OnActionInput;
             @ActionInput.canceled += instance.OnActionInput;
+            @CommandMenuInput.started += instance.OnCommandMenuInput;
+            @CommandMenuInput.performed += instance.OnCommandMenuInput;
+            @CommandMenuInput.canceled += instance.OnCommandMenuInput;
+            @WhistleInput.started += instance.OnWhistleInput;
+            @WhistleInput.performed += instance.OnWhistleInput;
+            @WhistleInput.canceled += instance.OnWhistleInput;
         }
 
         /// <summary>
@@ -402,6 +460,12 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @ActionInput.started -= instance.OnActionInput;
             @ActionInput.performed -= instance.OnActionInput;
             @ActionInput.canceled -= instance.OnActionInput;
+            @CommandMenuInput.started -= instance.OnCommandMenuInput;
+            @CommandMenuInput.performed -= instance.OnCommandMenuInput;
+            @CommandMenuInput.canceled -= instance.OnCommandMenuInput;
+            @WhistleInput.started -= instance.OnWhistleInput;
+            @WhistleInput.performed -= instance.OnWhistleInput;
+            @WhistleInput.canceled -= instance.OnWhistleInput;
         }
 
         /// <summary>
@@ -463,5 +527,19 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnActionInput(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CommandMenuInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCommandMenuInput(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "WhistleInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnWhistleInput(InputAction.CallbackContext context);
     }
 }

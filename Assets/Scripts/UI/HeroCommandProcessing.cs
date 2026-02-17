@@ -62,7 +62,7 @@ public class HeroCommandProcessing : MonoBehaviour
         playerInteraction.SetIgnoreRay(true);
 
         //1. Disable player movement
-        //playerMovement.ToggleMovement(false);
+        playerMovement.ToggleMovement(false);
 
         //2. Set pathing to idle on heroPathing.
         heroManager.HeroPathing().StopPathing();
@@ -114,7 +114,7 @@ public class HeroCommandProcessing : MonoBehaviour
 
         heroManager.HeroPathing().StartNewRandomPathing(); // should go back to doing whatever they were doing before command menu. like resuming training, etc.
 
-        //playerMovement.ToggleMovement(true);
+        playerMovement.ToggleMovement(true);
 
         playerInteraction.SetIgnoreRay(false);
 

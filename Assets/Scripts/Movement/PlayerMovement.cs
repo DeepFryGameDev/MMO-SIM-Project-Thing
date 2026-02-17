@@ -5,10 +5,9 @@ using UnityEngine;
 // Other notes: Written from YouTube tutorial: https://www.youtube.com/watch?v=f473C43s8nE
 
 public class PlayerMovement : MonoBehaviour
-{    
-    public bool movementEnabled;
-
-    [SerializeField] InputSubscription inputSubscription;
+{
+    [Tooltip("Toggles whether player movement is enabled or not.")]
+    [SerializeField] bool movementEnabled;
 
     [Header("Movement")]
     [Tooltip("Base speed at which the player moves while sprinting")]
@@ -19,12 +18,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Tooltip("Any additional force to add while the player is in the air")]
     [SerializeField] float airMultiplier;
-
-    [Header("Keybinds")]
-    [Tooltip("Key to hold to sprint")]
-    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    //[Tooltip("Key to press to jump (not being used right now)")]
-    //[SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     [Tooltip("Raycast is shot downward from the player's height to ensure they are grounded")]
@@ -37,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
     Transform orientation; // Set to the Player -> Orientation Transform during SetVars()
 
     float moveSpeedModifier = 10f; // Speed modifier used during calculation to determine how fast player should move
-
-    float combatCameraMovingBackwardsSpeedModifier = 5f; // Speed modifier used during calculation to determine how fast player should move when moving backwards during combat
 
     float horizontalInput; // Set to any movement from the player along the X axis
     float verticalInput; // Set to any movement from the player along the Y axis
@@ -57,20 +48,15 @@ public class PlayerMovement : MonoBehaviour
 
     bool movementSet; // Set to true when all movement variables have been set for a game startup
 
-    public static PlayerMovement i;
+    [SerializeField] InputSubscription inputSubscription; // update this to grab the object from System object instead of being set in the inspector
 
-    // testing stuff
-    Vector3 playerMovement;
-
-    float moveSpeed = 5; // testing
+    public static PlayerMovement i; // Instance of this script that can be called from other scripts via PlayerMovement.i
 
     // ------------------
 
     void Awake()
     {
         Singleton();
-
-        SetVars(transform.GetChild(0).gameObject);
 
         movementEnabled = true;
     }
@@ -88,6 +74,39 @@ public class PlayerMovement : MonoBehaviour
         DontDestroyOnLoad(gameObject); //set this to be persistable across scenes
     }
 
+    void Update()
+    {
+        if (movementSet && movementEnabled)
+        {
+            GetInput();
+            SpeedControl();
+
+            HandleAnimations();
+
+            // handle drag
+            if (grounded)
+            {
+                //Debug.Log("Grounded");
+                rb.linearDamping = groundDrag;
+            }
+            else
+            {
+                //Debug.Log("Not grounded");
+                rb.linearDamping = 0;
+            }
+        }
+
+        //--------------------------------
+    }
+
+    void FixedUpdate()
+    {
+        if (movementSet && movementEnabled)
+        {
+            MovePlayer();
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("whatIsGround"))
@@ -95,93 +114,6 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Grounded");
             grounded = true;
         }
-    }
-
-    void FixedUpdate()
-    {
-        if (movementSet && movementEnabled)
-        {
-            // ground check
-            //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .1f, whatIsGround);
-            //grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, 1, whatIsGround);
-            //Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, Color.red);
-
-            /*if (!grounded)
-            {
-                Debug.Log("We're floating for some reason.");
-                Debug.Log("transform.position: " + new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y + .1f, transform.position.z));
-                Debug.Log("-----");
-            }*/
-
-            GetInput();
-            SpeedControl();
-
-            HandleAnimations();
-
-            // handle drag
-            if (grounded)
-            {
-                //Debug.Log("Grounded");
-                rb.linearDamping = groundDrag;
-            }
-            else
-            {
-                //Debug.Log("Not grounded");
-                rb.linearDamping = 0;
-            }
-        }
-
-        // start new code --------------------------
-        //playerMovement = new Vector3(inputSubscription.moveInput.x, inputSubscription.moveInput.y, inputSubscription.moveInput.z);
-        //rb.linearVelocity = new Vector3(playerMovement.x, playerMovement.y, playerMovement.z) * moveSpeed;
-
-        //--------------------------------
-
-        if (movementSet)
-        {
-            MovePlayer();
-        }
-    }
-
-    void Update()
-    {
-        /*if (movementSet && movementEnabled)
-        {
-            // ground check
-            //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .1f, whatIsGround);
-            grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, 1, whatIsGround);
-            Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y - .35f, transform.position.z), Vector3.down, Color.red);
-            
-            if (!grounded)
-            {
-                Debug.Log("We're floating for some reason.");
-                Debug.Log("transform.position: " + new Vector3(transform.position.x, transform.position.y + col.bounds.extents.y + .1f, transform.position.z));
-                Debug.Log("-----");
-            }
-
-            GetInput();
-            SpeedControl();
-
-            HandleAnimations();
-
-            // handle drag
-            if (grounded)
-            {
-                //Debug.Log("Grounded");
-                rb.linearDamping = groundDrag;
-            }
-            else
-            {
-                //Debug.Log("Not grounded");
-                rb.linearDamping = 0;
-            }
-        }
-
-        // start new code --------------------------
-        //playerMovement = new Vector3(inputSubscription.moveInput.x, inputSubscription.moveInput.y, inputSubscription.moveInput.z);
-        //rb.linearVelocity = new Vector3(playerMovement.x, playerMovement.y, playerMovement.z) * moveSpeed;
-
-        //--------------------------------*/
     }
 
     /// <summary>
@@ -316,6 +248,7 @@ public class PlayerMovement : MonoBehaviour
             if (inputSubscription.sprintInput)
             {
                 rb.AddForce(moveDirection.normalized * sprintSpeed * moveSpeedModifier * airMultiplier, ForceMode.Force);
+                //Debug.Log("We're sprinting in the air! moveDir: " + moveDirection + " / GetMoveSpeed: " + pm.GetMoveSpeed() + " / speedModifier: " + moveSpeedModifier * airMultiplier);
             }
             else
             {

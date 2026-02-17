@@ -8,6 +8,8 @@ public class InputSubscription : MonoBehaviour
     public Vector3 moveInput { get; private set; } = Vector3.zero;
     public bool sprintInput { get; private set; } = false;
     public bool actionInput { get; private set; } = false;
+    public bool commandMenuInput { get; private set; } = false;
+    public bool whistleInput { get; private set; } = false;
 
     InputMap _Input = null;
 
@@ -25,6 +27,12 @@ public class InputSubscription : MonoBehaviour
 
         _Input.PlayerInput.SprintInput.started += SetAction;
         _Input.PlayerInput.SprintInput.canceled += SetAction;
+
+        _Input.PlayerInput.CommandMenuInput.started += SetAction;
+        _Input.PlayerInput.CommandMenuInput.canceled += SetAction;
+
+        _Input.PlayerInput.WhistleInput.started += SetAction;
+        _Input.PlayerInput.WhistleInput.canceled += SetAction;
     }
 
     private void OnDisable() // unsubscribe to inputs
@@ -37,6 +45,12 @@ public class InputSubscription : MonoBehaviour
 
         _Input.PlayerInput.SprintInput.started -= SetAction;
         _Input.PlayerInput.SprintInput.canceled -= SetAction;
+
+        _Input.PlayerInput.CommandMenuInput.started -= SetAction;
+        _Input.PlayerInput.CommandMenuInput.canceled -= SetAction;
+
+        _Input.PlayerInput.WhistleInput.started -= SetAction;
+        _Input.PlayerInput.WhistleInput.canceled -= SetAction;
 
         _Input.PlayerInput.Disable();
     }
@@ -54,7 +68,12 @@ public class InputSubscription : MonoBehaviour
 
     void Update()
     {
+        // For keys that should be pressed and released
         actionInput = _Input.PlayerInput.ActionInput.WasPressedThisFrame();
+        commandMenuInput = _Input.PlayerInput.CommandMenuInput.WasPressedThisFrame();
+        whistleInput = _Input.PlayerInput.WhistleInput.WasPressedThisFrame();
+
+        // For keys that should be held down
         sprintInput = _Input.PlayerInput.SprintInput.IsPressed();
     }
 }

@@ -51,7 +51,7 @@ public class CameraManager : MonoBehaviour
 
     private void Update()
     {
-        SetCameraMode(); // Likely will be removed eventually, only used to switch camera modes from pressing 1-3 for testing
+        //SetCameraMode(); // Likely will be removed eventually, only used to switch camera modes from pressing 1-3 for testing
     }
 
     /// <summary>
@@ -66,6 +66,7 @@ public class CameraManager : MonoBehaviour
 
     /// <summary>
     /// Disables all cameras and sets new camera mode from given argument
+    /// Probably not going to use.  Leave this alone for now.
     /// </summary>
     public void SwitchCameraMode(EnumHandler.CameraModes newMode)
     {
@@ -106,6 +107,7 @@ public class CameraManager : MonoBehaviour
 
     /// <summary>
     /// Sets style of camera control based on pressing 1-3 during gameplay
+    /// Probably not going to use.  Leave this alone for now.
     /// </summary>
     void SetCameraMode()
     {

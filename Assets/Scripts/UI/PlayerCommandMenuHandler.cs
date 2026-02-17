@@ -22,6 +22,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI fieldMonthText;
     [SerializeField] TextMeshProUGUI fieldYearText;
 
+    [SerializeField] InputSubscription inputSubscription;
+
     void Awake()
     {
         Setup();
@@ -47,10 +49,10 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         switch (SceneInfo.i.GetSceneMode())
         {
             case EnumHandler.SceneMode.FIELD:
-                if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
+                if (inputSubscription.commandMenuInput && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
                 {
                     // For now we are disabling player movement.  Eventually I think it would be cool to allow player movement while action is happening, but we need to figure out how to switch to a camera mode that works without needing the mouse.
-                    //playerMovement.ToggleMovement(false);
+                    playerMovement.ToggleMovement(false);
                     cam.ToggleCameraRotation(false);
 
                     MenuProcessingHandler.i.SetPlayerCommandFieldMenuState(EnumHandler.PlayerCommandFieldMenuStates.ROOT);
@@ -68,10 +70,10 @@ public class PlayerCommandMenuHandler : MonoBehaviour
                 }              
                 break;
             case EnumHandler.SceneMode.HOME:
-                /*if (Input.GetKeyDown(KeyBindings.playerCommandMenuKey) && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
+                if (inputSubscription.commandMenuInput && UISettings.GetUIState() == EnumHandler.UIStates.IDLE)
                 {
                     // disable player movement
-                    //playerMovement.ToggleMovement(false);
+                    playerMovement.ToggleMovement(false);
 
                     // disable player whistle ability
                     playerWhistle.ToggleCanWhistle(false);
@@ -91,7 +93,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
                     UISettings.SetUIState(EnumHandler.UIStates.PLAYERCOMMAND);
 
                     DateManager.i.StopNewWeekToast();
-                }*/
+                }
                 break;
         }        
     }
@@ -137,7 +139,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         if (allowMovement)
         {
             // enable player movement
-            //playerMovement.ToggleMovement(true);
+            playerMovement.ToggleMovement(true);
 
             // enable player whistle ability
             playerWhistle.ToggleCanWhistle(true);
@@ -190,7 +192,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         if (allowMovement)
         {
             // enable player movement
-            //playerMovement.ToggleMovement(true);
+            playerMovement.ToggleMovement(true);
 
             // enable player whistle ability
             playerWhistle.ToggleCanWhistle(true);
