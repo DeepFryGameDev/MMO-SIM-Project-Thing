@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class BaseHero : BaseAttackableUnit
 {
+    [SerializeField] string heroName;
+
     [SerializeField] int ID;
     public int GetID() { return ID; }
 
@@ -22,32 +24,38 @@ public class BaseHero : BaseAttackableUnit
     public int GetEnergy() { return energy; }
     public void SetEnergy(int energy) { this.energy = energy; }
 
+
     // -- Primary Stats --
+    [SerializeField] int defaultStrength;
+
     int strength; // Current Strength Level
     public void SetStrength(int strength) { this.strength = strength; } // This takes into account equipment, perks, etc
     public int GetStrength() { return strength; }
 
+    [SerializeField] int defaultEndurance;
     int endurance;
     public void SetEndurance(int endurance) { this.endurance = endurance; } // This takes into account equipment, perks, etc
     public int GetEndurance() { return endurance; }
 
+    [SerializeField] int defaultAgility;
     int agility;
     public void SetAgility(int agility) { this.agility = agility; } // This takes into account equipment, perks, etc
     public int GetAgility() { return agility; }
 
+    [SerializeField] int defaultDexterity;
     int dexterity;
     public void SetDexterity(int dexterity) { this.dexterity = dexterity; } // This takes into account equipment, perks, etc
     public int GetDexterity() { return dexterity; }
 
+    [SerializeField] int defaultIntelligence;
     int intelligence;
     public void SetIntelligence(int intelligence) { this.intelligence = intelligence; } // This takes into account equipment, perks, etc
     public int GetIntelligence() { return intelligence; }
 
+    [SerializeField] int defaultFaith;
     int faith;
     public void SetFaith(int faith) { this.faith = faith; } // This takes into account equipment, perks, etc
     public int GetFaith() { return faith; }
-
-
 
     float resistToArmorMod = .5f; // Makes armor more effective based on player's resistance
 
@@ -78,6 +86,8 @@ public class BaseHero : BaseAttackableUnit
     {
         // set hero manager
 
+        SetBaseStats();
+
         SetStrength(GetBaseStrength());
         SetEndurance(GetBaseEndurance());
         SetAgility(GetBaseAgility());
@@ -85,14 +95,25 @@ public class BaseHero : BaseAttackableUnit
         SetIntelligence(GetBaseIntelligence());
         SetFaith(GetBaseFaith());
 
-        SetArmor(GetBaseArmor());
-        SetMagicResist(GetBaseMagicResist());
+        SetArmor(GetArmor());
+        SetMagicResist(GetMagicResist());
 
         SetCurrentHP(GetMaxHP());
 
         energy = HeroSettings.maxEnergy;
 
         // ReportStats();
+    }
+
+    private void SetBaseStats()
+    {
+        base.SetName(heroName);
+        base.baseStrength = defaultStrength;
+        base.baseEndurance = defaultEndurance;
+        base.baseAgility = defaultAgility;
+        base.baseDexterity = defaultDexterity;
+        base.baseIntelligence = defaultIntelligence;
+        base.baseFaith = defaultFaith;
     }
 
     /// <summary>
