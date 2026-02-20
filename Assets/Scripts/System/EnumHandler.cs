@@ -18,6 +18,24 @@ public static class EnumHandler
         RECRUIT
     }
 
+
+    public enum heroAnimationStates
+    {
+        FREEMOVE,
+        BATTLE
+    }
+
+    public enum heroBattleAnimationStates
+    {
+        NOTINCOMBAT,
+        IDLE,
+        RUNTOPOINT,
+        ATTACK,
+        BLOCK,
+        MAGIC,        
+        ITEM
+    }
+
     /// <summary>
     /// TOPDOWN is not being used.  BASIC offers full camera control (used while in non-combat scenes).  COMBAT will force the camera to look in the direction the player is facing.
     /// </summary>
@@ -219,6 +237,7 @@ public static class EnumHandler
     public enum SceneMode
     {
         HOME,
-        FIELD
+        FIELD,
+        BATTLE
     }
 }

@@ -9,7 +9,15 @@ public class HeroAnimHandler : MonoBehaviour
     HeroManager heroManager; // HeroManager attached to the hero
 
     Animator animator; // Animator to manipulate for animations
-    
+
+    EnumHandler.heroAnimationStates currentAnimationState;
+    public EnumHandler.heroAnimationStates GetAnimationState() { return currentAnimationState; }
+    public void SetAnimationState(EnumHandler.heroAnimationStates newState) { currentAnimationState = newState; }
+
+    EnumHandler.heroBattleAnimationStates currentBattleAnimationState;
+    public EnumHandler.heroBattleAnimationStates GetBattleAnimationState() { return currentBattleAnimationState; }
+    public void SetBattleAnimationState(EnumHandler.heroBattleAnimationStates newState) { currentBattleAnimationState = newState; }
+
     void Start() // For scripts attached to heroes, set vars in Start so that HeroManager vars are set in Awake first.
     {
         heroManager = transform.GetComponent<HeroManager>();
@@ -19,7 +27,15 @@ public class HeroAnimHandler : MonoBehaviour
 
     void Update()
     {
-        MovementAnims();
+        switch (currentAnimationState)
+        {
+            case EnumHandler.heroAnimationStates.FREEMOVE:
+                MovementAnims();
+                break;
+            case EnumHandler.heroAnimationStates.BATTLE:
+                BattleAnims();
+                break;
+        }        
     }
 
     /// <summary>
@@ -84,6 +100,39 @@ public class HeroAnimHandler : MonoBehaviour
             if (HeroSettings.logPathingStuff) Debug.Log(gameObject.name + " - RandomPathing: Stopped / Idle Anim");
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
+        }
+    }
+
+    public void SetMovementToIdle()
+    {
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isRunning", false);
+    }
+
+    void BattleAnims()
+    {
+        // need to set a default state to idle battle stance
+        switch (currentBattleAnimationState)
+        {
+            case EnumHandler.heroBattleAnimationStates.NOTINCOMBAT:
+                // do nothing
+                break;
+            case EnumHandler.heroBattleAnimationStates.IDLE:
+                // show battle idle stance
+                animator.SetBool("battleIdle", true);
+                break;
+            case EnumHandler.heroBattleAnimationStates.RUNTOPOINT:
+
+                break;
+            case EnumHandler.heroBattleAnimationStates.ATTACK:
+
+                break;
+            case EnumHandler.heroBattleAnimationStates.BLOCK:
+
+                break;
+            case EnumHandler.heroBattleAnimationStates.MAGIC:
+
+                break;
         }
     }
 }

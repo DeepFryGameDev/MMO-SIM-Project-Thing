@@ -8,9 +8,12 @@ public class BaseInteractable : MonoBehaviour
 {
     protected BaseScriptedEvent bse;
 
+    public bool interactionReady;
+
     void Awake()
     {
         bse = FindFirstObjectByType<BaseScriptedEvent>();
+        interactionReady = true;
     }
 
     /// <summary>
@@ -20,6 +23,6 @@ public class BaseInteractable : MonoBehaviour
     /// </summary>
     public virtual void OnInteract()
     {
-
+        interactionReady = false;
     }
 }

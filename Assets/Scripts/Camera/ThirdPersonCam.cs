@@ -26,11 +26,12 @@ public class ThirdPersonCam : MonoBehaviour
     bool cameraSetupComplete; // Set to true when the camera variables have all been set up for game startup
     public void SetCameraSetupComplete(bool set) { cameraSetupComplete = set; }
 
-    [SerializeField] InputSubscription inputSubscription;
+    InputSubscription inputSubscription;
 
     void Start()
     {
         cameraManager = FindFirstObjectByType<CameraManager>();
+        inputSubscription = GameObject.Find("[System]").GetComponent<InputSubscription>();
     }
 
     void Update()

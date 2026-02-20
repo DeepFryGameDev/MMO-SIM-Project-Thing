@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool movementSet; // Set to true when all movement variables have been set for a game startup
 
-    [SerializeField] InputSubscription inputSubscription; // update this to grab the object from System object instead of being set in the inspector
+    InputSubscription inputSubscription;
 
     public static PlayerMovement i; // Instance of this script that can be called from other scripts via PlayerMovement.i
 
@@ -59,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
         Singleton();
 
         movementEnabled = true;
+
+        inputSubscription = GameObject.Find("[System]").GetComponent<InputSubscription>();
     }
 
     void Singleton()

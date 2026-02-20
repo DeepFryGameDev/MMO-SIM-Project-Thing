@@ -24,7 +24,7 @@ public class InteractionHandler : MonoBehaviour
 
     public CanvasGroup interactKeyCanvasGroup;
 
-    [SerializeField] InputSubscription inputSubscription;
+    InputSubscription inputSubscription;
 
 
     void Start()
@@ -34,16 +34,25 @@ public class InteractionHandler : MonoBehaviour
         // SetInteractKeyText();
     }
 
+    private void Awake()
+    {
+        inputSubscription = GameObject.Find("[System]").GetComponent<InputSubscription>();
+    }
+
     void Update()
     {
         if (interactionReady && inputSubscription.actionInput)
         {
-            Debug.Log("Interacting with " + interactedObject.name);
+             Debug.Log("Attempting interaction with " + interactedObject.name);
 
             BaseInteractable bi = interactedObject.GetComponent<BaseInteractable>();
             if (bi != null)
             {
-                bi.OnInteract();
+                if (bi.interactionReady)
+                {
+                     Debug.Log("Starting interaction with " + interactedObject.name);
+                    bi.OnInteract();
+                }
             } else
             {
                 switch (interactedObject.tag)

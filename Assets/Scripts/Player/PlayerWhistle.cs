@@ -19,13 +19,15 @@ public class PlayerWhistle : MonoBehaviour
     bool canWhistle;
     public void ToggleCanWhistle(bool toggle) { canWhistle = toggle; }
 
-    [SerializeField] InputSubscription inputSubscription;
+    InputSubscription inputSubscription;
 
     void Awake()
     {
         pm = FindFirstObjectByType<PlayerMovement>();
 
         hcp = FindFirstObjectByType<HeroCommandProcessing>();
+
+        inputSubscription = GameObject.Find("[System]").GetComponent<InputSubscription>();
     }
 
     void Start()

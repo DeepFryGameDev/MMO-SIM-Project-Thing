@@ -22,7 +22,7 @@ public class PlayerCommandMenuHandler : MonoBehaviour
     [SerializeField] TextMeshProUGUI fieldMonthText;
     [SerializeField] TextMeshProUGUI fieldYearText;
 
-    [SerializeField] InputSubscription inputSubscription;
+    InputSubscription inputSubscription;
 
     void Awake()
     {
@@ -34,6 +34,8 @@ public class PlayerCommandMenuHandler : MonoBehaviour
         playerMovement = FindFirstObjectByType<PlayerMovement>();
         cam = FindFirstObjectByType<ThirdPersonCam>();
         playerWhistle = FindFirstObjectByType<PlayerWhistle>();
+
+        inputSubscription = GameObject.Find("[System]").GetComponent<InputSubscription>();
     }
 
     void Update()
