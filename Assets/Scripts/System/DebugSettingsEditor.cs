@@ -19,6 +19,8 @@ public class DebugSettingsEditor : MonoBehaviour
 
     public Color classDebugColor;
 
+    public Color battleDebugColor;
+
     private void Awake()
     {
         SetSettings();
@@ -41,5 +43,7 @@ public class DebugSettingsEditor : MonoBehaviour
         DebugSettings.inventoryDebugColor = inventoryDebugColor;
 
         DebugSettings.classDebugColor = classDebugColor;
+
+        DebugSettings.battleDebugColor = battleDebugColor;
     }
 }

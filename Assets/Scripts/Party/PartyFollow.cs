@@ -105,7 +105,7 @@ public class PartyFollow : MonoBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1, transform.position.z),
-            transform.TransformDirection(Vector3.down), out hit, raycastDist, isFloorLayer))
+            transform.TransformDirection(Vector3.down), out hit, raycastDist, isFloorLayer) && SceneInfo.i.GetSceneMode() == EnumHandler.SceneMode.HOME)
         {            
             DebugManager.i.PartyDebugOut("PartyFollow", "Entering home - party members going back to their business!", false, false);
 

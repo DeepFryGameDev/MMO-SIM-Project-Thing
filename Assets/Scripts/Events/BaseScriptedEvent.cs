@@ -46,7 +46,60 @@ public class BaseScriptedEvent : MonoBehaviour
     #region ---BATTLE MANAGEMENT---
 
     #endregion
+    /// <summary>
+    /// Moves the player along with any heroes in party to the given scene.
+    /// Ensure this is always ran as a coroutine (StartCoroutine)
+    /// </summary>
+    /// <param name="sceneIndex">The build index of the scene to be loaded</param>
+    /// <param name="spawnPosition">The position in the world in the given scene where the player should load</param>
+    public IEnumerator BattleTransition(int sceneIndex)
+    {
+        DebugManager.i.BattleDebugOut("BattleTransition", "Loading Scene - Build Index: " + sceneIndex);
+        DebugManager.i.BattleDebugOut("BattleTransition", "Warnings may occur between these lines.  You should be safe to ignore them as they are caused to two scenes existing at once, but double check.");
+        DebugManager.i.BattleDebugOut("BattleTransition", "---------------------------------------------------------------------------------------");
 
+        GameSettings.SetSceneTransitionStarted(true);
+
+        GameSettings.SetUnloadSceneIndex(SceneManager.GetActiveScene().buildIndex); // SpawnManager will unload this scene after it detects that it is done loading.
+
+        PlayerMovement.i.ToggleMovement(false); // Disables the player's movement during transition
+
+        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty()) // For all heroes in party
+        {
+            //Debug.Log("Stop " + heroManager.Hero().GetName());
+            heroManager.HeroPathing().StopPathing(); // Stop moving and set to idle
+
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject); // may not be needed.  They are set once during Awake() in SpawnManager.
+            ActiveHeroesSystem.i.SetHeroManager(heroManager); // may not be needed.  They are set once during Awake() in SpawnManager.
+        }
+
+        foreach (HeroManager heroManager in GameSettings.GetIdleHeroes()) // For all idle heroes
+        {
+            //Debug.Log("Stop " + heroManager.Hero().GetName());
+            if (heroManager.HeroPathing().GetPathMode() != EnumHandler.pathModes.IDLE) // Set pathing to idle if it isn't already
+            {
+                heroManager.HeroPathing().StopPathing(); // and stop moving
+            }
+
+            ActiveHeroesSystem.i.SetHeroObject(heroManager.GetID(), heroManager.gameObject); // may not be needed.  They are set once during Awake() in SpawnManager.
+            ActiveHeroesSystem.i.SetHeroManager(heroManager); // may not be needed.  They are set once during Awake() in SpawnManager.
+        }
+
+        yield return UIManager.i.FadeToBlack(true); // The fade to black starts here and runtime will continue once it is done fading.  Should eventually be replaced with a battle transition animation.
+
+        Vector3 spawnPosition = new Vector3(21.6f, -0.09154558f, 29.95f); // <--- i think we can just remove this and have it set up in BattleSetup.
+        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition); // <--- this should be set to the middle heroBattleSpawnPoint in the new battle scene.  I think we will eventually just use one template battle scene and use the same positions every time.
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive); // And finally load the scene
+
+        while (!asyncLoad.isDone)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        DebugManager.i.BattleDebugOut("BattleTransition", "Battle Scene Loaded: " + sceneIndex);
+        GameSettings.SetSceneTransitionStarted(false);
+    }
     #region ---SCENE MANAGEMENT---
 
     /// <summary>

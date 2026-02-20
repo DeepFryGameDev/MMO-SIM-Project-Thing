@@ -21,4 +21,6 @@ public class DebugSettings
     public static Color partyDebugColor;
 
     public static Color inventoryDebugColor;
+
+    public static Color battleDebugColor;
 }

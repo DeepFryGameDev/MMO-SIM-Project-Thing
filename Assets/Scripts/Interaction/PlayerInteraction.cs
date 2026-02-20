@@ -43,7 +43,13 @@ public class PlayerInteraction : MonoBehaviour
             {
                 ih.ToggleInteraction(true);
                 ih.SetInteractedObject(hit.transform.gameObject);
-            }            
+            }
+            // if the target object is an interactable NPC, we should be able to talk to them
+            else if (hit.transform.gameObject.CompareTag("InteractableNPC"))
+            {
+                ih.ToggleInteraction(true);
+                ih.SetInteractedObject(hit.transform.gameObject);
+            }
         }
         else
         {
