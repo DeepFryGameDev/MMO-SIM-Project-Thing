@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleSetup : MonoBehaviour
@@ -8,7 +9,7 @@ public class BattleSetup : MonoBehaviour
     [SerializeField] Transform quadHeroSpawnPointIL, quadHeroSpawnPointOL, quadHeroSpawnPointIR, quadHeroSpawnPointOR;
     [SerializeField] Transform enemySpawnPointC, enemySpawnPointIL, enemySpawnPointOL, enemySpawnPointIR, enemySpawnPointOR;
 
-    [SerializeField] Transform enemySpawnPointsParent;
+    [SerializeField] Transform heroSpawnPointsParent, enemySpawnPointsParent, enemiesParent;
 
     
 
@@ -138,6 +139,14 @@ public class BattleSetup : MonoBehaviour
 
     void SpawnEnemies()
     {
+        foreach (EnemyScriptableObject enemy in BattleData.i.GetBaseBattle().GetEnemies())
+        {
+            Debug.Log("Spawning enemy " + enemy.GetName());
+            GameObject newEnemy = Instantiate(enemy.GetEnemyPrefab(), enemySpawnPointC.position, Quaternion.identity);
+            newEnemy.transform.SetParent(enemiesParent);
 
+            newEnemy.gameObject.name = enemy.GetName();
+            newEnemy.transform.LookAt(heroSpawnPointsParent.position);
+        }
     }
 }

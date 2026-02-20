@@ -88,7 +88,7 @@ public class BaseScriptedEvent : MonoBehaviour
         yield return UIManager.i.FadeToBlack(true); // The fade to black starts here and runtime will continue once it is done fading.  Should eventually be replaced with a battle transition animation.
 
         Vector3 spawnPosition = new Vector3(21.6f, -0.09154558f, 29.95f); // <--- i think we can just remove this and have it set up in BattleSetup.
-        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition); // <--- this should be set to the middle heroBattleSpawnPoint in the new battle scene.  I think we will eventually just use one template battle scene and use the same positions every time.
+        SpawnManager.i.SetPlayerSpawnPosition(spawnPosition); // I think we will eventually just use one template battle scene and use the same positions every time.
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive); // And finally load the scene
 

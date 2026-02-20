@@ -33,7 +33,26 @@ public static class EnumHandler
         ATTACK,
         BLOCK,
         MAGIC,        
-        ITEM
+        ITEM,
+        GETHIT,
+        DEATH
+    }
+
+    public enum enemyBattleAnimationStates
+    {
+        IDLE,
+        RUNTOPOINT,
+        ATTACK,
+        MAGIC,
+        GETHIT,
+        DEATH
+    }
+
+    public enum enemyBattleStates
+    {
+        IDLE,
+        ENGAGE,
+        DEATH
     }
 
     /// <summary>
