@@ -3,6 +3,8 @@ using UnityEngine;
 public class BaseEnemy : BaseAttackableUnit
 {
     [SerializeField] protected EnemyScriptableObject enemyData;
+    public EnemyScriptableObject GetEnemyData() { return enemyData; }
+
     EnemyAnimHandler animHandler;
 
     private void Awake()
