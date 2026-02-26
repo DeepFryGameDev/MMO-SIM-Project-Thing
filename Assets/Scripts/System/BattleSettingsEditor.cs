@@ -13,6 +13,15 @@ public class BattleSettingsEditor : MonoBehaviour
     [Tooltip("The maximum value that the ATB bar can reach before the unit can take an action")]
     public float maxATBVal = 100f;
 
+    [Tooltip("The fastest time (in seconds) to go from 0 -> full at max ATB Fill Speed")]
+    public float minFillTime = 2.5f;
+
+    [Tooltip("The slowest time (in seconds) to go from 0 -> full at max ATB Fill Speed")]
+    public float maxFillTime = 10f;
+
+    [Tooltip("The ATB Speed value that maps to fastest time")]
+    public float maxAtbSpeed = 99f;
+
     private void Awake()
     {
         SetSettings();
@@ -23,5 +32,9 @@ public class BattleSettingsEditor : MonoBehaviour
         BattleSettings.minATBStartingVal = minATBStartingVal;
         BattleSettings.maxATBStartingVal = maxATBStartingVal;
         BattleSettings.maxATBVal = maxATBVal;
+
+        BattleSettings.minFillTime = minFillTime;
+        BattleSettings.maxFillTime = maxFillTime;
+        BattleSettings.maxAtbSpeed = maxAtbSpeed;
     }
 }

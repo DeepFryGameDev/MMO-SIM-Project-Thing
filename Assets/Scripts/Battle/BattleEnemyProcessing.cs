@@ -12,11 +12,7 @@ public class BattleEnemyProcessing : MonoBehaviour
     // handle enemy status effects and stats here as well
 
     float currentATBVal = 0;
-
-    // new tuning parameters
-    float minFillTime = 2.5f;   // fastest time (seconds) to go from 0 -> full at max fill speed
-    float maxFillTime = 10f;  // slowest time (seconds) to go from 0 -> full at min fill speed
-    float maxAtbSpeed = 99f;       // ATB Speed value that maps to fastest time
+    public void ResetATB() { currentATBVal = 0; }
 
     bool ready = false;
     protected bool turnReady = false;
@@ -35,8 +31,6 @@ public class BattleEnemyProcessing : MonoBehaviour
         if (currentATBVal >= BattleSettings.maxATBVal) // Enemy is ready to perform an action
         {
             DebugManager.i.BattleDebugOut("BattleHeroProcessing", enemy.GetEnemyData().GetName() + " is ready to act!");
-            BattleManager.i.AddToUnitTurnQueue(enemy);
-            Debug.Log("Queue size: " + BattleManager.i.GetUnitTurnQueue().Count);
             turnReady = true;
         }
     }
@@ -60,8 +54,8 @@ public class BattleEnemyProcessing : MonoBehaviour
         float tempAtbSpeed = Mathf.Max(0f, atbSpeed);
 
         // map tempAtbSpeed -> time to fill (seconds). Lerp gives predictable linear scaling.
-        float t = Mathf.Clamp01(tempAtbSpeed / maxAtbSpeed);
-        float timeToFill = Mathf.Lerp(maxFillTime, minFillTime, t);
+        float t = Mathf.Clamp01(tempAtbSpeed / BattleSettings.maxAtbSpeed);
+        float timeToFill = Mathf.Lerp(BattleSettings.maxFillTime, BattleSettings.minFillTime, t);
 
         // fill rate in ATB units per second
         float fillRatePerSecond = BattleSettings.maxATBVal / timeToFill;
