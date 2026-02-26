@@ -43,4 +43,7 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the panel that should be instantiated for each hero when opening the menu in the field")]
     public GameObject HeroCommandFieldMenuPanel;
+
+    [Tooltip("Set this to the object that should be instantiated for each hero during battle")]
+    public GameObject BattleHUDHeroFrame;
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyAnimHandler : MonoBehaviour
 {
-    public EnumHandler.enemyBattleAnimationStates currentAnimState;
+    EnumHandler.enemyBattleAnimationStates currentAnimState;
     EnumHandler.enemyBattleStates currentBattleState;
 
     Animator anim;

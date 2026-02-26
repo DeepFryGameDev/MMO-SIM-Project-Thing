@@ -11,7 +11,7 @@ public class BattleSetup : MonoBehaviour
 
     [SerializeField] Transform heroSpawnPointsParent, enemySpawnPointsParent, enemiesParent;
 
-    
+    [SerializeField] GameObject mainCamera, battleCamera;
 
     private void Awake()
     {
@@ -23,7 +23,16 @@ public class BattleSetup : MonoBehaviour
 
         SpawnEnemies();
 
+        // Switch cameras
+        SetupCameras();
+
         Debug.Log("-------------------");
+    }
+
+    private void SetupCameras()
+    {
+        mainCamera.SetActive(false);
+        battleCamera.SetActive(true);
     }
 
     void PrepHeroForBattle(HeroManager heroManager)
