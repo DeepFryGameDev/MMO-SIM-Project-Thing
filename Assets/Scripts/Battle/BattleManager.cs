@@ -1,37 +1,42 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BattleManager : MonoBehaviour
 {
-    Transform battleHUDGroupParent;
-    CanvasGroup battleHUDGroup;
+    public static BattleManager i;
+
+    Queue<BaseAttackableUnit> unitTurnQueue = new Queue<BaseAttackableUnit>();
+    public void AddToUnitTurnQueue(BaseAttackableUnit unit) { unitTurnQueue.Enqueue(unit); }
+    void UnitTurnDeQueue() { unitTurnQueue.Dequeue(); }
+    public Queue<BaseAttackableUnit> GetUnitTurnQueue() { return unitTurnQueue; }
+
+    Queue<BaseAction> actionQueue = new Queue<BaseAction>();
+    public void AddToActionQueue(BaseAction action) { actionQueue.Enqueue(action); }
+    void ActionTurnDeQueue() { actionQueue.Dequeue(); }
+    public Queue<BaseAction> GetActionQueue() { return actionQueue; }
 
     private void Awake()
     {
-        battleHUDGroupParent = GameObject.Find("BattleHUDHeroGroup").transform;
-        battleHUDGroup = battleHUDGroupParent.GetComponentInParent<CanvasGroup>();
-
-        InstantiateHeroesInUI();
-
-        SetupUI();        
+        i = this;
     }
 
-    void SetupUI()
+    private void Update()
     {
-        battleHUDGroup.alpha = 1;
-    }
-
-    void InstantiateHeroesInUI()
-    {
-        foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
+        if ( actionQueue.Count > 0)
         {
-            GameObject heroFrame = Instantiate(PrefabManager.i.BattleHUDHeroFrame, battleHUDGroupParent);
-            BattleHeroProcessing heroProcessing = heroFrame.GetComponent<BattleHeroProcessing>();
+            if (actionQueue.Peek().GetSourceUnit() is BaseEnemy) // Enemy action is executed immediately
+            {
+                DebugManager.i.BattleDebugOut("BattleManager", "Processing action " + actionQueue.Peek().GetActionType().ToString() +
+                " / Source: " + actionQueue.Peek().GetSourceUnit().GetName() + " / Target: " + actionQueue.Peek().GetTargetUnit().GetName());
+                // run enemy action here
 
-            heroProcessing.SetHeroManager(heroManager);
-            heroProcessing.SetValues();
+                ActionTurnDeQueue();
+                UnitTurnDeQueue();
+            } else // Hero action is executed after player input
+            {
 
-            //Debug.Log("Instantiated hero frame for " + heroManager.Hero().GetName());
+            }            
         }
     }
 }

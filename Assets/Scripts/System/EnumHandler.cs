@@ -55,6 +55,14 @@ public static class EnumHandler
         DEATH
     }
 
+    public enum battleActionTypes
+    {
+        BASICATTACK,
+        SPECIALATTACK,
+        MAGIC,
+        ITEM
+    }
+
     /// <summary>
     /// TOPDOWN is not being used.  BASIC offers full camera control (used while in non-combat scenes).  COMBAT will force the camera to look in the direction the player is facing.
     /// </summary>

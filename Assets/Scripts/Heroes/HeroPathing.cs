@@ -28,6 +28,8 @@ public class HeroPathing : MonoBehaviour
     Vector3 spawnPos = new Vector3();
     public Vector3 GetSpawnPos() { return spawnPos; }
 
+    bool debuggingPositionSet = false;
+
 
     #region RandomPathing Vars
 
@@ -348,6 +350,12 @@ public class HeroPathing : MonoBehaviour
 
         if (Mathf.Abs(Vector3.Distance(transform.position, heroManager.HeroParty().GetPartyAnchor().GetPosition())) > HeroSettings.stoppingDistance)
         {
+            if (!debuggingPositionSet && NewGameSetup.i.GetDebugging())
+            {
+                transform.position = heroManager.HeroParty().GetPartyAnchor().GetPosition();
+                debuggingPositionSet = true;
+            }
+            
             agent.SetDestination(heroManager.HeroParty().GetPartyAnchor().GetPosition());
         }
     }

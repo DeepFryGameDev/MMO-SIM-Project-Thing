@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleHeroProcessing : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class BattleHeroProcessing : MonoBehaviour
         if (ATBBar.fillAmount >= 1f)
         {
             DebugManager.i.BattleDebugOut("BattleHeroProcessing", heroManager.Hero().GetName() + " is ready to act!");
+            BattleManager.i.AddToUnitTurnQueue(heroManager.Hero());
+            Debug.Log("Queue size: " + BattleManager.i.GetUnitTurnQueue().Count);
         }
     }
 
