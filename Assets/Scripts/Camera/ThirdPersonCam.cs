@@ -77,6 +77,6 @@ public class ThirdPersonCam : MonoBehaviour
     /// <param name="toggle">True if camera should be rotatable.  False if not.</param>
     public void ToggleCameraRotation(bool toggle)
     {
-        FindFirstObjectByType<CameraManager>().GetFreeLookCam().SetActive(toggle);
+        CameraManager.i.GetFreeLookCam().SetActive(toggle);
     }
 }

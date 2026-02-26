@@ -9,6 +9,7 @@ public class NewGameSetup : MonoBehaviour
 {
     [Tooltip("Check this if starting from a scene that is not the main menu.  Player will be set up using class selected in PlayerManager on [Player] object")]
     [SerializeField] bool debugging;
+    public bool GetDebugging() { return debugging; }
 
     PlayerManager playerManager; // Used to set the BasePlayer and AttackAnchor object to the Player Manager
     PlayerMovement playerMovement; // Used to set vars needed for player movement

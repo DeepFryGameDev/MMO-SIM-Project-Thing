@@ -12,15 +12,15 @@ public class CameraManager : MonoBehaviour
     [SerializeField] GameObject freeLookCam; // Set to the camera used for third person view
     public GameObject GetFreeLookCam () { return freeLookCam; }
 
-    [SerializeField] GameObject combatCam; // Set to the camera used for Combat camera style
+    /*[SerializeField] GameObject combatCam; // Set to the camera used for Combat camera style
     public GameObject GetCombatCam() { return combatCam; }
 
     [SerializeField] GameObject topDownCam; // Set to the camera used for top-down camera style
-    public GameObject GetTopDownCam() { return topDownCam; }
+    public GameObject GetTopDownCam() { return topDownCam; }*/
 
     Animator playerAnim; // Used to switch between Combat and Basic animations for each camera mode
 
-    public static CameraManager instance; // This keeps the script persisting across scenes
+    public static CameraManager i; // This keeps the script persisting across scenes
 
     bool camerasSet; // Set to true when all camera variables have been set for game creation
     public void SetCamerasSet(bool set) {  camerasSet = set; }
@@ -36,10 +36,10 @@ public class CameraManager : MonoBehaviour
 
     private void Singleton()
     {
-        if (instance != null)
+        if (i != null)
             Destroy(gameObject);
         else
-            instance = this;
+            i = this;
 
         DontDestroyOnLoad(gameObject);
     }
@@ -78,9 +78,9 @@ public class CameraManager : MonoBehaviour
                 playerAnim = GameObject.FindWithTag("Player").GetComponentInChildren<Animator>();
             }*/
 
-            combatCam.SetActive(false);
+            //combatCam.SetActive(false);
             freeLookCam.SetActive(false);
-            topDownCam.SetActive(false);
+            //topDownCam.SetActive(false);
 
             playerAnim.SetTrigger("camResetTrigger");
 
@@ -91,12 +91,12 @@ public class CameraManager : MonoBehaviour
                     //playerAnim.SetTrigger("basicCamTrigger");
                     break;
                 case EnumHandler.CameraModes.COMBAT:
-                    combatCam.SetActive(true);
+                    //combatCam.SetActive(true);
                     //playerAnim.SetTrigger("combatCamTrigger");
                     break;
 
                 case EnumHandler.CameraModes.TOPDOWN:
-                    topDownCam.SetActive(true);
+                    //topDownCam.SetActive(true);
                     break;
             }
 
