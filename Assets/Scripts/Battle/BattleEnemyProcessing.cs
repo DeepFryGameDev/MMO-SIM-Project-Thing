@@ -30,7 +30,7 @@ public class BattleEnemyProcessing : MonoBehaviour
 
         if (currentATBVal >= BattleSettings.maxATBVal) // Enemy is ready to perform an action
         {
-            DebugManager.i.BattleDebugOut("BattleHeroProcessing", enemy.GetEnemyData().GetName() + " is ready to act!");
+            DebugManager.i.BattleDebugOut("BattleEnemyProcessing", enemy.GetEnemyData().GetName() + " is ready to act!");
             turnReady = true;
         }
     }

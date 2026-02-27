@@ -46,4 +46,7 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the object that should be instantiated for each hero during battle")]
     public GameObject BattleHUDHeroFrame;
+
+    [Tooltip("Set this to the object that should be instantiated whenever there is a damage popup")]
+    public GameObject BattleDamagePopup;
 }

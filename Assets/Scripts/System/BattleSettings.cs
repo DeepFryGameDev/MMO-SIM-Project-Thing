@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 
 public static class BattleSettings
@@ -9,4 +11,11 @@ public static class BattleSettings
     public static float minFillTime;
     public static float maxFillTime;
     public static float maxAtbSpeed;
+
+    public static float agentStoppingDistanceToTarget;
+    public static float agentStoppingDistanceToDestination;
+
+    public static float preAttackAnimWaitTime;
+
+    public static float postAttackAnimWaitTime;
 }

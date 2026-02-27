@@ -90,6 +90,8 @@ public class BaseScriptedEvent : MonoBehaviour
         Vector3 spawnPosition = new Vector3(21.6f, -0.09154558f, 29.95f); // <--- i think we can just remove this and have it set up in BattleSetup.
         SpawnManager.i.SetPlayerSpawnPosition(spawnPosition); // I think we will eventually just use one template battle scene and use the same positions every time.
 
+        FindFirstObjectByType<PartyHUDHandler>().ToggleHUD(false); // Hide the party HUD
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive); // And finally load the scene
 
         while (!asyncLoad.isDone)

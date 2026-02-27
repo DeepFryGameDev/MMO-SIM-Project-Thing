@@ -22,6 +22,18 @@ public class BattleSettingsEditor : MonoBehaviour
     [Tooltip("The ATB Speed value that maps to fastest time")]
     public float maxAtbSpeed = 99f;
 
+    [Tooltip("The stopping distance for an agent when moving towards a target unit. This should be large enough to prevent the agent from trying to move inside the target's collider, but small enough to look natural.")]
+    public float agentStoppingDistanceToTarget = 2.5f;
+
+    [Tooltip("The stopping distance for an agent when moving towards a Vector3 destination point.")]
+    public float agentStoppingDistanceToDestination = 0f;
+
+    [Tooltip("Amount of time (in seconds) that the game will halt before an attack animation has triggered")]
+    public float preAttackAnimWaitTime = .25f;
+
+    [Tooltip("Amount of time (in seconds) that the game will halt after an attack animation has triggered")]
+    public float postAttackAnimWaitTime = 0f;
+
     private void Awake()
     {
         SetSettings();
@@ -36,5 +48,11 @@ public class BattleSettingsEditor : MonoBehaviour
         BattleSettings.minFillTime = minFillTime;
         BattleSettings.maxFillTime = maxFillTime;
         BattleSettings.maxAtbSpeed = maxAtbSpeed;
+
+        BattleSettings.agentStoppingDistanceToTarget = agentStoppingDistanceToTarget;
+        BattleSettings.agentStoppingDistanceToDestination = agentStoppingDistanceToDestination;
+
+        BattleSettings.preAttackAnimWaitTime = preAttackAnimWaitTime;
+        BattleSettings.postAttackAnimWaitTime = postAttackAnimWaitTime;
     }
 }
