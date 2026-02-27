@@ -8,10 +8,10 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager i;
 
-    Queue<BaseAttackableUnit> unitTurnQueue = new Queue<BaseAttackableUnit>();
-    public void AddToUnitTurnQueue(BaseAttackableUnit unit) { unitTurnQueue.Enqueue(unit); }
-    void UnitTurnDeQueue() { unitTurnQueue.Dequeue(); }
-    public Queue<BaseAttackableUnit> GetUnitTurnQueue() { return unitTurnQueue; }
+    Queue<BaseAttackableUnit> heroTurnQueue = new Queue<BaseAttackableUnit>();
+    public void AddToHeroTurnQueue(BaseAttackableUnit unit) { heroTurnQueue.Enqueue(unit); }
+    void HeroTurnDeQueue() { heroTurnQueue.Dequeue(); }
+    public Queue<BaseAttackableUnit> GetHeroTurnQueue() { return heroTurnQueue; }
 
     Queue<BaseAction> actionQueue = new Queue<BaseAction>();
     public void AddToActionQueue(BaseAction action) { actionQueue.Enqueue(action); }
@@ -29,17 +29,10 @@ public class BattleManager : MonoBehaviour
     {
         if ( actionQueue.Count > 0 && !actionStarted)
         {
-            if (actionQueue.Peek().GetSourceUnit() is BaseEnemy) // Enemy action is executed immediately
-            {
-                DebugManager.i.BattleDebugOut("BattleManager", "Processing action " + actionQueue.Peek().GetActionType().ToString() +
+            DebugManager.i.BattleDebugOut("BattleManager", "Processing action " + actionQueue.Peek().GetActionType().ToString() +
                 " / Source: " + actionQueue.Peek().GetSourceUnit().GetName() + " / Target: " + actionQueue.Peek().GetTargetUnit().GetName());
-                // run enemy action here
-                StartCoroutine(ProcessAction());
-                
-            } else // Hero action is executed after player input
-            {
-
-            }            
+            // run action here
+            StartCoroutine(ProcessAction());
         }
     }
 
@@ -51,14 +44,30 @@ public class BattleManager : MonoBehaviour
         // halt any other actions from taking place until this action is fully processed
         while (!actionFinished)
         {
-            // source unit should run to target unit
-            // play attack animation, etc. here. for now just simulating with a wait
-            // run back to their original position after the attack is done, etc.
+            // switch for type of action
+            switch (actionQueue.Peek().GetActionType())
+            {
+                case EnumHandler.battleActionTypes.BASICATTACK:
+                    Debug.Log("Processing basic attack action");
 
-            Debug.Log("~~Simulating action process~~");
-            yield return new WaitForSeconds(3.0f); // placeholder for action processing time
-            Debug.Log("Just setting actionFinished to true for now");
-            actionFinished = true;
+                    StartCoroutine(ProcessBasicAttack());
+
+                    while (!actionFinished)
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+
+                    break;
+                case EnumHandler.battleActionTypes.SPECIALATTACK:
+                    Debug.Log("Processing special attack action");
+                    break;
+                case EnumHandler.battleActionTypes.MAGIC:
+                    Debug.Log("Processing magic action");
+                    break;
+                case EnumHandler.battleActionTypes.ITEM:
+                    Debug.Log("Processing item action");
+                    break;
+            }          
         }
 
         // start unit's ATB over again
@@ -71,5 +80,109 @@ public class BattleManager : MonoBehaviour
         ActionTurnDeQueue();   
 
         actionStarted = false;        
+    }
+
+    IEnumerator ProcessBasicAttack()
+    {
+        BaseAction action = actionQueue.Peek();
+
+        BattleUnitMovement unitMovement = action.GetSourceUnit().GetComponent<BattleUnitMovement>();
+        Animator animator = action.GetSourceUnit().GetComponent<Animator>();
+
+        bool isEnemy = action.GetSourceUnit() is BaseEnemy;
+
+        // PART 1 - SOURCE UNIT RUNS TO TARGET UNIT
+        unitMovement.RunToTarget(action.GetTargetUnit());
+
+        if (isEnemy) // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.RUNTOPOINT);
+        } else // Hero anim handler
+        {
+
+        }
+
+            yield return new WaitUntil(() => unitMovement.GetIsRunningToTarget() == false);
+
+        // -----------------------------------------
+
+        // PART 2 - DO THE ATTACK
+
+        Debug.Log("Pre attack");
+        // Small pause
+        if (isEnemy)  // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
+        } else // Hero anim handler
+        {
+
+        }
+            yield return new WaitForSeconds(BattleSettings.preAttackAnimWaitTime);
+
+        Debug.Log("Playing attack animation!");
+
+        if (isEnemy)  // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().AttackAnim();
+        } else
+        {
+
+        }
+
+        yield return null;
+
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length); // Wait until animation is finished
+
+
+        // PART 3 - DISPLAY DAMAGE 
+
+        DamagePopupHandler.Create(action.GetTargetUnit().transform.position, 000);
+
+        // Small pause
+        if (isEnemy)  // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
+        }
+        else
+        {
+
+        }
+        yield return new WaitForSeconds(BattleSettings.postAttackAnimWaitTime);
+
+        // -----------------------------------------
+
+        // PART 4 - RUN BACK TO ORIGINAL POSITION AND FACE OPPONENT AGAIN
+        if (isEnemy)   // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.RUNTOPOINT);
+        }
+        else // Hero anim handler
+        {
+
+        }
+
+        unitMovement.RunToOrigin();
+        yield return new WaitUntil(() => unitMovement.GetIsRunningToOrigin() == false);
+
+        // ------------------------------------------
+
+        // -- PART 5 - POST ATTACK STUFF
+
+        Debug.Log("In post attack");
+
+        // Set back to idle animation
+        if (isEnemy)  // Enemy anim handler
+        {
+            action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
+        }
+        else
+        {
+
+        }
+
+        // -----------------------------------------
+
+        // when all done, set actionFinished to true so that the BattleManager can move on to the next action in the queue
+        actionFinished = true;
     }
 }

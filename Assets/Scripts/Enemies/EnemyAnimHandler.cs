@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyAnimHandler : MonoBehaviour
 {
     EnumHandler.enemyBattleAnimationStates currentAnimState;
+    public void SetAnimationState(EnumHandler.enemyBattleAnimationStates animState) { currentAnimState = animState; }
     EnumHandler.enemyBattleStates currentBattleState;
 
     Animator anim;
@@ -19,9 +20,11 @@ public class EnemyAnimHandler : MonoBehaviour
         {
              case EnumHandler.enemyBattleAnimationStates.IDLE:
                 anim.SetBool("battleIdle", true);
+                anim.SetBool("battleRun", false);
                 break;
-            case EnumHandler.enemyBattleAnimationStates.ATTACK:
-                // Play attack animation
+            case EnumHandler.enemyBattleAnimationStates.RUNTOPOINT:
+                anim.SetBool("battleIdle", false);
+                anim.SetBool("battleRun", true);
                 break;
             case EnumHandler.enemyBattleAnimationStates.GETHIT:
                 // Play hurt animation
@@ -29,6 +32,16 @@ public class EnemyAnimHandler : MonoBehaviour
             case EnumHandler.enemyBattleAnimationStates.DEATH:
                 // Play death animation
                 break;
+        }
+    }
+
+    public void AttackAnim()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            Debug.Log("An attacking animation is playing.");
+            Debug.Log("Triggering battleAttack");
+            anim.SetTrigger("battleAttack");
         }
     }
 }

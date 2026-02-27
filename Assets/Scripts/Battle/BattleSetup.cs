@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -163,6 +164,7 @@ public class BattleSetup : MonoBehaviour
 
             newEnemy.gameObject.name = enemy.GetName();
             newEnemy.transform.LookAt(heroSpawnPointsParent.position);
+            newEnemy.GetComponent<BattleUnitMovement>().SetOriginRotation();
         }
     }
 
