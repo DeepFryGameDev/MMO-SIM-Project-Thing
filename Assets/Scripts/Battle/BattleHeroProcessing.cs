@@ -12,11 +12,7 @@ public class BattleHeroProcessing : MonoBehaviour
     [SerializeField] Image ATBBar;
 
     float currentATBVal = 0;
-
-    // new tuning parameters
-    float minFillTime = 3.5f;   // fastest time (seconds) to go from 0 -> full at max dex
-    float maxFillTime = 10f;  // slowest time (seconds) to go from 0 -> full at min dex
-    float maxDex = 99f;       // dex value that maps to fastest time
+    public void ResetATB() { currentATBVal = 0; }
 
     bool ready = false;
 
@@ -28,8 +24,8 @@ public class BattleHeroProcessing : MonoBehaviour
         float dex = Mathf.Max(0f, heroManager.Hero().GetDexterity());
 
         // map dex -> time to fill (seconds). Lerp gives predictable linear scaling.
-        float t = Mathf.Clamp01(dex / maxDex);
-        float timeToFill = Mathf.Lerp(maxFillTime, minFillTime, t);
+        float t = Mathf.Clamp01(dex / BattleSettings.maxAtbSpeed);
+        float timeToFill = Mathf.Lerp(BattleSettings.maxFillTime, BattleSettings.minFillTime, t);
 
         // fill rate in ATB units per second
         float fillRatePerSecond = BattleSettings.maxATBVal / timeToFill;
@@ -43,8 +39,7 @@ public class BattleHeroProcessing : MonoBehaviour
         if (ATBBar.fillAmount >= 1f)
         {
             DebugManager.i.BattleDebugOut("BattleHeroProcessing", heroManager.Hero().GetName() + " is ready to act!");
-            BattleManager.i.AddToHeroTurnQueue(heroManager.Hero());
-            Debug.Log("Queue size: " + BattleManager.i.GetHeroTurnQueue().Count);
+            BattleManager.i.AddToHeroTurnQueue(heroManager);
         }
     }
 
@@ -56,6 +51,7 @@ public class BattleHeroProcessing : MonoBehaviour
     public void SetHeroManager(HeroManager heroManager)
     {
         this.heroManager = heroManager;
+        this.heroManager.SetBattleHeroProcessing(this);
     }
 
     public void SetValues()

@@ -49,4 +49,7 @@ public class PrefabManager : MonoBehaviour
 
     [Tooltip("Set this to the object that should be instantiated whenever there is a damage popup")]
     public GameObject BattleDamagePopup;
+
+    [Tooltip("Set this to the object that should be instantiated to show enemy buttons for hero action choices")]
+    public GameObject BattleEnemyListButton;
 }

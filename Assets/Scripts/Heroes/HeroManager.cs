@@ -50,6 +50,10 @@ public class HeroManager : MonoBehaviour
     HeroAnimHandler animHandler;
     public HeroAnimHandler AnimHandler() { return animHandler; }
 
+    BattleHeroProcessing battleHeroProcessing;
+    public BattleHeroProcessing BattleHeroProcessing() { return battleHeroProcessing; }
+    public void SetBattleHeroProcessing(BattleHeroProcessing proc) { battleHeroProcessing = proc; }
+
     // Scripts attached elsewhere - these will need a public setter so they can be set externally.
     // These should be set in Awake() (in the other script) so that this script can use Start()/CheckForNulls() to detect any issues.
     HeroHomeZone homeZone;

@@ -33,6 +33,9 @@ public class EnemyScriptableObject : ScriptableObject
     [SerializeField] int baseFaith;    
     public int GetBaseFaith() { return baseFaith; }
 
+    [SerializeField] int baseAttackDamage;
+    public int GetBaseAttackDamage() { return baseAttackDamage; }
+
     [SerializeField] GameObject enemyPrefab;
     public GameObject GetEnemyPrefab() { return enemyPrefab; }
 }

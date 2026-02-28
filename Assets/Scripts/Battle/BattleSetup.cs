@@ -19,8 +19,6 @@ public class BattleSetup : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Lets get some battle stuff setup");
-
         SpawnActiveHeroes();
 
         SpawnInactiveHeroes();
@@ -41,6 +39,9 @@ public class BattleSetup : MonoBehaviour
     {
         mainCamera.SetActive(false);
         battleCamera.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void PrepHeroForBattle(HeroManager heroManager)
@@ -65,6 +66,7 @@ public class BattleSetup : MonoBehaviour
 
                 PrepHeroForBattle(GameSettings.GetHeroesInParty()[0]);
                 GameSettings.GetHeroesInParty()[0].gameObject.transform.position = heroSpawnPointC.position;
+
                 break;
             case 2:
                 // spawn on HeroSpawnPoint IL and IR
@@ -142,7 +144,16 @@ public class BattleSetup : MonoBehaviour
         foreach (HeroManager heroManager in GameSettings.GetHeroesInParty())
         {
             heroManager.transform.LookAt(enemySpawnPointsParent.transform.position);
+
+            SetBattleMovementParams(heroManager);
         }
+    }
+
+    void SetBattleMovementParams(HeroManager heroManager)
+    {
+        heroManager.gameObject.AddComponent<BattleUnitMovement>();
+        heroManager.HeroPathing().ToggleNavMeshAgent(true);
+        heroManager.HeroPathing().SetInBattle(true);
     }
 
     void SpawnInactiveHeroes()
@@ -156,15 +167,18 @@ public class BattleSetup : MonoBehaviour
 
     void SpawnEnemies()
     {
-        foreach (EnemyScriptableObject enemy in BattleData.i.GetBaseBattle().GetEnemies())
+        foreach (BaseEnemy enemy in BattleData.i.GetBaseBattle().GetEnemies())
         {
             Debug.Log("Spawning enemy " + enemy.GetName());
-            GameObject newEnemy = Instantiate(enemy.GetEnemyPrefab(), enemySpawnPointC.position, Quaternion.identity);
+            GameObject newEnemy = Instantiate(enemy.GetEnemyData().GetEnemyPrefab(), enemySpawnPointC.position, Quaternion.identity);
             newEnemy.transform.SetParent(enemiesParent);
 
-            newEnemy.gameObject.name = enemy.GetName();
+            newEnemy.gameObject.name = enemy.GetEnemyData().GetName();
             newEnemy.transform.LookAt(heroSpawnPointsParent.position);
             newEnemy.GetComponent<BattleUnitMovement>().SetOriginRotation();
+
+            if (BattleManager.i == null) { BattleManager.i = FindFirstObjectByType<BattleManager>(); }
+            BattleManager.i.AddToEnemyList(newEnemy.GetComponent<BaseEnemy>());
         }
     }
 
@@ -174,6 +188,8 @@ public class BattleSetup : MonoBehaviour
         battleHUDGroup = battleHUDGroupParent.GetComponentInParent<CanvasGroup>();
 
         battleHUDGroup.alpha = 1;
+
+        BattleUIHandler.i.Setup();
     }
 
     void InstantiateHeroesInUI()
