@@ -43,6 +43,8 @@ public class BattleUnitMovement : MonoBehaviour
     {
         isRunningToTarget = true;
 
+        agent.speed = BattleSettings.agentRunToTargetRunSpeed;
+
         agent.stoppingDistance = BattleSettings.agentStoppingDistanceToTarget;
 
         transform.LookAt(targetUnit.transform.position);       

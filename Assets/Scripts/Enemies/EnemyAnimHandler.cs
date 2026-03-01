@@ -39,9 +39,16 @@ public class EnemyAnimHandler : MonoBehaviour
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
         {
-            Debug.Log("An attacking animation is playing.");
-            Debug.Log("Triggering battleAttack");
             anim.SetTrigger("battleAttack");
+        }
+    }
+
+    public void GetHitAnim()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            //Debug.Log("Triggering battleGetHit");
+            anim.SetTrigger("battleGetHit");
         }
     }
 }

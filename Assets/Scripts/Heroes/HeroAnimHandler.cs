@@ -120,9 +120,11 @@ public class HeroAnimHandler : MonoBehaviour
             case EnumHandler.heroBattleAnimationStates.IDLE:
                 // show battle idle stance
                 animator.SetBool("battleIdle", true);
+                animator.SetBool("battleRun", false);
                 break;
             case EnumHandler.heroBattleAnimationStates.RUNTOPOINT:
-
+                animator.SetBool("battleIdle", false);
+                animator.SetBool("battleRun", true);
                 break;
             case EnumHandler.heroBattleAnimationStates.ATTACK:
 
@@ -133,6 +135,24 @@ public class HeroAnimHandler : MonoBehaviour
             case EnumHandler.heroBattleAnimationStates.MAGIC:
 
                 break;
+        }
+    }
+
+    public void AttackAnim()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            //Debug.Log("Triggering battleAttack");
+            animator.SetTrigger("battleAttack");
+        }
+    }
+
+    public void GetHitAnim()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            //Debug.Log("Triggering battleGetHit");
+            animator.SetTrigger("battleGetHit");
         }
     }
 }

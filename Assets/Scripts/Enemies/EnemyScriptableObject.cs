@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enemies/New Enemy")]
 public class EnemyScriptableObject : ScriptableObject
 {
+    [SerializeField] int ID;
+    public int GetID() { return ID; }
+
     [SerializeField] new string name;
     public string GetName() { return name; }
 
@@ -32,6 +35,9 @@ public class EnemyScriptableObject : ScriptableObject
 
     [SerializeField] int baseFaith;    
     public int GetBaseFaith() { return baseFaith; }
+
+    [SerializeField] int baseAttackDamage;
+    public int GetBaseAttackDamage() { return baseAttackDamage; }
 
     [SerializeField] GameObject enemyPrefab;
     public GameObject GetEnemyPrefab() { return enemyPrefab; }

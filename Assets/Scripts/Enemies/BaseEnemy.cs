@@ -4,6 +4,10 @@ public class BaseEnemy : BaseAttackableUnit
 {
     [SerializeField] protected EnemyScriptableObject enemyData;
     public EnemyScriptableObject GetEnemyData() { return enemyData; }
+    public void SetEnemyData(EnemyScriptableObject enemyData) { this.enemyData = enemyData; }
+
+    EnemySelectArrowBehavior arrowBehavior;
+    public EnemySelectArrowBehavior GetArrowBehavior() { return arrowBehavior; }
 
     EnemyAnimHandler animHandler;
 
@@ -23,5 +27,7 @@ public class BaseEnemy : BaseAttackableUnit
         magicResist = enemyData.GetBaseMagicResist();
 
         animHandler = GetComponent<EnemyAnimHandler>();
+
+        arrowBehavior = GetComponentInChildren<EnemySelectArrowBehavior>();
     }
 }

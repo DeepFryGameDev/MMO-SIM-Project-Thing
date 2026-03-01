@@ -28,11 +28,17 @@ public class BattleSettingsEditor : MonoBehaviour
     [Tooltip("The stopping distance for an agent when moving towards a Vector3 destination point.")]
     public float agentStoppingDistanceToDestination = 0f;
 
+    [Tooltip("The move speed a battle unit's NavMeshAgent will be set to when running to a target.")]
+    public float agentRunToTargetRunSpeed = 10f;
+
     [Tooltip("Amount of time (in seconds) that the game will halt before an attack animation has triggered")]
     public float preAttackAnimWaitTime = .25f;
 
     [Tooltip("Amount of time (in seconds) that the game will halt after an attack animation has triggered")]
     public float postAttackAnimWaitTime = 0f;
+
+    // add tooltip after breakfast lol
+    public string enemyDupeNamingConvention = "ABCDE";
 
     private void Awake()
     {
@@ -51,8 +57,11 @@ public class BattleSettingsEditor : MonoBehaviour
 
         BattleSettings.agentStoppingDistanceToTarget = agentStoppingDistanceToTarget;
         BattleSettings.agentStoppingDistanceToDestination = agentStoppingDistanceToDestination;
+        BattleSettings.agentRunToTargetRunSpeed = agentRunToTargetRunSpeed;
 
         BattleSettings.preAttackAnimWaitTime = preAttackAnimWaitTime;
         BattleSettings.postAttackAnimWaitTime = postAttackAnimWaitTime;
+
+        BattleSettings.enemyDupeNamingConvention = enemyDupeNamingConvention;
     }
 }

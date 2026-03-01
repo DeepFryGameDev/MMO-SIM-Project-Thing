@@ -50,6 +50,10 @@ public class HeroPathing : MonoBehaviour
     
     HeroManager heroManager; // Used to gather the other needed scripts attached to the hero
 
+    bool inBattle;
+    public void SetInBattle(bool inBattle) { this.inBattle = inBattle; }
+    public bool GetInBattle() { return inBattle; }
+
     void Awake()
     {
         Setup();
@@ -94,9 +98,12 @@ public class HeroPathing : MonoBehaviour
                 break;
         }
 
-        HandleMoveSpeed();
+        if (!inBattle)
+        {
+            HandleMoveSpeed();
 
-        SyncMoveSpeed();
+            SyncMoveSpeed();
+        }
     }
 
     /// <summary>

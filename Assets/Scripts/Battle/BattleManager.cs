@@ -8,10 +8,10 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager i;
 
-    Queue<BaseAttackableUnit> heroTurnQueue = new Queue<BaseAttackableUnit>();
-    public void AddToHeroTurnQueue(BaseAttackableUnit unit) { heroTurnQueue.Enqueue(unit); }
-    void HeroTurnDeQueue() { heroTurnQueue.Dequeue(); }
-    public Queue<BaseAttackableUnit> GetHeroTurnQueue() { return heroTurnQueue; }
+    Queue<HeroManager> heroTurnQueue = new Queue<HeroManager>();
+    public void AddToHeroTurnQueue(HeroManager hero) { heroTurnQueue.Enqueue(hero); }
+    public void HeroTurnDeQueue() { heroTurnQueue.Dequeue(); }
+    public Queue<HeroManager> GetHeroTurnQueue() { return heroTurnQueue; }
 
     Queue<BaseAction> actionQueue = new Queue<BaseAction>();
     public void AddToActionQueue(BaseAction action) { actionQueue.Enqueue(action); }
@@ -19,6 +19,12 @@ public class BattleManager : MonoBehaviour
     public Queue<BaseAction> GetActionQueue() { return actionQueue; }
 
     bool actionStarted, actionFinished = false;
+    bool heroTurnActive = false;
+    public void SetHeroTurnActive(bool active) { heroTurnActive = active; }
+
+    List<BaseEnemy> activeEnemies = new List<BaseEnemy>();
+    public void AddToActiveEnemies(BaseEnemy enemy) { activeEnemies.Add(enemy); }
+    public List<BaseEnemy> GetActiveEnemies() { return activeEnemies; }
 
     private void Awake()
     {
@@ -34,6 +40,19 @@ public class BattleManager : MonoBehaviour
             // run action here
             StartCoroutine(ProcessAction());
         }
+
+        if (heroTurnQueue.Count > 0 && !heroTurnActive)
+        {
+            // Display BattleActionPanel for the hero at heroTurnQueue.Peek()
+
+            // while this is being displayed, we should wait to check the next in the queue
+            heroTurnActive = true;
+            
+            if (BattleUIHandler.i == null) BattleUIHandler.i = FindFirstObjectByType<BattleUIHandler>();
+
+            BattleUIHandler.i.SetHeroFacePanel(heroTurnQueue.Peek().GetFaceImage());
+            BattleUIHandler.i.ToggleHeroActionPanel(true);
+        }
     }
 
     IEnumerator ProcessAction()
@@ -48,7 +67,7 @@ public class BattleManager : MonoBehaviour
             switch (actionQueue.Peek().GetActionType())
             {
                 case EnumHandler.battleActionTypes.BASICATTACK:
-                    Debug.Log("Processing basic attack action");
+                    //Debug.Log("Processing basic attack action");
 
                     StartCoroutine(ProcessBasicAttack());
 
@@ -75,9 +94,14 @@ public class BattleManager : MonoBehaviour
         {
             BattleEnemyProcessing enemyProc = actionQueue.Peek().GetSourceUnit().GetComponent<BattleEnemyProcessing>();
             if (enemyProc != null) enemyProc.ResetATB();
+        } else
+        {
+            BaseHero hero = actionQueue.Peek().GetSourceUnit() as BaseHero;
+
+            hero.GetComponent<HeroManager>().BattleHeroProcessing().ResetATB();
         }
 
-        ActionTurnDeQueue();   
+            ActionTurnDeQueue();   
 
         actionStarted = false;        
     }
@@ -99,7 +123,7 @@ public class BattleManager : MonoBehaviour
             action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.RUNTOPOINT);
         } else // Hero anim handler
         {
-
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.RUNTOPOINT);
         }
 
             yield return new WaitUntil(() => unitMovement.GetIsRunningToTarget() == false);
@@ -108,25 +132,25 @@ public class BattleManager : MonoBehaviour
 
         // PART 2 - DO THE ATTACK
 
-        Debug.Log("Pre attack");
+        //Debug.Log("Pre attack");
         // Small pause
         if (isEnemy)  // Enemy anim handler
         {
             action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
         } else // Hero anim handler
         {
-
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.IDLE);
         }
             yield return new WaitForSeconds(BattleSettings.preAttackAnimWaitTime);
 
-        Debug.Log("Playing attack animation!");
+        //Debug.Log("Playing attack animation!");
 
         if (isEnemy)  // Enemy anim handler
         {
             action.GetSourceUnit().GetComponent<EnemyAnimHandler>().AttackAnim();
         } else
         {
-
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().AttackAnim();
         }
 
         yield return null;
@@ -135,18 +159,58 @@ public class BattleManager : MonoBehaviour
 
 
         // PART 3 - DISPLAY DAMAGE 
+        
 
-        DamagePopupHandler.Create(action.GetTargetUnit().transform.position, 000);
-
-        // Small pause
+        // update hero/enemy values
+        
         if (isEnemy)  // Enemy anim handler
         {
             action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
+
+            BaseHero hero = action.GetTargetUnit() as BaseHero;
+            BaseEnemy enemy = action.GetSourceUnit() as BaseEnemy;
+
+            //calculate damage here and put it in the damagepopup below.
+
+            int attackDamage = DamageCalc.GetEnemyToHeroBasicAttackDamage(enemy, hero.GetHeroManager());
+
+            DebugManager.i.BattleDebugOut("BattleManager", enemy.GetName() + " dealt " + attackDamage + " to " + hero.GetName() + "!");
+
+            DamagePopupHandler.Create(action.GetTargetUnit().transform.position, attackDamage);
+
+            // trigger GetHit animation
+            if (attackDamage > 0)
+            {
+                action.GetTargetUnit().GetComponent<HeroAnimHandler>().GetHitAnim();
+            }            
+
+            // subtract hero HP and update UI
         }
         else
         {
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.IDLE);
 
+            BaseHero hero = action.GetSourceUnit() as BaseHero;
+            BaseEnemy enemy = action.GetTargetUnit() as BaseEnemy;
+
+            //calculate damage here and put it in the damagepopup below.
+
+            int attackDamage = DamageCalc.GetHeroToEnemyBasicAttackDamage(hero.GetHeroManager(), enemy);
+
+            DebugManager.i.BattleDebugOut("BattleManager", hero.GetName() + " dealt " + attackDamage + " damage to " + enemy.GetName() + "!");
+
+            DamagePopupHandler.Create(action.GetTargetUnit().transform.position, attackDamage);
+
+            // trigger GetHit animation
+            if (attackDamage > 0)
+            {
+                action.GetTargetUnit().GetComponent<EnemyAnimHandler>().GetHitAnim();
+            }
+
+            // subtract enemy HP and update UI
         }
+
+        // Small pause
         yield return new WaitForSeconds(BattleSettings.postAttackAnimWaitTime);
 
         // -----------------------------------------
@@ -158,7 +222,7 @@ public class BattleManager : MonoBehaviour
         }
         else // Hero anim handler
         {
-
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.RUNTOPOINT);
         }
 
         unitMovement.RunToOrigin();
@@ -168,7 +232,7 @@ public class BattleManager : MonoBehaviour
 
         // -- PART 5 - POST ATTACK STUFF
 
-        Debug.Log("In post attack");
+        //Debug.Log("In post attack");
 
         // Set back to idle animation
         if (isEnemy)  // Enemy anim handler
@@ -177,8 +241,10 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-
+            action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.IDLE);
         }
+
+        // Update UI
 
         // -----------------------------------------
 

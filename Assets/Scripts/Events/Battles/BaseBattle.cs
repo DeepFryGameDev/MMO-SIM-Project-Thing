@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class BaseBattle : BaseInteractable
 {
-    [SerializeField] protected List<EnemyScriptableObject> enemies;
-    public List<EnemyScriptableObject> GetEnemies() { return enemies; }
+    [SerializeField] protected List<BaseEnemy> enemies;
+    public List<BaseEnemy> GetEnemies() { return enemies; }
 
     [SerializeField] int battleScene;
 

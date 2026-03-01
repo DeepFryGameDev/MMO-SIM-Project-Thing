@@ -57,9 +57,10 @@ public class BaseHero : BaseAttackableUnit
     public void SetFaith(int faith) { this.faith = faith; } // This takes into account equipment, perks, etc
     public int GetFaith() { return faith; }
 
-    float resistToArmorMod = .5f; // Makes armor more effective based on player's resistance
-
     float resistToMagicResistMod = .5f; // Makes magic resist more effective based on player's resistance
+
+    HeroManager heroManager;
+    public HeroManager GetHeroManager() { return heroManager; }
 
     // -- Secondary stats
 
@@ -101,6 +102,8 @@ public class BaseHero : BaseAttackableUnit
         SetCurrentHP(GetMaxHP());
 
         energy = HeroSettings.maxEnergy;
+
+        heroManager = GetComponent<HeroManager>();
 
         // ReportStats();
     }
@@ -206,66 +209,6 @@ public class BaseHero : BaseAttackableUnit
 
     #region Get attribute/stat values from Equipment functions
     // These functions return the player's attributes by adding the base value together with all equipped equipment values
-
-    public override int GetArmor()
-    {
-        int totalArmor = base.GetArmor();
-
-        /*
-        if (GetEquippedMainHand() != null)
-        {
-            totalArmor += GetEquippedMainHand().armor;
-        }
-        if (GetEquippedOffHand() != null)
-        {
-            totalArmor += GetEquippedOffHand().armor;
-        }
-
-        if (GetEquippedHelm() != null)
-        {
-            totalArmor += GetEquippedHelm().armor;
-        }
-
-        if (GetEquippedChest() != null)
-        {
-            totalArmor += GetEquippedChest().armor;
-        }
-
-        if (GetEquippedHands() != null)
-        {
-            totalArmor += GetEquippedHands().armor;
-        }
-
-        if (GetEquippedLegs() != null)
-        {
-            totalArmor += GetEquippedLegs().armor;
-        }
-
-        if (GetEquippedFeet() != null)
-        {
-            totalArmor += GetEquippedFeet().armor;
-        }
-
-        if (GetEquippedAmulet() != null)
-        {
-            totalArmor += GetEquippedAmulet().armor;
-        }
-
-        if (GetEquippedRingOne() != null)
-        {
-            totalArmor += GetEquippedRingOne().armor;
-        }
-
-        if (GetEquippedRingTwo() != null)
-        {
-            totalArmor += GetEquippedRingTwo().armor;
-        }
-        */
-
-        totalArmor = Mathf.RoundToInt(totalArmor * (GetFaith() * resistToArmorMod)); // Improves Armor based on player's resist
-
-        return totalArmor; // calculate strength including equipped gear here
-    }
 
     public override int GetMagicResist()
     {
