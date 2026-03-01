@@ -37,6 +37,9 @@ public class BattleSettingsEditor : MonoBehaviour
     [Tooltip("Amount of time (in seconds) that the game will halt after an attack animation has triggered")]
     public float postAttackAnimWaitTime = 0f;
 
+    // add tooltip after breakfast lol
+    public string enemyDupeNamingConvention = "ABCDE";
+
     private void Awake()
     {
         SetSettings();
@@ -58,5 +61,7 @@ public class BattleSettingsEditor : MonoBehaviour
 
         BattleSettings.preAttackAnimWaitTime = preAttackAnimWaitTime;
         BattleSettings.postAttackAnimWaitTime = postAttackAnimWaitTime;
+
+        BattleSettings.enemyDupeNamingConvention = enemyDupeNamingConvention;
     }
 }

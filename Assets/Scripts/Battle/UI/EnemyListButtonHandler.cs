@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class EnemyListButtonHandler : MonoBehaviour
+public class EnemyListButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // should just store which enemy belongs to this button
     BaseEnemy enemy;
@@ -21,5 +22,19 @@ public class EnemyListButtonHandler : MonoBehaviour
 
         // Turn hero turn off
         BattleManager.i.SetHeroTurnActive(false);
+    }
+
+
+
+    // Called when the mouse pointer enters the button area
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        enemy.GetArrowBehavior().ToggleVisibility(true);
+    }
+
+    // Called when the mouse pointer exits the button area
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        enemy.GetArrowBehavior().ToggleVisibility(false);
     }
 }

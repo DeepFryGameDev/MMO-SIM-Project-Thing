@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Purpose: Facilitates functionality with setting a piece of equipment as 'equipped' to a hero (and vice versa) and other equipment functionalities.  Here is also where each piece of 'equipped' equipment is tracked for each hero.

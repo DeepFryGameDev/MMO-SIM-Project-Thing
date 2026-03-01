@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BattleHeroActionButton : MonoBehaviour
+public class BattleHeroActionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     BattleUIHandler handler;
 
@@ -12,4 +13,17 @@ public class BattleHeroActionButton : MonoBehaviour
     {
         handler.ToggleEnemyListPanel(true);
     }
+
+    // Called when the mouse pointer enters the button area
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Nothing yet
+    }
+
+    // Called when the mouse pointer exits the button area
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Nothing yet
+    }
+
 }

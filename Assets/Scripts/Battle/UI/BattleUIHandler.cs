@@ -14,7 +14,6 @@ public class BattleUIHandler : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Setting i");
         i = this;
     }
 
@@ -43,7 +42,7 @@ public class BattleUIHandler : MonoBehaviour
     public void Setup()
     {
         // for each enemy in BattleData.i.GetBaseBattle().GetEnemies(), instantiate buttons to BattleEnemyListTransform and set their EnemyListButtonHandler enemy.
-        foreach (BaseEnemy enemy in BattleManager.i.GetEnemyList())
+        foreach (BaseEnemy enemy in BattleManager.i.GetActiveEnemies())
         {
             Debug.Log("BattleUIHandler Setup - Instantiating enemy: " + enemy.GetEnemyData().GetName());
             GameObject newEnemyListButton = Instantiate(PrefabManager.i.BattleEnemyListButton);
@@ -54,7 +53,7 @@ public class BattleUIHandler : MonoBehaviour
             // It doesn't like using the serialized field as a transform or a gameobject.  It will only take a manual GameObject.Find (and only on this line - I can't even set it to a transform variable. WEIRD.    
 
             newEnemyListButton.GetComponent<EnemyListButtonHandler>().SetEnemy(enemy);
-            newEnemyListButton.GetComponentInChildren<TextMeshProUGUI>().SetText(enemy.GetEnemyData().GetName());
+            newEnemyListButton.GetComponentInChildren<TextMeshProUGUI>().SetText(enemy.GetName());
         }
     }
 }

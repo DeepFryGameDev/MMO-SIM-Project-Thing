@@ -42,4 +42,13 @@ public class EnemyAnimHandler : MonoBehaviour
             anim.SetTrigger("battleAttack");
         }
     }
+
+    public void GetHitAnim()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            //Debug.Log("Triggering battleGetHit");
+            anim.SetTrigger("battleGetHit");
+        }
+    }
 }

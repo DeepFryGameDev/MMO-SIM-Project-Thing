@@ -19,4 +19,6 @@ public static class BattleSettings
     public static float preAttackAnimWaitTime;
 
     public static float postAttackAnimWaitTime;
+
+    public static string enemyDupeNamingConvention;
 }

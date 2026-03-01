@@ -22,9 +22,9 @@ public class BattleManager : MonoBehaviour
     bool heroTurnActive = false;
     public void SetHeroTurnActive(bool active) { heroTurnActive = active; }
 
-    List<BaseEnemy> enemyList = new List<BaseEnemy>();
-    public void AddToEnemyList(BaseEnemy enemy) { enemyList.Add(enemy); }
-    public List<BaseEnemy> GetEnemyList() { return enemyList; }
+    List<BaseEnemy> activeEnemies = new List<BaseEnemy>();
+    public void AddToActiveEnemies(BaseEnemy enemy) { activeEnemies.Add(enemy); }
+    public List<BaseEnemy> GetActiveEnemies() { return activeEnemies; }
 
     private void Awake()
     {
@@ -159,20 +159,58 @@ public class BattleManager : MonoBehaviour
 
 
         // PART 3 - DISPLAY DAMAGE 
-        //calculate damage here and put it in the damagepopup below.
-        DamagePopupHandler.Create(action.GetTargetUnit().transform.position, 000);
+        
 
         // update hero/enemy values
-
-        // Small pause
+        
         if (isEnemy)  // Enemy anim handler
         {
             action.GetSourceUnit().GetComponent<EnemyAnimHandler>().SetAnimationState(EnumHandler.enemyBattleAnimationStates.IDLE);
+
+            BaseHero hero = action.GetTargetUnit() as BaseHero;
+            BaseEnemy enemy = action.GetSourceUnit() as BaseEnemy;
+
+            //calculate damage here and put it in the damagepopup below.
+
+            int attackDamage = DamageCalc.GetEnemyToHeroBasicAttackDamage(enemy, hero.GetHeroManager());
+
+            DebugManager.i.BattleDebugOut("BattleManager", enemy.GetName() + " dealt " + attackDamage + " to " + hero.GetName() + "!");
+
+            DamagePopupHandler.Create(action.GetTargetUnit().transform.position, attackDamage);
+
+            // trigger GetHit animation
+            if (attackDamage > 0)
+            {
+                action.GetTargetUnit().GetComponent<HeroAnimHandler>().GetHitAnim();
+            }            
+
+            // subtract hero HP and update UI
         }
         else
         {
             action.GetSourceUnit().GetComponent<HeroAnimHandler>().SetBattleAnimationState(EnumHandler.heroBattleAnimationStates.IDLE);
+
+            BaseHero hero = action.GetSourceUnit() as BaseHero;
+            BaseEnemy enemy = action.GetTargetUnit() as BaseEnemy;
+
+            //calculate damage here and put it in the damagepopup below.
+
+            int attackDamage = DamageCalc.GetHeroToEnemyBasicAttackDamage(hero.GetHeroManager(), enemy);
+
+            DebugManager.i.BattleDebugOut("BattleManager", hero.GetName() + " dealt " + attackDamage + " damage to " + enemy.GetName() + "!");
+
+            DamagePopupHandler.Create(action.GetTargetUnit().transform.position, attackDamage);
+
+            // trigger GetHit animation
+            if (attackDamage > 0)
+            {
+                action.GetTargetUnit().GetComponent<EnemyAnimHandler>().GetHitAnim();
+            }
+
+            // subtract enemy HP and update UI
         }
+
+        // Small pause
         yield return new WaitForSeconds(BattleSettings.postAttackAnimWaitTime);
 
         // -----------------------------------------

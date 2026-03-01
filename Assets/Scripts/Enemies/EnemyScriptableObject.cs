@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enemies/New Enemy")]
 public class EnemyScriptableObject : ScriptableObject
 {
+    [SerializeField] int ID;
+    public int GetID() { return ID; }
+
     [SerializeField] new string name;
     public string GetName() { return name; }
 

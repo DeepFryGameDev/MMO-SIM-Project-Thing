@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattleSetup : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class BattleSetup : MonoBehaviour
     [SerializeField] Transform heroSpawnPointC, heroSpawnPointIL, heroSpawnPointOL, heroSpawnPointIR, heroSpawnPointOR;
     [SerializeField] Transform quadHeroSpawnPointIL, quadHeroSpawnPointOL, quadHeroSpawnPointIR, quadHeroSpawnPointOR;
     [SerializeField] Transform enemySpawnPointC, enemySpawnPointIL, enemySpawnPointOL, enemySpawnPointIR, enemySpawnPointOR;
+    [SerializeField] Transform quadEnemySpawnPointIL, quadEnemySpawnPointOL, quadEnemySpawnPointIR, quadEnemySpawnPointOR;
 
     [SerializeField] Transform heroSpawnPointsParent, enemySpawnPointsParent, enemiesParent;
 
@@ -17,8 +20,16 @@ public class BattleSetup : MonoBehaviour
     Transform battleHUDGroupParent;
     CanvasGroup battleHUDGroup;
 
+    List<int> tempDuplicateEnemyIDs = new List<int>();
+    List<int> duplicateEnemyIDs = new List<int>();
+
+    int enemyNamingModIndex = 0;
+    char[] enemyNamingMod;
+
     private void Awake()
     {
+        SetupVars();
+
         SpawnActiveHeroes();
 
         SpawnInactiveHeroes();
@@ -33,6 +44,11 @@ public class BattleSetup : MonoBehaviour
         InstantiateHeroesInUI();
 
         Debug.Log("-------------------");
+    }
+
+    private void SetupVars()
+    {
+        enemyNamingMod = BattleSettings.enemyDupeNamingConvention.ToCharArray();
     }
 
     private void SetupCameras()
@@ -81,18 +97,18 @@ public class BattleSetup : MonoBehaviour
                 break;
             case 3:
                 // spawn on HeroSpawnPoint IL, C, and IR
-                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[0].Hero().GetName() + " on HeroSpawnPoint IL");
-                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[1].Hero().GetName() + " on HeroSpawnPoint C");
-                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[2].Hero().GetName() + " on HeroSpawnPoint IR");
+                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[0].Hero().GetName() + " on HeroSpawnPoint C");
+                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[1].Hero().GetName() + " on HeroSpawnPoint OL");
+                DebugManager.i.BattleDebugOut("BattleSetup", "Spawning " + GameSettings.GetHeroesInParty()[2].Hero().GetName() + " on HeroSpawnPoint OR");
 
                 PrepHeroForBattle(GameSettings.GetHeroesInParty()[0]);
                 GameSettings.GetHeroesInParty()[0].gameObject.transform.position = heroSpawnPointC.position;
 
                 PrepHeroForBattle(GameSettings.GetHeroesInParty()[1]);
-                GameSettings.GetHeroesInParty()[1].gameObject.transform.position = heroSpawnPointIL.position;
+                GameSettings.GetHeroesInParty()[1].gameObject.transform.position = heroSpawnPointOL.position;
 
                 PrepHeroForBattle(GameSettings.GetHeroesInParty()[2]);
-                GameSettings.GetHeroesInParty()[2].gameObject.transform.position = heroSpawnPointIR.position;
+                GameSettings.GetHeroesInParty()[2].gameObject.transform.position = heroSpawnPointOR.position;
 
                 break;
             case 4:
@@ -167,19 +183,117 @@ public class BattleSetup : MonoBehaviour
 
     void SpawnEnemies()
     {
-        foreach (BaseEnemy enemy in BattleData.i.GetBaseBattle().GetEnemies())
+        //SetEnemyNamesAndPrepInstantiation();
+
+        if (BattleManager.i == null) { BattleManager.i = FindFirstObjectByType<BattleManager>(); }
+
+        switch (BattleData.i.GetBaseBattle().GetEnemies().Count)
         {
-            Debug.Log("Spawning enemy " + enemy.GetName());
-            GameObject newEnemy = Instantiate(enemy.GetEnemyData().GetEnemyPrefab(), enemySpawnPointC.position, Quaternion.identity);
-            newEnemy.transform.SetParent(enemiesParent);
-
-            newEnemy.gameObject.name = enemy.GetEnemyData().GetName();
-            newEnemy.transform.LookAt(heroSpawnPointsParent.position);
-            newEnemy.GetComponent<BattleUnitMovement>().SetOriginRotation();
-
-            if (BattleManager.i == null) { BattleManager.i = FindFirstObjectByType<BattleManager>(); }
-            BattleManager.i.AddToEnemyList(newEnemy.GetComponent<BaseEnemy>());
+            case 1:
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[0], enemySpawnPointC);
+                break;
+            case 2:
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[0], enemySpawnPointIL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[1], enemySpawnPointIR);
+                break;
+            case 3:
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[0], enemySpawnPointC);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[1], enemySpawnPointOL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[2], enemySpawnPointOR);
+                break;
+            case 4:
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[0], quadEnemySpawnPointOL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[1], quadEnemySpawnPointIL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[2], quadEnemySpawnPointIR);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[3], quadEnemySpawnPointOR);
+                break;
+            case 5:
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[0], enemySpawnPointC);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[1], enemySpawnPointIL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[2], enemySpawnPointOL);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[3], enemySpawnPointIR);
+                InstantiateEnemyToBattle(BattleData.i.GetBaseBattle().GetEnemies()[4], enemySpawnPointOR);
+                break;
         }
+
+        SetEnemyNames();
+    }
+
+    void SetEnemyNames()
+    {
+        // check if there are duplicates of any IDs in BattleManager.i.GetActiveEnemies().  Set their name appropriately
+        foreach (BaseEnemy enemy in BattleManager.i.GetActiveEnemies())
+        {
+            if (!tempDuplicateEnemyIDs.Contains(enemy.GetEnemyData().GetID()))
+            {
+                tempDuplicateEnemyIDs.Add(enemy.GetEnemyData().GetID());
+            }
+            else if (!duplicateEnemyIDs.Contains(enemy.GetEnemyData().GetID()))
+            {
+                duplicateEnemyIDs.Add(enemy.GetEnemyData().GetID());
+                DebugManager.i.BattleDebugOut("BattleSetup", "Enemies with duplicate IDs found - " + enemy.GetEnemyData().GetName() + " / ID: " + enemy.GetEnemyData().GetID());
+            }
+        }
+
+        tempDuplicateEnemyIDs.Clear(); // reusing to ensure duplicate enemies are renamed individually by enemy ID
+
+        foreach (int ID in duplicateEnemyIDs) // name duplicate enemies with naming mod
+        {
+            int counter = 0;
+            foreach (BaseEnemy enemy in BattleManager.i.GetActiveEnemies())
+            {
+                if (enemy.GetEnemyData().GetID() == ID && !tempDuplicateEnemyIDs.Contains(enemy.GetEnemyData().GetID()))
+                {
+                    BaseEnemy newEnemy = BattleManager.i.GetActiveEnemies()[counter];
+
+                    char tempChar = enemyNamingMod[enemyNamingModIndex];
+
+                    String tempName = newEnemy.GetEnemyData().GetName() + " " + tempChar;
+
+                    Debug.Log("Setting name to " + tempName);
+
+                    Debug.Log("Setting naming mod " + tempChar + " to " + newEnemy.GetEnemyData().GetName());
+
+                    newEnemy.SetName(tempName);
+                    newEnemy.gameObject.name = tempName;
+
+                    enemyNamingModIndex++;
+                }
+
+                counter++;
+            }
+
+            enemyNamingModIndex = 0;
+            tempDuplicateEnemyIDs.Add(ID);
+        }
+
+        foreach (BaseEnemy enemy in BattleManager.i.GetActiveEnemies()) // name them normally
+        {
+            int counter = 0;
+
+            if (!duplicateEnemyIDs.Contains(enemy.GetEnemyData().GetID())) // ignore those we already did above that are duplicates
+            {
+                BaseEnemy newEnemy = BattleManager.i.GetActiveEnemies()[counter];
+
+                newEnemy.SetName(enemy.GetEnemyData().GetName());
+                newEnemy.gameObject.name = enemy.GetEnemyData().GetName();
+            }
+            counter++;
+        }
+    }
+
+    private void InstantiateEnemyToBattle(BaseEnemy enemy, Transform position)
+    {
+        Debug.Log("Spawning enemy " + enemy.GetName());
+        GameObject newEnemy = Instantiate(enemy.GetEnemyData().GetEnemyPrefab(), position.position, Quaternion.identity);
+        newEnemy.transform.SetParent(enemiesParent);
+
+        //newEnemy.gameObject.name = enemy.GetName();     
+
+        newEnemy.transform.LookAt(heroSpawnPointsParent.position);
+        newEnemy.GetComponent<BattleUnitMovement>().SetOriginRotation();
+
+        BattleManager.i.AddToActiveEnemies(newEnemy.GetComponent<BaseEnemy>());
     }
 
     void SetupUI()

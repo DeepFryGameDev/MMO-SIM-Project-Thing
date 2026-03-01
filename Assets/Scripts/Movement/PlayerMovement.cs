@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("whatIsGround"))
         {
-            Debug.Log("Grounded");
+            //Debug.Log("Grounded");
             grounded = true;
         }
     }

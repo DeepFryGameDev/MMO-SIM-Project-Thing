@@ -146,4 +146,13 @@ public class HeroAnimHandler : MonoBehaviour
             animator.SetTrigger("battleAttack");
         }
     }
+
+    public void GetHitAnim()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("BattleIdle"))
+        {
+            //Debug.Log("Triggering battleGetHit");
+            animator.SetTrigger("battleGetHit");
+        }
+    }
 }
